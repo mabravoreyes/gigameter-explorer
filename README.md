@@ -30,6 +30,8 @@ The helpers expect Trino on `localhost:8080` (`_TRINO_PRD` in `helpers/load_meas
    The helpers auto-start this if the port is closed.
 2. **Your own endpoint** — edit `_TRINO_PRD` (host, port, user, catalog) in `helpers/load_measurements.py`.
 
+New to the platform? `trino_starter.ipynb` walks through the one-time setup (`az` / `kubectl` / `kubelogin`), verifies the connection, and shows how to discover catalogs and run ad-hoc queries before diving into the full explorer.
+
 ## Running
 
 1. `pip install -r requirements.txt` (Python 3.11+)
