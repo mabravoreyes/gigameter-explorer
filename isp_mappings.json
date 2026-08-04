@@ -1,0 +1,159 @@
+{
+  "_note": "ISP canonicalization mappings per country. Keys are ISO3 country codes. Each entry maps a canonical ISP name to a list of lowercase substring patterns matched against detected_isp values (ASN strings and name variants).",
+  "MDA": {
+    "Moldtelecom": [
+      "as8926",
+      "moldtelecom"
+    ],
+    "StarNet": [
+      "as31252",
+      "starnet"
+    ],
+    "Click-COM": [
+      "as62013",
+      "click-com",
+      "click com"
+    ],
+    "Orange Moldova": [
+      "as25454",
+      "as31204",
+      "orange moldova"
+    ],
+    "Inet Tehno": [
+      "as51056",
+      "inet tehno"
+    ],
+    "AltNet": [
+      "as48480",
+      "altnet"
+    ],
+    "Metical": [
+      "as48506",
+      "metical"
+    ],
+    "Raznet": [
+      "as200640",
+      "raznet"
+    ],
+    "Arax-Impex": [
+      "as15836",
+      "arax"
+    ],
+    "Digi": [
+      "as8708",
+      "digi romania",
+      "digi moldova",
+      "digi communications"
+    ],
+    "EuroTelecom": [
+      "as35346",
+      "eurotelecom"
+    ],
+    "Moldcell": [
+      "as43925",
+      "moldcell"
+    ],
+    "LARITEX-TV": [
+      "as64453",
+      "laritex"
+    ],
+    "Diana-Net": [
+      "as35525",
+      "diana-net",
+      "diana net"
+    ],
+    "Vinasterisk": [
+      "as21228",
+      "vinasterisk"
+    ],
+    "NextGenNetwork": [
+      "as60514",
+      "nextgennetwork"
+    ]
+  },
+  "ZMB": {
+    "Zain Zambia": [
+      "as37287",
+      "zain zambia",
+      "zain-zambia"
+    ],
+    "MTN Zambia": [
+      "as36962",
+      "mtn zambia"
+    ],
+    "ZAMTEL": [
+      "as37154",
+      "zamtel",
+      "zambia telecommunications"
+    ],
+    "Liquid Telecom": [
+      "as30844",
+      "liquid telecommunications",
+      "liquid telecom"
+    ],
+    "AfriConnect": [
+      "as36959",
+      "africonnect"
+    ],
+    "Fibrecom": [
+      "as328570",
+      "fibrecom"
+    ],
+    "Starlink": [
+      "as14593",
+      "space exploration technologies",
+      "spacex",
+      "starlink"
+    ],
+    "Airtel": [
+      "as327708",
+      "airtel"
+    ],
+    "NForce": [
+      "as43350",
+      "nforce entertainment"
+    ],
+    "WorldStream": [
+      "as49981",
+      "worldstream"
+    ],
+    "Proton AG": [
+      "as208172",
+      "as199218",
+      "proton ag",
+      "proton"
+    ],
+    "M247": [
+      "as9009",
+      "m247 europe"
+    ],
+    "Beeline": [
+      "as329444",
+      "beeline telecoms"
+    ]
+  },
+  "FJI": {
+    "Telecom Fiji": [
+      "telecom fiji"
+    ],
+    "Digicel Fiji": [
+      "digicel"
+    ],
+    "Vodafone Fiji": [
+      "vodafone fiji"
+    ],
+    "Starlink": [
+      "as14593",
+      "space exploration technologies",
+      "spacex",
+      "starlink"
+    ],
+    "Kacific": [
+      "kacific"
+    ],
+    "FINTEL": [
+      "fiji international telecomunications",
+      "fiji international telecommunications"
+    ]
+  }
+}

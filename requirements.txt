@@ -1,0 +1,11 @@
+pandas>=2.0
+numpy
+matplotlib
+seaborn
+scipy
+pyarrow
+trino
+sqlalchemy
+delta-sharing
+pytz
+jupyter
