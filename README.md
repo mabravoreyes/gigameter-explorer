@@ -1,14 +1,23 @@
 # Giga Meter EDA Explorer
 
-[Giga Meter](https://giga.global/) is the school-side measurement application of Giga, the UNICEF–ITU initiative to connect every school to the internet. It runs speed tests and connectivity checks from a device inside the school and reports the results centrally. This repository contains a single country-parameterized notebook, `gigameter_eda_explorer.ipynb`, that turns that raw measurement stream into a full exploratory analysis: deployment funnel and installation growth, adoption and retention, connectivity performance distributions, IQB-Edu service readiness, ISP comparison, and an appendix of deep dives covering drop-off, speed consistency, throttling and hard-cap detection, hourly congestion profiles, WiFi versus Ethernet, and per-school anomaly flags.
+[Giga Meter](https://giga.global/) is the school-side measurement application of Giga, the UNICEF–ITU initiative to connect every school to the internet. It runs speed tests and connectivity checks from a device inside the school and reports the results centrally. 
+
+This repository contains a single country-parameterized notebook, `gigameter_eda_explorer.ipynb`, which templatizes EDA for Giga Meter data. It covers the following main areas:
+* deployment funnel and installation growth
+* adoption and retention
+* connectivity performance distributions & IQB-Edu distributions
+* ISP comparisons
+
+The Appendix contains various deep dives covering drop-off, speed consistency, throttling and hard-cap detection, hourly congestion profiles, WiFi versus Ethernet, and per-school anomaly flags.
 
 The same notebook serves deployments of very different sizes. Data pulls stream to parquet in batches once a country exceeds one million rows, and two read-time knobs (`ROWLEVEL_WINDOW_DAYS`, `LOAD_COLUMNS`) bound what is loaded into memory — a few hundred schools load in full, while a multi-million-row deployment can be scoped to a trailing window without changing any analysis code. Configuration is a single cell; the analysis is the same for every country.
 
-A scope note on the data. Measurements come from the consolidated table `all_gigameter_measurement_data`, which lags roughly one day — the freshest observable activity is "yesterday", not "today". The `pass_fail_overall` field is a measurement-validity flag, not a quality verdict; the notebook uses it only to exclude unreliable tests. Measured speeds reflect conditions at a device on the school network, and are bounded by — not equal to — contracted capacity.
+A scope note on the data. Measurements come from the consolidated table `all_gigameter_measurement_data`, which lags roughly one day — the freshest observable activity is "yesterday", not "today". The `pass_fail_overall` field is a measurement-validity flag, not a quality verdict; the notebook uses it to exclude unreliable tests. Measured speeds reflect conditions at a device on the school network, and are bounded by — not equal to — contracted capacity.
 
 ## Data access
 
-Running the notebook requires Trino access to the Giga data platform, granted by the Giga data team. This repository contains no data and no credentials; all notebook outputs are stripped. School master data (education levels, admin regions) additionally requires a Delta Sharing profile — place your `prd_profile.share` in `helpers/`, or skip the master cell and work from measurements alone.
+Running the notebook requires Trino access to the Giga data platform, granted by the Giga DevOps team. 
+School master data (education levels, admin regions) additionally requires a Delta Sharing profile — place your `prd_profile.share` in `helpers/`, or skip the master cell and work from measurements alone.
 
 ## Connecting to Trino
 
@@ -41,5 +50,5 @@ Raw ISP names split one provider across near-duplicate strings — quotes, legal
 Extend the file with a block for your country; patterns are lowercased substrings matched after cleaning.
 
 ## Known limits
-
-The traceroute section is opt-in: it requires additional modules and M-Lab BigQuery access, which is billed. Ping (heartbeat) data is a newer Giga Meter capability with partial coverage — where the notebook uses it, measurement-based activity remains the primary signal. Column availability in the consolidated table varies by measurement source; fields specific to one source are present but null for the others.
+* Traceroute section to be developed
+* Ping data in process of being added
