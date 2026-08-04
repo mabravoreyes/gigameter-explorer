@@ -1,0 +1,377 @@
+{
+  "AGO": {
+    "iso2": "AO",
+    "name": "Angola",
+    "timezone": "Africa/Luanda"
+  },
+  "ALB": {
+    "iso2": "AL",
+    "name": "Albania",
+    "timezone": "Europe/Tirane"
+  },
+  "ARG": {
+    "iso2": "AR",
+    "name": "Argentina",
+    "timezone": "America/Argentina/Buenos_Aires"
+  },
+  "ARM": {
+    "iso2": "AM",
+    "name": "Armenia",
+    "timezone": "Asia/Yerevan"
+  },
+  "BDI": {
+    "iso2": "BI",
+    "name": "Burundi",
+    "timezone": "Africa/Bujumbura"
+  },
+  "BEN": {
+    "iso2": "BJ",
+    "name": "Benin",
+    "timezone": "Africa/Porto-Novo"
+  },
+  "BFA": {
+    "iso2": "BF",
+    "name": "Burkina Faso",
+    "timezone": "Africa/Ouagadougou"
+  },
+  "BGD": {
+    "iso2": "BD",
+    "name": "Bangladesh",
+    "timezone": "Asia/Dhaka"
+  },
+  "BIH": {
+    "iso2": "BA",
+    "name": "Bosnia and Herzegovina",
+    "timezone": "Europe/Sarajevo"
+  },
+  "BLZ": {
+    "iso2": "BZ",
+    "name": "Belize",
+    "timezone": "America/Belize"
+  },
+  "BOL": {
+    "iso2": "BO",
+    "name": "Bolivia",
+    "timezone": "America/La_Paz"
+  },
+  "BRA": {
+    "iso2": "BR",
+    "name": "Brazil",
+    "timezone": "America/Sao_Paulo"
+  },
+  "BRB": {
+    "iso2": "BB",
+    "name": "Barbados",
+    "timezone": "America/Barbados"
+  },
+  "BWA": {
+    "iso2": "BW",
+    "name": "Botswana",
+    "timezone": "Africa/Gaborone"
+  },
+  "CAF": {
+    "iso2": "CF",
+    "name": "Central African Republic",
+    "timezone": "Africa/Bangui"
+  },
+  "CIV": {
+    "iso2": "CI",
+    "name": "Côte d'Ivoire",
+    "timezone": "Africa/Abidjan"
+  },
+  "CMR": {
+    "iso2": "CM",
+    "name": "Cameroon",
+    "timezone": "Africa/Douala"
+  },
+  "COD": {
+    "iso2": "CD",
+    "name": "Democratic Republic of the Congo",
+    "timezone": "Africa/Kinshasa"
+  },
+  "COG": {
+    "iso2": "CG",
+    "name": "Congo (Brazzaville)",
+    "timezone": "Africa/Brazzaville"
+  },
+  "COL": {
+    "iso2": "CO",
+    "name": "Colombia",
+    "timezone": "America/Bogota"
+  },
+  "DJI": {
+    "iso2": "DJ",
+    "name": "Djibouti",
+    "timezone": "Africa/Djibouti"
+  },
+  "DZA": {
+    "iso2": "DZ",
+    "name": "Algeria",
+    "timezone": "Africa/Algiers"
+  },
+  "ECU": {
+    "iso2": "EC",
+    "name": "Ecuador",
+    "timezone": "America/Guayaquil"
+  },
+  "EGY": {
+    "iso2": "EG",
+    "name": "Egypt",
+    "timezone": "Africa/Cairo"
+  },
+  "ERI": {
+    "iso2": "ER",
+    "name": "Eritrea",
+    "timezone": "Africa/Asmara"
+  },
+  "ETH": {
+    "iso2": "ET",
+    "name": "Ethiopia",
+    "timezone": "Africa/Addis_Ababa"
+  },
+  "FJI": {
+    "iso2": "FJ",
+    "name": "Fiji",
+    "timezone": "Pacific/Fiji"
+  },
+  "GAB": {
+    "iso2": "GA",
+    "name": "Gabon",
+    "timezone": "Africa/Libreville"
+  },
+  "GEO": {
+    "iso2": "GE",
+    "name": "Georgia",
+    "timezone": "Asia/Tbilisi"
+  },
+  "GHA": {
+    "iso2": "GH",
+    "name": "Ghana",
+    "timezone": "Africa/Accra"
+  },
+  "GIN": {
+    "iso2": "GN",
+    "name": "Guinea",
+    "timezone": "Africa/Conakry"
+  },
+  "GMB": {
+    "iso2": "GM",
+    "name": "Gambia",
+    "timezone": "Africa/Banjul"
+  },
+  "GNB": {
+    "iso2": "GW",
+    "name": "Guinea-Bissau",
+    "timezone": "Africa/Bissau"
+  },
+  "GRD": {
+    "iso2": "GD",
+    "name": "Grenada",
+    "timezone": "America/Grenada"
+  },
+  "HND": {
+    "iso2": "HN",
+    "name": "Honduras",
+    "timezone": "America/Tegucigalpa"
+  },
+  "IDN": {
+    "iso2": "ID",
+    "name": "Indonesia",
+    "timezone": "Asia/Jakarta"
+  },
+  "IND": {
+    "iso2": "IN",
+    "name": "India",
+    "timezone": "Asia/Kolkata"
+  },
+  "KAZ": {
+    "iso2": "KZ",
+    "name": "Kazakhstan",
+    "timezone": "Asia/Almaty"
+  },
+  "KEN": {
+    "iso2": "KE",
+    "name": "Kenya",
+    "timezone": "Africa/Nairobi"
+  },
+  "KGZ": {
+    "iso2": "KG",
+    "name": "Kyrgyzstan",
+    "timezone": "Asia/Bishkek"
+  },
+  "KNA": {
+    "iso2": "KN",
+    "name": "Saint Kitts and Nevis",
+    "timezone": "America/St_Kitts"
+  },
+  "LCA": {
+    "iso2": "LC",
+    "name": "Saint Lucia",
+    "timezone": "America/St_Lucia"
+  },
+  "LKA": {
+    "iso2": "LK",
+    "name": "Sri Lanka",
+    "timezone": "Asia/Colombo"
+  },
+  "LSO": {
+    "iso2": "LS",
+    "name": "Lesotho",
+    "timezone": "Africa/Maseru"
+  },
+  "MAR": {
+    "iso2": "MA",
+    "name": "Morocco",
+    "timezone": "Africa/Casablanca"
+  },
+  "MDA": {
+    "iso2": "MD",
+    "name": "Republic of Moldova",
+    "timezone": "Europe/Chisinau"
+  },
+  "MDG": {
+    "iso2": "MG",
+    "name": "Madagascar",
+    "timezone": "Indian/Antananarivo"
+  },
+  "MLI": {
+    "iso2": "ML",
+    "name": "Mali",
+    "timezone": "Africa/Bamako"
+  },
+  "MNE": {
+    "iso2": "ME",
+    "name": "Montenegro",
+    "timezone": "Europe/Podgorica"
+  },
+  "MNG": {
+    "iso2": "MN",
+    "name": "Mongolia",
+    "timezone": "Asia/Ulaanbaatar"
+  },
+  "MOZ": {
+    "iso2": "MZ",
+    "name": "Mozambique",
+    "timezone": "Africa/Maputo"
+  },
+  "MWI": {
+    "iso2": "MW",
+    "name": "Malawi",
+    "timezone": "Africa/Blantyre"
+  },
+  "NAM": {
+    "iso2": "NA",
+    "name": "Namibia",
+    "timezone": "Africa/Windhoek"
+  },
+  "NER": {
+    "iso2": "NE",
+    "name": "Niger",
+    "timezone": "Africa/Niamey"
+  },
+  "NGA": {
+    "iso2": "NG",
+    "name": "Nigeria",
+    "timezone": "Africa/Lagos"
+  },
+  "PAK": {
+    "iso2": "PK",
+    "name": "Pakistan",
+    "timezone": "Asia/Karachi"
+  },
+  "PER": {
+    "iso2": "PE",
+    "name": "Peru",
+    "timezone": "America/Lima"
+  },
+  "PHL": {
+    "iso2": "PH",
+    "name": "Philippines",
+    "timezone": "Asia/Manila"
+  },
+  "PNG": {
+    "iso2": "PG",
+    "name": "Papua New Guinea",
+    "timezone": "Pacific/Port_Moresby"
+  },
+  "RWA": {
+    "iso2": "RW",
+    "name": "Rwanda",
+    "timezone": "Africa/Kigali"
+  },
+  "SDN": {
+    "iso2": "SD",
+    "name": "Sudan",
+    "timezone": "Africa/Khartoum"
+  },
+  "SEN": {
+    "iso2": "SN",
+    "name": "Senegal",
+    "timezone": "Africa/Dakar"
+  },
+  "SLE": {
+    "iso2": "SL",
+    "name": "Sierra Leone",
+    "timezone": "Africa/Freetown"
+  },
+  "SOM": {
+    "iso2": "SO",
+    "name": "Somalia",
+    "timezone": "Africa/Mogadishu"
+  },
+  "STP": {
+    "iso2": "ST",
+    "name": "São Tomé and Príncipe",
+    "timezone": "Africa/Sao_Tome"
+  },
+  "TCD": {
+    "iso2": "TD",
+    "name": "Chad",
+    "timezone": "Africa/Ndjamena"
+  },
+  "TGO": {
+    "iso2": "TG",
+    "name": "Togo",
+    "timezone": "Africa/Lome"
+  },
+  "TTO": {
+    "iso2": "TT",
+    "name": "Trinidad and Tobago",
+    "timezone": "America/Port_of_Spain"
+  },
+  "TZA": {
+    "iso2": "TZ",
+    "name": "Tanzania",
+    "timezone": "Africa/Dar_es_Salaam"
+  },
+  "UGA": {
+    "iso2": "UG",
+    "name": "Uganda",
+    "timezone": "Africa/Kampala"
+  },
+  "UZB": {
+    "iso2": "UZ",
+    "name": "Uzbekistan",
+    "timezone": "Asia/Tashkent"
+  },
+  "VCT": {
+    "iso2": "VC",
+    "name": "Saint Vincent and the Grenadines",
+    "timezone": "America/St_Vincent"
+  },
+  "ZAF": {
+    "iso2": "ZA",
+    "name": "South Africa",
+    "timezone": "Africa/Johannesburg"
+  },
+  "ZMB": {
+    "iso2": "ZM",
+    "name": "Zambia",
+    "timezone": "Africa/Lusaka"
+  },
+  "ZWE": {
+    "iso2": "ZW",
+    "name": "Zimbabwe",
+    "timezone": "Africa/Harare"
+  }
+}

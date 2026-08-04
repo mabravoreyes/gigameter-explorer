@@ -35,11 +35,10 @@ New to the platform? `trino_starter.ipynb` walks through the one-time setup (`az
 ## Running
 
 1. `pip install -r requirements.txt` (Python 3.11+)
-2. Open `gigameter_eda_explorer.ipynb` and set the **CONFIG cell**:
-   - `COUNTRY_ISO3`, `COUNTRY_ISO2`, `COUNTRY_NAME`, `TIMEZONE`
+2. Open `gigameter_eda_explorer.ipynb` and set the **Country cell** — one code, e.g. `COUNTRY = "FJI"` (ISO3 or country name; iso2/name/timezone resolve automatically via `helpers/country_reference.json` + pytz). Data-loading options live in the same cell; notebook-level filters (region, school hours, minimum-data rules) in the cell after:
    - `USE_CACHED_DATA = False` on first run — pulls from Trino and caches to `./cache/<Country>/`; `True` afterwards for offline work
    - `ROWLEVEL_WINDOW_DAYS` / `LOAD_COLUMNS` — leave `None` for small countries; set (e.g. `365`) for very large ones
-3. Run top to bottom: Part A is the close-out narrative, Part B the appendix deep dives, Part C the exports.
+3. Run top to bottom: Part A is the core EDA narrative, Part B the appendix deep dives, Part C the exports.
 
 ## ISP canonicalisation
 
