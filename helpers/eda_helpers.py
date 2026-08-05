@@ -404,6 +404,31 @@ def format_shift_result(res, label=None, better="up", alpha=0.05):
     return "\n".join(lines)
 
 
+def wilson_ci(k, n, ci=95):
+    """Wilson score interval for a binomial proportion k/n. Returns (p, lo, hi) in 0..1.
+
+    Preferred over the normal (Wald) interval for readiness shares: it stays inside
+    [0, 1], behaves at small n, and doesn't collapse to a zero-width band at 0% / 100%.
+    """
+    from scipy import stats
+    if n == 0:
+        return (float("nan"), float("nan"), float("nan"))
+    z = stats.norm.ppf(1 - (1 - ci / 100) / 2)
+    p = k / n
+    denom = 1 + z * z / n
+    center = (p + z * z / (2 * n)) / denom
+    half = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
+    return (p, max(0.0, center - half), min(1.0, center + half))
+
+
+def fmt_pct_ci(k, n, ci=95, width=5):
+    """'62.0% [54.1, 69.4]  (n=…)' — a readiness share with its Wilson CI."""
+    p, lo, hi = wilson_ci(k, n, ci=ci)
+    if p != p:  # NaN
+        return f"{'n/a':>{width}}  (n=0)"
+    return f"{p*100:>{width}.1f}% [{lo*100:4.1f}, {hi*100:4.1f}]  (n={n})"
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Country resolution — one code in, everything else out
 # ─────────────────────────────────────────────────────────────────────────────
