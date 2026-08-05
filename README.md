@@ -1,8 +1,18 @@
-# Giga Meter EDA Explorer
+# Giga Meter Explorer
 
 [Giga Meter](https://giga.global/) is the school-side measurement application of Giga, the UNICEF–ITU initiative to connect every school to the internet. It runs speed tests and connectivity checks from a device inside the school and reports the results centrally. 
 
-This repository contains a single country-parameterized notebook, `gigameter_eda_explorer.ipynb`, which templatizes EDA for Giga Meter data. It covers the following main areas:
+This repository contains three country-parameterized notebooks that templatize the work on Giga Meter data:
+
+| Notebook | Role |
+|---|---|
+| `gigameter_downloadcleandata.ipynb` | pulls and cleans the data, writes the analysis-ready dataset |
+| `gigameter_edaexplorer.ipynb` | exploratory analysis |
+| `gigameter_runbaseline.ipynb` | connectivity baseline and ISP performance review |
+
+Run the download/clean notebook first. It writes `<slug>_clean.parquet`, `<slug>_clean_unfiltered.parquet` and `<slug>_clean_params.json` to the country cache; both other notebooks open with a loader cell that reads those, so the cleaning decisions — servers kept, latency cutoff, school-hours window — are inherited rather than repeated, and every result traces back to the parameters that produced it.
+
+**The EDA explorer** covers:
 * deployment funnel and installation growth
 * adoption and retention
 * connectivity performance distributions & IQB-Edu distributions
@@ -10,13 +20,15 @@ This repository contains a single country-parameterized notebook, `gigameter_eda
 
 The Appendix contains various deep dives covering drop-off, speed consistency, throttling and hard-cap detection, hourly congestion profiles, WiFi versus Ethernet, and per-school anomaly flags.
 
-The same notebook serves deployments of very different sizes. Data pulls stream to parquet in batches once a country exceeds one million rows, and two read-time knobs (`ROWLEVEL_WINDOW_DAYS`, `LOAD_COLUMNS`) bound what is loaded into memory — a few hundred schools load in full, while a multi-million-row deployment can be scoped to a trailing window without changing any analysis code. Configuration is a single cell; the analysis is the same for every country.
+**The baseline notebook** answers the questions a ministry asks when reviewing ISP contracts: when were the most schools actively reporting, what is the connectivity baseline per school, how do providers compare against an agreed threshold, and whether year-over-year changes are statistically significant. It is parameterized by education level and year, and includes an H3 hex-tile map of median bandwidth by area, a measurement-validity annex, and Superset-ready exports.
 
-A scope note on the data. Measurements come from the consolidated table `all_gigameter_measurement_data`, which lags roughly one day — the freshest observable activity is "yesterday", not "today". The `pass_fail_overall` field is a measurement-validity flag, not a quality verdict; the notebook uses it to exclude unreliable tests. Measured speeds reflect conditions at a device on the school network, and are bounded by — not equal to — contracted capacity.
+The same notebooks serve deployments of very different sizes. Data pulls stream to parquet in batches once a country exceeds one million rows, and two read-time knobs (`ROWLEVEL_WINDOW_DAYS`, `LOAD_COLUMNS`) bound what is loaded into memory — a few hundred schools load in full, while a multi-million-row deployment can be scoped to a trailing window without changing any analysis code. Configuration is a single cell; the analysis is the same for every country.
+
+A scope note on the data. Measurements come from the consolidated table `all_gigameter_measurement_data`, which lags roughly one day — the freshest observable activity is "yesterday", not "today". The `pass_fail_overall` field is a measurement-validity flag, not a quality verdict; the notebooks use it to exclude unreliable tests. Measured speeds reflect conditions at a device on the school network, and are bounded by — not equal to — contracted capacity.
 
 ## Data access
 
-Running the notebook requires Trino access to the Giga data platform, granted by the Giga DevOps team. 
+Running the notebooks requires Trino access to the Giga data platform, granted by the Giga DevOps team. 
 School master data (education levels, admin regions) additionally requires a Delta Sharing profile — place your `prd_profile.share` in `helpers/`, or skip the master cell and work from measurements alone.
 
 ## Connecting to Trino
@@ -30,15 +42,16 @@ The helpers expect Trino on `localhost:8080` (`_TRINO_PRD` in `helpers/load_meas
    The helpers auto-start this if the port is closed.
 2. **Your own endpoint** — edit `_TRINO_PRD` (host, port, user, catalog) in `helpers/load_measurements.py`.
 
-New to the platform? `trino_starter.ipynb` walks through the one-time setup (`az` / `kubectl` / `kubelogin`), verifies the connection, and shows how to discover catalogs and run ad-hoc queries before diving into the full explorer.
+New to the platform? `trino_starter.ipynb` walks through the one-time setup (`az` / `kubectl` / `kubelogin`), verifies the connection, and shows how to discover catalogs and run ad-hoc queries before diving into the notebooks.
 
 ## Running
 
 1. `pip install -r requirements.txt` (Python 3.11+)
-2. Open `gigameter_eda_explorer.ipynb` and set the **Country cell** — one code, e.g. `COUNTRY = "FJI"` (ISO3 or country name; iso2/name/timezone resolve automatically via `helpers/country_reference.json` + pytz). Data-loading options live in the same cell; notebook-level filters (region, school hours, minimum-data rules) in the cell after:
+2. Open `gigameter_downloadcleandata.ipynb` and set the **Country cell** — one code, e.g. `COUNTRY = "FJI"` (ISO3 or country name; iso2/name/timezone resolve automatically via `helpers/country_reference.json` + pytz). Data-loading options live in the same cell; notebook-level filters (region, school hours, minimum-data rules) and the analysis scope (education level, years, thresholds) in the cells after:
    - `USE_CACHED_DATA = False` on first run — pulls from Trino and caches to `./cache/<Country>/`; `True` afterwards for offline work
    - `ROWLEVEL_WINDOW_DAYS` / `LOAD_COLUMNS` — leave `None` for small countries; set (e.g. `365`) for very large ones
-3. Run top to bottom: Part A is the core EDA narrative, Part B the appendix deep dives, Part C the exports.
+3. Run it top to bottom. Two choices are made from the data rather than assumed: the latency outlier cutoff and the school-hours window each show a distribution first, then apply your pick.
+4. Open `gigameter_edaexplorer.ipynb` or `gigameter_runbaseline.ipynb`, set the country in the loader cell, and run.
 
 ## ISP canonicalisation
 
