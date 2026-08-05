@@ -430,6 +430,106 @@ def fmt_pct_ci(k, n, ci=95, width=5):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Many-group comparison (ISPs): omnibus + FDR-corrected pairwise
+#
+# Ranking ISPs by median speed is not evidence — with many measurements per
+# school, tiny gaps look certain. The honest pattern is: aggregate to one median
+# per school per ISP, ask "do ISPs differ at all?" (Kruskal–Wallis), and only if
+# so, run every pairwise shift with a Benjamini–Hochberg correction so the flood
+# of pairs doesn't manufacture false positives.
+# ─────────────────────────────────────────────────────────────────────────────
+def benjamini_hochberg(pvals):
+    """Benjamini–Hochberg FDR-adjusted q-values. NaNs pass through as NaN."""
+    p = np.asarray(pvals, dtype=float)
+    q = np.full(p.shape, np.nan)
+    mask = ~np.isnan(p)
+    pm = p[mask]
+    n = pm.size
+    if n == 0:
+        return q
+    order = np.argsort(pm)
+    adj = pm[order] * n / np.arange(1, n + 1)
+    adj = np.minimum.accumulate(adj[::-1])[::-1]   # enforce monotonicity
+    out = np.empty(n)
+    out[order] = np.clip(adj, 0, 1)
+    q[mask] = out
+    return q
+
+
+def _per_unit_group_median(df, unit_col, group_col, value_col, min_per_cell):
+    """Long frame of one median per (unit, group) cell with >= min_per_cell obs."""
+    sub = df[[unit_col, group_col, value_col]].dropna()
+    g = sub.groupby([group_col, unit_col])[value_col].agg(["median", "count"])
+    g = g[g["count"] >= min_per_cell]["median"].reset_index()
+    return g.rename(columns={"median": value_col})
+
+
+def kruskal_omnibus(df, unit_col, group_col, value_col, groups=None,
+                    min_units=3, min_per_cell=3):
+    """Kruskal–Wallis across groups on per-unit medians (avoids pseudoreplication).
+
+    Keeps groups with >= min_units units (each unit needing >= min_per_cell
+    measurements for a stable median). Returns H, p, epsilon-squared effect size,
+    the qualifying group list (ordered by descending median), and per-group medians.
+    """
+    from scipy import stats
+    per = _per_unit_group_median(df, unit_col, group_col, value_col, min_per_cell)
+    counts = per.groupby(group_col)[unit_col].size()
+    pool = list(groups) if groups is not None else list(counts.index)
+    keep = [g for g in pool if counts.get(g, 0) >= min_units]
+    med = per[per[group_col].isin(keep)].groupby(group_col)[value_col].median()
+    keep = list(med.sort_values(ascending=False).index)
+    arrays = [per.loc[per[group_col] == g, value_col].to_numpy(dtype=float) for g in keep]
+    out = {"value": value_col, "groups": keep, "n_groups": len(keep),
+           "n_units": int(sum(a.size for a in arrays)),
+           "statistic": float("nan"), "p_value": float("nan"), "effect": float("nan"),
+           "medians": {g: float(np.median(a)) for g, a in zip(keep, arrays)}}
+    if len(arrays) >= 2:
+        try:
+            h, p = stats.kruskal(*arrays)
+            out["statistic"], out["p_value"] = float(h), float(p)
+            n = out["n_units"]
+            out["effect"] = float(h / (n - 1)) if n > 1 else float("nan")  # epsilon^2
+        except ValueError:
+            pass                                  # all values tied → no test
+    return out
+
+
+def pairwise_shift_tests(df, unit_col, group_col, value_col, groups=None,
+                         min_units=3, min_per_cell=3, n_boot=1000, ci=95, seed=0):
+    """All pairwise per-unit shifts among `groups`, Benjamini–Hochberg corrected.
+
+    Each pair goes through two_group_shift_test (Mann–Whitney + Cliff's delta +
+    bootstrap CI on the median difference); raw p-values are then FDR-adjusted
+    together. Returns a DataFrame sorted by adjusted p (empty if <2 groups qualify).
+    """
+    import itertools
+    if groups is None:
+        per = _per_unit_group_median(df, unit_col, group_col, value_col, min_per_cell)
+        counts = per.groupby(group_col)[unit_col].size()
+        groups = [g for g in counts.index if counts[g] >= min_units]
+    rows = []
+    for a, b in itertools.combinations(groups, 2):
+        r = two_group_shift_test(df, unit_col, group_col, value_col, a, b,
+                                 min_per_cell=min_per_cell, n_boot=n_boot, ci=ci, seed=seed)
+        if r["n_a"] < min_units or r["n_b"] < min_units:
+            continue
+        lo, hi = r["diff_ci"]
+        rows.append({"ISP A": a, "ISP B": b, "n_A": r["n_a"], "n_B": r["n_b"],
+                     "median_A": round(r["median_a"], 2), "median_B": round(r["median_b"], 2),
+                     "d_median (A-B)": round(r["median_diff"], 2),
+                     "ci_low": round(lo, 2), "ci_high": round(hi, 2),
+                     "cliff_delta": round(r["effect"], 3), "p": r["p_value"]})
+    out = pd.DataFrame(rows)
+    if out.empty:
+        return out
+    out["p_adj"] = benjamini_hochberg(out["p"].to_numpy())
+    out["p"] = out["p"].round(5)
+    out["p_adj"] = out["p_adj"].round(5)
+    return out.sort_values(["p_adj", "p"]).reset_index(drop=True)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Country resolution — one code in, everything else out
 # ─────────────────────────────────────────────────────────────────────────────
 def _load_country_reference():
