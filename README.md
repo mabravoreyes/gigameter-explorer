@@ -2,13 +2,16 @@
 
 [Giga Meter](https://giga.global/) is the school-side measurement application of Giga, the UNICEF–ITU initiative to connect every school to the internet. It runs speed tests and connectivity checks from a device inside the school and reports the results centrally. 
 
-This repository contains three country-parameterized notebooks that templatize the work on Giga Meter data:
+This repository contains a numbered set of country-parameterized notebooks that templatize the work on Giga Meter data:
 
 | Notebook | Role |
 |---|---|
-| `gigameter_downloadcleandata.ipynb` | pulls and cleans the data, writes the analysis-ready dataset |
-| `gigameter_edaexplorer.ipynb` | exploratory analysis |
-| `gigameter_runbaseline.ipynb` | connectivity baseline and ISP performance review |
+| `trino_starter_00.ipynb` | one-time Trino setup and connection check |
+| `download_data_01.ipynb` | pulls and cleans the data, writes the analysis-ready dataset |
+| `meter_explorer_02.ipynb` | exploratory analysis |
+| `meter_baseline_03.ipynb` | connectivity baseline and ISP performance review |
+| `meter_fleetprofile_04.ipynb` | fleet-wide profile: rhythm, seasonality, silence, churn, survivorship (server-side SQL) |
+| `meter_dropoff_05.ipynb` | per-country drop-off: who stopped, when, and what predicts it |
 
 Run the download/clean notebook first. It writes `<slug>_clean.parquet`, `<slug>_clean_unfiltered.parquet` and `<slug>_clean_params.json` to the country cache; both other notebooks open with a loader cell that reads those, so the cleaning decisions — servers kept, latency cutoff, school-hours window — are inherited rather than repeated, and every result traces back to the parameters that produced it.
 
@@ -42,16 +45,16 @@ The helpers expect Trino on `localhost:8080` (`_TRINO_PRD` in `helpers/load_meas
    The helpers auto-start this if the port is closed.
 2. **Your own endpoint** — edit `_TRINO_PRD` (host, port, user, catalog) in `helpers/load_measurements.py`.
 
-New to the platform? `trino_starter.ipynb` walks through the one-time setup (`az` / `kubectl` / `kubelogin`), verifies the connection, and shows how to discover catalogs and run ad-hoc queries before diving into the notebooks.
+New to the platform? `trino_starter_00.ipynb` walks through the one-time setup (`az` / `kubectl` / `kubelogin`), verifies the connection, and shows how to discover catalogs and run ad-hoc queries before diving into the notebooks.
 
 ## Running
 
 1. `pip install -r requirements.txt` (Python 3.11+)
-2. Open `gigameter_downloadcleandata.ipynb` and set the **Country cell** — one code, e.g. `COUNTRY = "FJI"` (ISO3 or country name; iso2/name/timezone resolve automatically via `helpers/country_reference.json` + pytz). Data-loading options live in the same cell; notebook-level filters (region, school hours, minimum-data rules) and the analysis scope (education level, years, thresholds) in the cells after:
+2. Open `download_data_01.ipynb` and set the **Country cell** — one code, e.g. `COUNTRY = "FJI"` (ISO3 or country name; iso2/name/timezone resolve automatically via `helpers/country_reference.json` + pytz). Data-loading options live in the same cell; notebook-level filters (region, school hours, minimum-data rules) and the analysis scope (education level, years, thresholds) in the cells after:
    - `USE_CACHED_DATA = False` on first run — pulls from Trino and caches to `./cache/<Country>/`; `True` afterwards for offline work
    - `ROWLEVEL_WINDOW_DAYS` / `LOAD_COLUMNS` — leave `None` for small countries; set (e.g. `365`) for very large ones
 3. Run it top to bottom. Two choices are made from the data rather than assumed: the latency outlier cutoff and the school-hours window each show a distribution first, then apply your pick.
-4. Open `gigameter_edaexplorer.ipynb` or `gigameter_runbaseline.ipynb`, set the country in the loader cell, and run.
+4. Open `meter_explorer_02.ipynb` or `meter_baseline_03.ipynb`, set the country in the loader cell, and run.
 
 ## ISP canonicalisation
 
