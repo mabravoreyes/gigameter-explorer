@@ -36,14 +36,19 @@ import pandas as pd
 _CACHE_ROOT = Path(__file__).resolve().parent.parent / "cache"
 
 # Columns worth carrying onto a traceroute. Everything else in the measurement
-# table describes the NDT transfer, which the traceroute row already has.
+# table describes the NDT transfer, which the traceroute row already has. The
+# wifi_* and detected_location_* fields are what `wifi_analysis` needs: they
+# describe the link inside the school and how far the client sat from it,
+# neither of which exists in the traceroute exports.
 _INDEX_COLUMNS = """
     measurement_uuid, school_id_giga, school_name, school_id_govt,
     ip_address, isp_name_clean, isp_asn_clean, admin1, admin2,
     education_level, school_area_type, latitude, longitude,
     download_speed, upload_speed, latency, packet_loss_rate,
-    wifi_ssid, wifi_signal, wifi_tx_rate, connectivity_type,
-    pass_fail_overall
+    connectivity_type, pass_fail_overall,
+    wifi_ssid, wifi_model, wifi_quality, wifi_signal,
+    wifi_tx_rate, wifi_channel, wifi_frequency,
+    detected_location_distance, detected_location_is_flagged
 """
 
 

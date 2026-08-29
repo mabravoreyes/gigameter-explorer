@@ -34,7 +34,7 @@ finding survives, the magnitude does not.
 | 09 | Loss Rate Analysis | Q6 | Has loss median; **missing** loss by AS-path-length and by distance bucket |
 | 10 | Per-School Performance | Q7 partial | Q7 counts schools correctly via UUID rather than IP, avoiding the distortion the report flags in its own version |
 | 11 | School-Level Study | **Q7, Q7b** | Join implemented via Trino (`helpers/join_schools.py`); routing-vs-performance correlations still missing |
-| 12 | Wi-Fi and School Performance | — | **Not possible here.** Wi-Fi fields are Giga Meter, not in the traceroute parquet |
+| 12 | Wi-Fi and School Performance | **Q7c-Q7e** | Reproduced via the same Giga Meter join; security (WPA2) is the one attribute the measurement table does not carry |
 | 13 | Temporal Patterns | Q2, Q2b | Has hour-of-day and day-of-week; **missing** RTT/throughput/loss by hour and day |
 | 14 | Path Quality | Q6, Annex | Has reachability; **missing** geographic detour ratio and path stability |
 | 15 | RTT Decomposition | **Q6-Q6c** | Reproduced: domestic/international split plus attribution per transit ASN and per country |
@@ -83,6 +83,17 @@ like BZ→MX→US→MX that their cleaner subset does not show.
 
 **Transit concentration (§08).** Same top egress AS identified (AS23520), at
 77.2% and HHI 0.637 here against their 88.0% and 0.785 — again the filter.
+
+**Wi-Fi (§12).** Reproduced through the Giga Meter join rather than the
+traceroute files. Belize July: median client distance from the registered
+school 0.10 km exactly matching the report, p90 45.6 km against 46, generation
+802.11ac at 71.4% of schools against 70%. The section's actual finding survives
+too — the negotiated radio rate predicts throughput (rho +0.73, p 0.002 here;
++0.71, p 0.021 published) while signal strength does not.
+
+Albania then showed why that conclusion must be derived and not asserted: there
+*both* correlations are significant (radio +0.43, signal +0.16), so the notebook
+picks its reading from the data rather than repeating Belize's.
 
 **The school filter itself could not be reproduced.** Their "known school IP
 ranges" is a curated list: for Belize July it keeps 889 rows from 28 IPs, where
