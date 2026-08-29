@@ -1,0 +1,32 @@
+{
+  "source_url": "https://giga-traceroutes.measurementlab.net/country/uz.html",
+  "bucket": "gs://giga_traceroutes/parquet/",
+  "country_iso2": "UZ",
+  "retrieved": "2026-08-29",
+  "files": [
+    {
+      "file": "giga_UZ_2026-06.parquet",
+      "month": "2026-06",
+      "rows": 14188,
+      "columns": 81,
+      "bytes": 5778970,
+      "sha256": "f51544c3bbf6166a977653269a5b91b592ff77f75505ed60976a0dc3593608b7",
+      "date_min": "2026-06-01",
+      "date_max": "2026-06-30",
+      "distinct_days": 30,
+      "bucket_object": "parquet/giga_UZ_june2026.parquet"
+    },
+    {
+      "file": "giga_UZ_2026-07.parquet",
+      "month": "2026-07",
+      "rows": 71978,
+      "columns": 81,
+      "bytes": 30642547,
+      "sha256": "33c5b2d98a7dff5c845237272c4ff970a7977d63869591c4073b69c1bec84eeb",
+      "date_min": "2026-07-01",
+      "date_max": "2026-07-31",
+      "distinct_days": 31,
+      "bucket_object": "parquet/giga_UZ_july2026.parquet"
+    }
+  ]
+}

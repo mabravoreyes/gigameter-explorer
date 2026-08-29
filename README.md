@@ -69,20 +69,22 @@ Extend the file with a block for your country; patterns are lowercased substring
 
 ## Traceroute data
 
-Monthly M-Lab traceroute exports are committed under `data/traceroutes/<ISO2>/`
-(Albania and Belize so far), with provenance in `manifest.json` and the schema,
-direction of measurement and caveats in the country's `README.md`. The site
-publishes 28 countries to a public bucket; `helpers/fetch_traceroutes.py`
-lists them and pulls any country or month into the same layout:
+The M-Lab traceroute study publishes a monthly export per country for 28
+countries. **The parquet is not in this repository** — it lives in
+[gigameter-traceroute-data](https://github.com/mabravoreyes/gigameter-traceroute-data),
+so the explorer stays light to clone and share. What stays here is the schema,
+direction-of-measurement and caveat notes in `data/traceroutes/README.md`, each
+country's `manifest.json`, and `country_profiles.csv`.
+
+Fetch whatever you need into `data/traceroutes/`, where the notebook expects it
+(fetched files are gitignored):
 
 ```bash
-python helpers/fetch_traceroutes.py --list     # inventory by country and month
-python helpers/fetch_traceroutes.py BZ         # every month for Belize
-python helpers/fetch_traceroutes.py AL --months 2026-04
+python helpers/fetch_traceroutes.py --list                       # inventory
+python helpers/fetch_traceroutes.py AL BZ                        # just what you need
+python helpers/fetch_traceroutes.py --all --max-mb 100           # all 28, ~1 min
+python helpers/fetch_traceroutes.py UZ --dest cache/traceroutes  # UZ in full, ~1 GB
 ```
-
-A fetched country is tracked by git only if you `git add` it — check the size
-first, since one country's monthly export runs to several hundred megabytes.
 `meter_traceroutes_07.ipynb` runs the analysis: it verifies the direction of
 measurement, dates the panel against the school calendar, derives each ISP's
 transit upstream, and measures what that upstream costs in latency to a fixed
@@ -105,9 +107,12 @@ they carry no school identity though, so join `id` (the NDT UUID) to `uuid` in
 the Giga Meter measurements to count schools rather than traces.
 
 ## Known limits
-* Traceroute analysis covers Albania and Belize, and rests on one or two M-Lab
-  vantage points per country — routes are to those servers, not to "the
-  internet" generally
+* Only Albania and Belize are written up; `country_profiles.csv` summarises
+  the other 26
+* Uzbekistan is 2 of 6 months in the data repository — the other four exceed
+  GitHub's 100 MB per-file limit and must be fetched to a cache
+* Analysis rests on one or two M-Lab vantage points per country: routes are to
+  those servers, not to "the internet" generally
 * Traceroutes are not yet joined to school identity; `id` (NDT UUID) to `uuid`
   is the join that would turn trace shares into school counts
 * Ping data in process of being added

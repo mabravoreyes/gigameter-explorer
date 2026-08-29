@@ -6,25 +6,54 @@ country-month in the public bucket `gs://giga_traceroutes/parquet/`.
 28 countries are available, six months each (Fiji and Malawi have seven),
 latest July 2026.
 
-## Layout
+## The parquet is not in this repository
 
-* `<ISO2>/` — committed exports for a country, plus a `manifest.json`
-  (source object, rows, sha256) and a country `README.md`. Albania and Belize
-  are committed; everything else is a fetch away.
-* `country_profiles.csv` — one row per country summarising all 28, written by
-  `helpers/traceroute_profiles.py`.
+This repository holds the analysis; the data lives in
+**[gigameter-traceroute-data](https://github.com/mabravoreyes/gigameter-traceroute-data)**
+(private). Keeping 244 MB of parquet out of the explorer is what makes it light
+enough to clone and share — parquet is already compressed, so git cannot delta
+it, and every committed copy costs its full size in history forever.
 
-## Fetching
+What stays here is the small, text-only part: this file, the per-country
+`README.md` for the worked countries, each country's `manifest.json` (source
+object, row counts, sha256 — so a run can be traced to exact files), and
+`country_profiles.csv`, the 28-row cross-country summary.
+
+## Getting the data
+
+Either clone the data repository beside this one:
+
+```bash
+git clone https://github.com/mabravoreyes/gigameter-traceroute-data.git ../gigameter-traceroute-data
+```
+
+```python
+tr = load_traceroutes('AL', data_root='../gigameter-traceroute-data/traceroutes')
+```
+
+Or re-fetch from the source bucket, which takes about a minute and produces
+byte-identical files in `data/traceroutes/` where the notebook expects them:
 
 ```bash
 python helpers/fetch_traceroutes.py --list                 # inventory
-python helpers/fetch_traceroutes.py KE                     # commit-tracked
-python helpers/fetch_traceroutes.py --all --dest cache/traceroutes --max-mb 70
+python helpers/fetch_traceroutes.py AL BZ                  # just what you need
+python helpers/fetch_traceroutes.py --all --max-mb 100     # all 28 countries
+python helpers/fetch_traceroutes.py UZ --dest cache/traceroutes   # UZ in full, ~1 GB
 ```
 
-`--dest` keeps a bulk pull out of git. Uzbekistan is the reason for `--max-mb`:
-its monthly exports run 168-286 MB, 1,008 MB against 217 MB for the other 27
-countries combined.
+Fetched files are gitignored, so a pull never re-bloats this repository.
+
+## Coverage gaps
+
+**Uzbekistan is 2 of 6 months** in the data repository: its February-May 2026
+exports are 271, 246, 286 and 168 MB and GitHub rejects any file over 100 MB.
+`country_profiles.csv` records `months=2` for UZ. Use `--dest cache/traceroutes`
+to fetch the full series outside git.
+
+Every other country is complete. Where a country shows fewer than six months in
+the profile, the site published an *empty* export for those months — Saint
+Kitts has five empty of six — which is a property of the source, not a gap
+here.
 
 ## What the publisher does upstream of these files
 

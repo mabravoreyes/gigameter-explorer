@@ -1,0 +1,80 @@
+{
+  "source_url": "https://giga-traceroutes.measurementlab.net/country/cg.html",
+  "bucket": "gs://giga_traceroutes/parquet/",
+  "country_iso2": "CG",
+  "retrieved": "2026-08-29",
+  "files": [
+    {
+      "file": "giga_CG_2026-02.parquet",
+      "month": "2026-02",
+      "rows": 33,
+      "columns": 53,
+      "bytes": 38999,
+      "sha256": "fde2a826cefcd914e1b7fdb30d50a9194b8738815ab2352061b5cfb33417cd0f",
+      "date_min": "2026-02-02",
+      "date_max": "2026-02-28",
+      "distinct_days": 14,
+      "bucket_object": "parquet/giga_CG_february2026.parquet"
+    },
+    {
+      "file": "giga_CG_2026-03.parquet",
+      "month": "2026-03",
+      "rows": 4,
+      "columns": 51,
+      "bytes": 27980,
+      "sha256": "58e5c983b420cb7caa7ac5054bde3ae64d6a8f02598d7dae9942496acb3d0ad4",
+      "date_min": "2026-03-07",
+      "date_max": "2026-03-10",
+      "distinct_days": 2,
+      "bucket_object": "parquet/giga_CG_march2026.parquet"
+    },
+    {
+      "file": "giga_CG_2026-04.parquet",
+      "month": "2026-04",
+      "rows": 5,
+      "columns": 51,
+      "bytes": 27670,
+      "sha256": "4f85577e97c8b73190d1b0f49f2dd856e9eeaff8a22206e0cbbe1e288c7d31a2",
+      "date_min": "2026-04-02",
+      "date_max": "2026-04-07",
+      "distinct_days": 3,
+      "bucket_object": "parquet/giga_CG_april2026.parquet"
+    },
+    {
+      "file": "giga_CG_2026-05.parquet",
+      "month": "2026-05",
+      "rows": 0,
+      "columns": 25,
+      "bytes": 12193,
+      "sha256": "30cc2860f276a9a2a2747c5acc10c35ea92ecaa5352f9a4fba9d2f2838a9dd45",
+      "date_min": null,
+      "date_max": null,
+      "distinct_days": 0,
+      "bucket_object": "parquet/giga_CG_may2026.parquet"
+    },
+    {
+      "file": "giga_CG_2026-06.parquet",
+      "month": "2026-06",
+      "rows": 0,
+      "columns": 25,
+      "bytes": 12193,
+      "sha256": "30cc2860f276a9a2a2747c5acc10c35ea92ecaa5352f9a4fba9d2f2838a9dd45",
+      "date_min": null,
+      "date_max": null,
+      "distinct_days": 0,
+      "bucket_object": "parquet/giga_CG_june2026.parquet"
+    },
+    {
+      "file": "giga_CG_2026-07.parquet",
+      "month": "2026-07",
+      "rows": 63,
+      "columns": 53,
+      "bytes": 34214,
+      "sha256": "4d66f84355612c16b6d9a968a7aa942c4f2fde0343b28187947cf4d1c4d101ba",
+      "date_min": "2026-07-01",
+      "date_max": "2026-07-06",
+      "distinct_days": 2,
+      "bucket_object": "parquet/giga_CG_july2026.parquet"
+    }
+  ]
+}

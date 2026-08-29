@@ -5,5 +5,5 @@ cache/
 __pycache__/
 .DS_Store
 
-# Committed reference datasets (traceroutes) — exempt from the *.parquet rule above
-!data/traceroutes/**/*.parquet
+# Traceroute parquet lives in the gigameter-traceroute-data repository, not here.
+# The *.parquet rule above covers data/traceroutes/; do not add an exception.
