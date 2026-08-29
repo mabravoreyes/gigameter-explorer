@@ -166,21 +166,47 @@ negotiated rate, and only about 10% of tests reach half of it. For the other
 90% the radio has five-fold headroom or more, so the band is not what is
 holding those schools back.
 
-### Where the Wi-Fi is worth fixing, and where it is a distraction
+### What moving a school to 5 GHz is actually worth
 
-`median_ratio` and `radio_limited_pct` decide this, and they split the
-countries sharply:
+The question is not whether 5 GHz is better in principle but how much a school
+gains, on how many schools the estimate rests, and against what it currently
+gets. `wifi_profiles.csv` carries all three; ordered by gain against current
+throughput, and keeping only countries whose estimate rests on 20 or more
+schools seen on both bands:
 
-| | ratio | delivered | reading |
-|---|---:|---:|---|
-| Grenada, Belize, Saint Lucia, Trinidad | 0.31-0.50 | 24-80 Mb/s | radio near its ceiling — band and AP work pays |
-| Moldova, Albania, Botswana | 0.18-0.28 | 23-45 Mb/s | worth doing; Albania gains 45 Mb/s within-school |
-| Sri Lanka, Bosnia, Mongolia, Uzbekistan, Montenegro | 0.14-0.16 | 16-40 Mb/s | marginal |
-| Kenya, Fiji, South Africa, Malawi, Zambia, Rwanda, Namibia | 0.01-0.06 | 1-9 Mb/s | **the connection is the problem** |
+| country | addressable schools | now | gain | vs now | evidence | faster on 5 GHz |
+|---|---:|---:|---:|---:|---:|---:|
+| Mongolia | 111 | 21.5 | +58.1 | +271% | 343 | 94.5% |
+| Sri Lanka | 1,170 | 15.3 | +25.4 | +166% | 273 | 84.2% |
+| Bosnia and Herzegovina | 49 | 21.2 | +27.7 | +131% | 18 | 94.4% |
+| Albania | 255 | 36.6 | +45.5 | +124% | 170 | 88.2% |
+| Moldova | 19 | 27.7 | +29.1 | +105% | 21 | 90.5% |
+| South Africa | 100 | 8.6 | +6.1 | +71% | 94 | 74.5% |
+| Uzbekistan | 403 | 13.8 | +9.3 | +67% | 153 | 76.5% |
+| Fiji | 69 | 7.2 | +4.8 | +67% | 58 | 75.9% |
+| Kenya | 45 | 9.2 | +5.4 | +59% | 32 | 87.5% |
+| Montenegro | 133 | 20.6 | +11.5 | +56% | 109 | 74.3% |
+| Namibia | 5 | 0.4 | **-0.1** | -25% | 10 | 40.0% |
 
-Namibia is the clearest case: 144 Mb/s negotiated, **1.0 Mb/s delivered**, and a
-within-school 5 GHz gain of −0.1 Mb/s. Nothing about the Wi-Fi is limiting those
-schools.
+*Addressable* is schools with at least five tests, mostly on 5 GHz-capable
+hardware, mostly observed on 2.4 GHz. *Gain* is the within-school median
+throughput change moving to 5 GHz, in Mb/s. *Evidence* is how many schools that
+estimate rests on — below about 20 the figure is indicative only, which is why
+Belize (18), Botswana (15), Malawi (11), Lesotho (3), Trinidad (4) and
+Kazakhstan (1) are omitted here despite large apparent gains.
+
+**A low use-of-negotiated-rate ratio does not mean the radio is irrelevant.**
+That inference is wrong and the within-school test is what shows it: Malawi
+runs at 0.05 of its negotiated rate yet gains 11.1 Mb/s on 5 GHz, more than
+doubling what its schools get. The negotiated rate is a headline PHY figure; on
+2.4 GHz, interference, retries and collisions push actual throughput far below
+it, so the band can be impairing a school even when the rate suggests headroom.
+Read `median_ratio` as a description of the gap between headline and delivered,
+not as a diagnosis of its cause.
+
+Namibia is the one country measured to gain nothing: 0.4 Mb/s now, -0.1 Mb/s
+from a band change, 40% of schools faster on 5 GHz. Whatever limits those
+schools is not the radio.
 
 ### The capability columns, read with that caveat
 
