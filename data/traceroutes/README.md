@@ -208,6 +208,48 @@ Namibia is the one country measured to gain nothing: 0.4 Mb/s now, -0.1 Mb/s
 from a band change, 40% of schools faster on 5 GHz. Whatever limits those
 schools is not the radio.
 
+### What is limiting these schools, if not the radio
+
+The Wi-Fi work above rules the radio's headline rate out as the cap for most
+schools. It does not identify what the cap *is*, and an earlier version of this
+file said "the connection is the problem", which asserted a cause that had not
+been tested. Two things can be measured; a third cannot.
+
+**The contract is not the ceiling, where it can be checked.**
+`download_speed_contracted` is populated for Malawi and for no other country
+here. Across its 40 schools with five or more tests, the median contract is
+9.5 Mb/s and the median best case delivered is 23.0 Mb/s — schools *exceed*
+their contracted rate by about 1.8x, and 26 of 40 clear 80% of it. Whatever
+limits them, it is not the number on the contract. (Contract figures come from
+school master data and their accuracy is not established here; this is one
+country, and it should not be generalised.)
+
+**Capacity is contended during the school day.** Comparing the best and worst
+median throughput across school hours, holding the country fixed:
+
+| large swing — shared capacity under load | | small swing — fixed ceiling | |
+|---|---:|---|---:|
+| Montenegro | 61% | Mongolia | 14% |
+| Malawi | 59% | Kenya | 22% |
+| Rwanda | 56% | South Africa | 29% |
+| Namibia | 52% | Albania | 30% |
+| Sri Lanka | 50% | | |
+| Zambia | 44% | | |
+| Fiji | 40% | | |
+
+A school whose throughput halves between its best and worst hour is sharing
+capacity with something; a flat profile points at a ceiling that does not care
+about load. This is the distinction the published reports draw in their
+Temporal Patterns section — a large diurnal swing means capacity rather than
+routing.
+
+**What cannot be separated here.** Contention could sit on the school's own
+network, on its access link, or in the provider's aggregation, and nothing in
+these fields distinguishes them. Nor can this rule out the path: the traceroute
+sections measure route length and transit dependency, which bear on latency far
+more than on throughput. "Not the Wi-Fi PHY rate" is the claim the Wi-Fi data
+supports, and it is narrower than naming a cause.
+
 ### The capability columns, read with that caveat
 
 `capable_hw_pct` is the share of tests on hardware that can use 5 GHz (84%
