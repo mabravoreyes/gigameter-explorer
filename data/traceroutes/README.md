@@ -32,7 +32,16 @@ Use `traceroute_profiles.read_profiles()`, not a bare `pd.read_csv`. Namibia's
 ISO-2 code is `NA`, which pandas reads as a missing value by default and would
 drop the country from any grouping.
 
-Two columns need care before anything is compared across countries:
+Three columns need care before anything is compared across countries:
+
+* **`transit_readable`** — whether the transit columns mean anything for that
+  country. Where the M-Lab server sits one hop from the client the AS path is
+  just `[server, client]`, so the "upstream" is the server's own host network
+  and no transit provider is crossed. Kenya and South Africa read as 92% and
+  91% single-upstream on exactly those paths — matching
+  `upstream_is_server_pct` to the decimal. Seven countries are affected (BJ,
+  KE, ZA, FJ, BW, MN, MW); for them `transit_hhi`, `top_upstream_share` and
+  `single_homed_pct` describe server placement, not a transit market.
 
 * **`months`** — how many months were on disk when the profile ran, not what
   the site publishes. Uzbekistan shows 2 because the bulk pull skipped its

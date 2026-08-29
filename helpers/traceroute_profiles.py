@@ -23,8 +23,16 @@ would drop the country from any grouping.
 Every figure is descriptive of one country's own paths. RTT and path length are
 NOT comparable across countries — each country is measured against whichever
 M-Lab servers serve it, so a low median means "close to its server", not
-"better connected". The concentration measures are comparable; the distances
-are not.
+"better connected".
+
+Transit concentration needs the same care, and `transit_readable` says whether
+it can be trusted for a country. Where the M-Lab server sits one hop from the
+client the AS path is just [server, client]: the "upstream" is then the
+server's own host network and no transit provider is crossed. Kenya and South
+Africa read as 92% and 91% single-upstream on exactly those paths, matching
+`upstream_is_server_pct` to the decimal. Read `transit_hhi`,
+`top_upstream_share` and `single_homed_pct` only where `transit_readable` is
+True; elsewhere they describe server placement, not a transit market.
 """
 
 from __future__ import annotations
@@ -110,18 +118,31 @@ def profile_country(country: str, root: Path | str) -> dict | None:
     upstream = upstream_adjacency(tr)
     if upstream.empty:
         row.update(transit_hhi=None, top_upstream_org=None, top_upstream_share=None,
-                   single_homed_pct=None)
+                   single_homed_pct=None, upstream_is_server_pct=None,
+                   median_as_path=None, transit_readable=False)
     else:
         counts = upstream["upstream_asn"].value_counts()
         top_org = upstream.loc[upstream["upstream_asn"] == counts.index[0],
                                "upstream_org"].dropna()
         conc = upstream_concentration(upstream, min_paths=50)
+
+        # Where the M-Lab server sits one hop from the client, the AS path is
+        # just [server, client] and the "upstream" is the server's own host
+        # network — no transit provider is traversed at all. That inflates
+        # transit concentration into a measurement artefact, so it is measured
+        # here rather than left for the reader to discover.
+        joined = upstream.merge(tr[["id", "dst_asn"]], on="id")
+        is_server = 100 * (joined["upstream_asn"] == joined["dst_asn"]).mean()
+
         row.update(
             transit_hhi=round(_hhi(counts)),
             top_upstream_org=(top_org.iloc[0] if len(top_org) else f"AS{counts.index[0]}"),
             top_upstream_share=round(100 * counts.iloc[0] / counts.sum(), 1),
             single_homed_pct=(round(100 * (conc["top_upstream_share_pct"] >= 90).mean(), 1)
                               if len(conc) else None),
+            upstream_is_server_pct=round(is_server, 1),
+            median_as_path=float(upstream["as_path_length"].median()),
+            transit_readable=bool(is_server < 25),
         )
 
     # --- geography, on completed paths only ---
