@@ -94,7 +94,9 @@ def load_traceroutes(
         raise ValueError(f"Every export for {country!r} is empty")
 
     tr = pd.concat(frames, ignore_index=True)
-    tr["partition_date"] = pd.to_datetime(tr["partition_date"])
+    # partition_date is absent when the caller subsets `columns`.
+    if "partition_date" in tr.columns:
+        tr["partition_date"] = pd.to_datetime(tr["partition_date"])
     if months is not None:
         tr = tr[tr["month"].isin(months)].reset_index(drop=True)
     return tr
@@ -271,3 +273,53 @@ def upstream_concentration(upstream: pd.DataFrame, min_paths: int = 50) -> pd.Da
     return (pd.DataFrame(out, columns=columns)
             .sort_values(["month", "completed_paths"], ascending=[True, False])
             .reset_index(drop=True))
+
+
+def latency_decomposition(tr: pd.DataFrame, home_cc: str) -> pd.DataFrame:
+    """
+    Split each path's round-trip time into the part accrued inside the country
+    and the part accrued crossing borders.
+
+    Hop RTTs are cumulative from the server, so the difference between
+    consecutive responding hops is that link's contribution. A link counts as
+    domestic only when both of its endpoints geolocate to `home_cc`; anything
+    touching another country is international. Non-responding hops ('*',
+    rtts = -1) are skipped, and the occasional negative delta — routers answer
+    out of order — is clamped to zero rather than allowed to subtract latency.
+
+    Returns one row per completed path with domestic_ms, international_ms and
+    their share of the total, alongside the measured ndt_rtt for comparison.
+    """
+    rows = []
+    completed = tr[tr["is_reaching_dst_asn"].fillna(False)]
+    for record in completed[["id", "month", "src_asn_name", "ndt_rtt",
+                             "ndt_loss_rate",
+                             "forward_updated_node_details"]].to_dict("records"):
+        hops = record["forward_updated_node_details"]
+        responding = [h for h in (hops if hops is not None else [])
+                      if h.get("rtts") is not None and h["rtts"] != _NO_REPLY_RTT]
+        if len(responding) < 2:
+            continue
+
+        domestic = international = 0.0
+        for previous, hop in zip(responding, responding[1:]):
+            delta = max(0.0, hop["rtts"] - previous["rtts"])
+            if previous.get("cc") == home_cc and hop.get("cc") == home_cc:
+                domestic += delta
+            else:
+                international += delta
+
+        total = domestic + international
+        if total <= 0:
+            continue
+        rows.append({
+            "id": record["id"],
+            "month": record["month"],
+            "isp": record["src_asn_name"],
+            "ndt_rtt": record["ndt_rtt"],
+            "loss_rate": record["ndt_loss_rate"],
+            "domestic_ms": round(domestic, 2),
+            "international_ms": round(international, 2),
+            "international_pct": round(100 * international / total, 1),
+        })
+    return pd.DataFrame(rows)

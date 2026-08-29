@@ -49,15 +49,17 @@ provider's upstream from another's, which is what `upstream_adjacency()` takes.
 
 ## Scope
 
-The export is not filtered to schools by construction — it is NDT clients in
-Albania, 7,789 distinct client IPs across 481 /24s in June 2026 — but the
-timing says the panel is overwhelmingly school-driven. On weekdays 08:00-15:59
-local sit 60% of all traces against the 24% a uniform clock would put there;
-the hourly profile peaks hard at 08:00-09:00 and decays through the school day
-rather than rising into the evening as residential traffic does; and weekend
-days carry 7-8% of traces each against 16-18% for each weekday. Read the client
-IP count as dynamic addressing across roughly Albania's school estate, not as
-7,789 distinct premises.
+These are school measurements by construction. The published methodology is
+explicit: *"We filter each dataset to known school IP ranges."* The 7,789
+distinct client IPs across 481 /24s in June 2026 are therefore dynamic
+addressing across Albania's school estate, not 7,789 distinct premises.
+
+The timing independently agrees, which is worth keeping as a check on the
+filter: 60% of traces fall in the weekday 08:00-15:59 window against the 24% a
+uniform clock would put there, the hourly profile peaks at 08:00-09:00 and
+decays through the school day rather than rising into the evening as
+residential traffic does, and weekend days carry 7-8% of traces each against
+16-18% for each weekday.
 
 The same signature dates the series to the school calendar, which constrains
 what months can be compared. March through June hold the school-hours peak
@@ -67,8 +69,10 @@ and second half of the month as the school year ends. **July is not a like-for-
 like month against March-June** — a trend line drawn through it is measuring
 the summer holiday as much as anything else.
 
-To isolate schools exactly rather than by inference, join `id` — the NDT UUID,
-e.g. `ndt-2zjb9_1781008606_0000000000265E39` — against `uuid` in the Giga Meter
+The filter identifies schools as a set of IP ranges, not individually, so the
+data still carries no school identity. To attach one — and turn trace shares
+into school counts — join `id`, the NDT UUID (e.g.
+`ndt-2zjb9_1781008606_0000000000265E39`), against `uuid` in the Giga Meter
 measurements, the same key the traceroute cell of `meter_explorer_02.ipynb`
 uses.
 

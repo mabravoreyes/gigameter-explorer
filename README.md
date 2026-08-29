@@ -99,10 +99,10 @@ Two points decide whether a reading of this data holds. The traceroute runs
 *from the M-Lab server towards the client*, so `src_*` is the school-side
 network and `dst_*` the server — and because every trace starts at the same
 server, only the hops adjacent to the client identify an ISP's own upstream.
-And the exports are not filtered to schools by construction, though their
-timing shows they are overwhelmingly school-driven — which also means the
-school calendar, not just the network, moves the series; join `id` (the NDT
-UUID) to `uuid` in the Giga Meter measurements to isolate schools exactly.
+And the exports are already filtered to known school IP ranges by the
+publisher, so the school calendar moves the series as much as the network does;
+they carry no school identity though, so join `id` (the NDT UUID) to `uuid` in
+the Giga Meter measurements to count schools rather than traces.
 
 ## Known limits
 * Traceroute analysis covers Albania and Belize, and rests on one or two M-Lab

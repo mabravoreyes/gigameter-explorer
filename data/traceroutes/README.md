@@ -26,6 +26,28 @@ python helpers/fetch_traceroutes.py --all --dest cache/traceroutes --max-mb 70
 its monthly exports run 168-286 MB, 1,008 MB against 217 MB for the other 27
 countries combined.
 
+## What the publisher does upstream of these files
+
+From the site's own methodology note: *"Measurements come from M-Lab: NDT speed
+tests run by real users on school networks, annotated with per-hop routing
+detail. We filter each dataset to known school IP ranges, reconstruct the
+forward path to domestic and international test servers, and summarize path
+length, exchange-point crossings, transit-country dependency, latency
+decomposition, loss, and performance over time."*
+
+Two consequences. The school filter is applied before publication, so these are
+school measurements by construction rather than by inference. And the site's
+own figures cover path length, IXP crossings, transit-country dependency,
+latency decomposition, loss and change over time — `meter_traceroutes_07.ipynb`
+covers the same ground in Q4-Q6, which is the closest this repo gets to
+reproducing the published country pages.
+
+Note that the array stored in `forward_updated_node_details` runs server to
+client (verified in Q0: every path begins in `dst_asn`), the opposite of the
+"forward path to test servers" reading its name suggests. The analysis takes
+the hop adjacent to the client either way, so the direction changes the
+interpretation, not the arithmetic.
+
 ## Reading `country_profiles.csv`
 
 Use `traceroute_profiles.read_profiles()`, not a bare `pd.read_csv`. Namibia's
@@ -34,14 +56,17 @@ drop the country from any grouping.
 
 Three columns need care before anything is compared across countries:
 
-* **`transit_readable`** — whether the transit columns mean anything for that
-  country. Where the M-Lab server sits one hop from the client the AS path is
-  just `[server, client]`, so the "upstream" is the server's own host network
-  and no transit provider is crossed. Kenya and South Africa read as 92% and
-  91% single-upstream on exactly those paths — matching
+* **`transit_readable`** — whether the transit columns can answer a question
+  about market structure. Where the M-Lab server sits one hop from the client
+  the AS path is just `[server, client]`, so the observed "upstream" is the
+  network hosting the server. That adjacency is usually real — Kenyan schools
+  genuinely do reach the server through KENET — but every path to that server
+  must cross it, so a 92% top-upstream share is *forced by the measurement*
+  rather than evidence of single-homing, and nothing here can show whether
+  those ISPs hold other upstreams for other destinations. Kenya and South
+  Africa read as 92% and 91% on exactly those paths, matching
   `upstream_is_server_pct` to the decimal. Seven countries are affected (BJ,
-  KE, ZA, FJ, BW, MN, MW); for them `transit_hhi`, `top_upstream_share` and
-  `single_homed_pct` describe server placement, not a transit market.
+  KE, ZA, FJ, BW, MN, MW).
 
 * **`months`** — how many months were on disk when the profile ran, not what
   the site publishes. Uzbekistan shows 2 because the bulk pull skipped its
