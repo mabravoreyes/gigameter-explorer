@@ -1,0 +1,25 @@
+cc,country,traces,readable,transit_hhi,schools_est,nat_exp_isp,nat_exp_ratio,nat_exp_lo,nat_exp_hi,nat_exp_n,gated,unavoidable,domestic_ms,intl_ms
+AL,Albania,140915,True,5670,,Abissnet sh.a.,2.43,26.9,65.2,46820.0,ME<-HR 93%; HR<-RS 82%,,1.05,34.4
+BA,Bosnia and Herzegovina,137635,True,2268,,Blicnet d.o.o.,1.76,10.2,17.9,1136.0,ME<-HR 89%,,0.0,24.4
+BJ,Benin,810,False,9730,,,,,,,NG<-ZA 100%,,0.48,14.2
+BZ,Belize,13993,True,7927,,Belize Telemedia Limit,1.0,70.0,70.2,2900.0,MX<-US 82%,,0.0,91.1
+DM,Dominica,1529,True,3410,,,,,,,CO<-US 99%,,0.0,146.2
+FJ,Fiji,75146,False,5093,,,,,,,NZ<-AU 100%,AU,0.0,75.4
+HN,Honduras,10419,True,1840,,,,,,,MX<-US 80%,,0.0,90.9
+KE,Kenya,63645,False,8455,,Space Exploration Tech,1.01,22.8,23.0,6307.0,,,3.16,0.0
+KG,Kyrgyzstan,502,True,8247,,,,,,,PK<-RU 92%; RU<-KZ 100%,PK,9.95,222.0
+KZ,Kazakhstan,68284,True,1572,,JSC Kazakhtelecom,1.54,212.8,328.6,14565.0,,,7.23,229.9
+LC,Saint Lucia,612,True,5102,,,,,,,CO<-US 99%,US,0.0,136.1
+LK,Sri Lanka,318551,True,2370,,Dialog Telekom Ltd,2.11,101.3,213.4,44993.0,,,6.61,185.4
+LS,Lesotho,1678,True,4354,,Econet Telecom Lesotho,1.01,13.0,13.0,850.0,,,0.0,27.4
+MD,Republic of Moldova,32766,True,2033,,Moldtelecom SA,2.12,30.3,64.4,6893.0,,,4.25,42.9
+ME,Montenegro,94555,True,2521,,,,,,,HR<-RS 93%,,0.24,0.0
+MN,Mongolia,109398,False,3784,,"Mobinet ISP, MobiCom C",3.82,1.5,5.7,6811.0,,,2.24,5.3
+MW,Malawi,28211,False,4281,,Space Exploration Tech,4.46,50.3,224.3,5623.0,MZ<-ZA 92%,,0.0,18.2
+,Namibia,40678,True,6666,,Telecom Namibia,5.37,35.3,189.7,23152.0,,,0.0,67.6
+RW,Rwanda,5268,True,3162,,KT RWANDA NETWORK Ltd,1.83,46.8,85.8,489.0,,,0.0,165.8
+TT,Trinidad and Tobago,5206,True,4764,,Telecommunication Serv,1.11,115.6,128.2,858.0,CO<-US 84%,,0.0,119.0
+UZ,Uzbekistan,86166,True,9998,,,,,,,,,6.95,229.1
+VC,Saint Vincent and the Gr,2435,True,9932,,,,,,,CO<-US 98%,,0.0,120.4
+ZA,South Africa,85167,False,8304,,,,,,,,,2.85,0.0
+ZM,Zambia,12978,True,2193,,,,,,,,,0.36,27.8
