@@ -80,6 +80,9 @@ def load_traceroutes(
         # to_pandas(ignore_metadata=True) sidesteps the BigQuery 'dbdate'
         # numpy_type in the file's pandas metadata, which pandas cannot parse.
         frame = table.to_pandas(ignore_metadata=True)
+        # A few exports carry pandas' index column and others do not; it holds
+        # nothing, and keeping it would leave NaNs across a mixed concat.
+        frame = frame.drop(columns="__index_level_0__", errors="ignore")
         frame["month"] = path.stem.rsplit("_", 1)[-1]
         frames.append(frame)
 

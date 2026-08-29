@@ -1,14 +1,11 @@
 {
   "source_url": "https://giga-traceroutes.measurementlab.net/country/al.html",
-  "country": "Albania",
-  "iso2": "AL",
-  "iso3": "ALB",
+  "bucket": "gs://giga_traceroutes/parquet/",
+  "country_iso2": "AL",
   "retrieved": "2026-08-29",
-  "note": "Monthly M-Lab traceroute exports for Albania, downloaded from the Giga traceroutes site and supplied by the repo owner. 2026-02 is an empty export (0 rows, 25 cols, no __index_level_0__); 2026-04 was not published.",
   "files": [
     {
       "file": "giga_AL_2026-02.parquet",
-      "original_filename": "1eb77b59-giga_AL_february2026.parquet",
       "month": "2026-02",
       "rows": 0,
       "columns": 25,
@@ -16,55 +13,68 @@
       "sha256": "30cc2860f276a9a2a2747c5acc10c35ea92ecaa5352f9a4fba9d2f2838a9dd45",
       "date_min": null,
       "date_max": null,
-      "distinct_days": 0
-    },
-    {
-      "file": "giga_AL_2026-07.parquet",
-      "original_filename": "4db73535-giga_AL_july2026.parquet",
-      "month": "2026-07",
-      "rows": 17337,
-      "columns": 26,
-      "bytes": 3940310,
-      "sha256": "41b21d839983d3305a82c37c651ba14937b93b45005ac86901b21f2a09e0d3aa",
-      "date_min": "2026-07-01",
-      "date_max": "2026-07-31",
-      "distinct_days": 30
-    },
-    {
-      "file": "giga_AL_2026-06.parquet",
-      "original_filename": "68d7aa0e-giga_AL_june2026.parquet",
-      "month": "2026-06",
-      "rows": 40381,
-      "columns": 26,
-      "bytes": 8428658,
-      "sha256": "0d0d0563cdc4cd8870898cc7b46710c5b5c75ad8fc2c299a7b56112ac579b41a",
-      "date_min": "2026-06-01",
-      "date_max": "2026-06-30",
-      "distinct_days": 30
-    },
-    {
-      "file": "giga_AL_2026-05.parquet",
-      "original_filename": "6fdc901d-giga_AL_may2026.parquet",
-      "month": "2026-05",
-      "rows": 50910,
-      "columns": 26,
-      "bytes": 9926866,
-      "sha256": "5b3412be45d52e1ac949f4c69e5f9ccf3b2b0301ec335596dd9b9baa6131aa99",
-      "date_min": "2026-05-01",
-      "date_max": "2026-05-31",
-      "distinct_days": 30
+      "distinct_days": 0,
+      "bucket_object": "parquet/giga_AL_february2026.parquet"
     },
     {
       "file": "giga_AL_2026-03.parquet",
-      "original_filename": "fdcf8c54-giga_AL_march2026.parquet",
       "month": "2026-03",
       "rows": 6278,
-      "columns": 26,
+      "columns": 82,
       "bytes": 1450535,
       "sha256": "576414ecb22c5c0a0b4119486504705f10e57a08c6399c440e811d8e97bbdf12",
       "date_min": "2026-03-01",
       "date_max": "2026-03-31",
-      "distinct_days": 27
+      "distinct_days": 27,
+      "bucket_object": "parquet/giga_AL_march2026.parquet"
+    },
+    {
+      "file": "giga_AL_2026-04.parquet",
+      "month": "2026-04",
+      "rows": 26009,
+      "columns": 78,
+      "bytes": 5534426,
+      "sha256": "6cd95073ec2e45c3bd568c4014c1249a4e61b8d38df0361d5c7bceffc6f906d8",
+      "date_min": "2026-04-01",
+      "date_max": "2026-04-30",
+      "distinct_days": 30,
+      "bucket_object": "parquet/giga_AL_april2026.parquet"
+    },
+    {
+      "file": "giga_AL_2026-05.parquet",
+      "month": "2026-05",
+      "rows": 50910,
+      "columns": 82,
+      "bytes": 9926866,
+      "sha256": "5b3412be45d52e1ac949f4c69e5f9ccf3b2b0301ec335596dd9b9baa6131aa99",
+      "date_min": "2026-05-01",
+      "date_max": "2026-05-31",
+      "distinct_days": 30,
+      "bucket_object": "parquet/giga_AL_may2026.parquet"
+    },
+    {
+      "file": "giga_AL_2026-06.parquet",
+      "month": "2026-06",
+      "rows": 40381,
+      "columns": 82,
+      "bytes": 8428658,
+      "sha256": "0d0d0563cdc4cd8870898cc7b46710c5b5c75ad8fc2c299a7b56112ac579b41a",
+      "date_min": "2026-06-01",
+      "date_max": "2026-06-30",
+      "distinct_days": 30,
+      "bucket_object": "parquet/giga_AL_june2026.parquet"
+    },
+    {
+      "file": "giga_AL_2026-07.parquet",
+      "month": "2026-07",
+      "rows": 17337,
+      "columns": 82,
+      "bytes": 3940310,
+      "sha256": "41b21d839983d3305a82c37c651ba14937b93b45005ac86901b21f2a09e0d3aa",
+      "date_min": "2026-07-01",
+      "date_max": "2026-07-31",
+      "distinct_days": 30,
+      "bucket_object": "parquet/giga_AL_july2026.parquet"
     }
   ]
 }

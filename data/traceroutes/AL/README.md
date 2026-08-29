@@ -8,13 +8,13 @@ Monthly traceroute exports for Albania, from
 |---|---:|---|
 | `giga_AL_2026-02.parquet` | 0 | published empty — 25 columns, no `__index_level_0__` |
 | `giga_AL_2026-03.parquet` | 6,278 | 2026-03-01 → 03-31 (27 days) |
+| `giga_AL_2026-04.parquet` | 26,009 | 2026-04-01 → 04-30 |
 | `giga_AL_2026-05.parquet` | 50,910 | 2026-05-01 → 05-31 (30 days) |
 | `giga_AL_2026-06.parquet` | 40,381 | 2026-06-01 → 06-30 (30 days) |
 | `giga_AL_2026-07.parquet` | 17,337 | 2026-07-01 → 07-31 (30 days) |
 
-2026-04 was not published, and 2026-02 is an empty export, so the series has two
-gaps. Read `load_traceroutes()` output as four observed months, not a continuous
-run — month-over-month deltas across the March→May gap span two months, not one.
+2026-02 is an empty export; every other month from the campaign's March start is
+present, so March→July is a continuous monthly series.
 
 ## Loading
 

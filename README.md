@@ -70,8 +70,19 @@ Extend the file with a block for your country; patterns are lowercased substring
 ## Traceroute data
 
 Monthly M-Lab traceroute exports are committed under `data/traceroutes/<ISO2>/`
-(Albania so far), with provenance in `manifest.json` and the schema, direction
-of measurement and caveats in the country's `README.md`.
+(Albania and Belize so far), with provenance in `manifest.json` and the schema,
+direction of measurement and caveats in the country's `README.md`. The site
+publishes 28 countries to a public bucket; `helpers/fetch_traceroutes.py`
+lists them and pulls any country or month into the same layout:
+
+```bash
+python helpers/fetch_traceroutes.py --list     # inventory by country and month
+python helpers/fetch_traceroutes.py BZ         # every month for Belize
+python helpers/fetch_traceroutes.py AL --months 2026-04
+```
+
+A fetched country is tracked by git only if you `git add` it — check the size
+first, since one country's monthly export runs to several hundred megabytes.
 `meter_traceroutes_07.ipynb` runs the analysis: it verifies the direction of
 measurement, dates the panel against the school calendar, derives each ISP's
 transit upstream, and measures what that upstream costs in latency to a fixed
@@ -94,9 +105,9 @@ school calendar, not just the network, moves the series; join `id` (the NDT
 UUID) to `uuid` in the Giga Meter measurements to isolate schools exactly.
 
 ## Known limits
-* Traceroute analysis covers Albania only, from four published months with two
-  gaps, and one M-Lab vantage point — routes are to that server, not to
-  "the internet" generally
+* Traceroute analysis covers Albania and Belize, and rests on one or two M-Lab
+  vantage points per country — routes are to those servers, not to "the
+  internet" generally
 * Traceroutes are not yet joined to school identity; `id` (NDT UUID) to `uuid`
   is the join that would turn trace shares into school counts
 * Ping data in process of being added
