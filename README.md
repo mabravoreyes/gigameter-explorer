@@ -66,6 +66,27 @@ Raw ISP names split one provider across near-duplicate strings — quotes, legal
 
 Extend the file with a block for your country; patterns are lowercased substrings matched after cleaning.
 
+## Traceroute data
+
+Monthly M-Lab traceroute exports are committed under `data/traceroutes/<ISO2>/`
+(Albania so far), with provenance in `manifest.json` and the schema, direction
+of measurement and caveats in the country's `README.md`. Load them with
+`helpers/load_traceroutes.py`, which also reshapes hops into tidy frames:
+
+```python
+import sys; sys.path.insert(0, 'helpers')
+from load_traceroutes import load_traceroutes, hop_frame, upstream_adjacency
+tr = load_traceroutes('AL')
+```
+
+Two points decide whether a reading of this data holds. The traceroute runs
+*from the M-Lab server towards the client*, so `src_*` is the school-side
+network and `dst_*` the server — and because every trace starts at the same
+server, only the hops adjacent to the client identify an ISP's own upstream.
+And the exports cover all NDT clients in the country, not only schools; join
+`id` (the NDT UUID) to `uuid` in the Giga Meter measurements to isolate schools.
+
 ## Known limits
-* Traceroute section to be developed
+* Traceroute analysis is bootstrapped: data and loader are in, per-country
+  notebooks are not written yet
 * Ping data in process of being added

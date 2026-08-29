@@ -1,0 +1,72 @@
+# Albania traceroutes (M-Lab)
+
+Monthly traceroute exports for Albania, from
+<https://giga-traceroutes.measurementlab.net/country/al.html>.
+`manifest.json` records the source, row counts and a sha256 per file.
+
+| File | Rows | Coverage |
+|---|---:|---|
+| `giga_AL_2026-02.parquet` | 0 | published empty — 25 columns, no `__index_level_0__` |
+| `giga_AL_2026-03.parquet` | 6,278 | 2026-03-01 → 03-31 (27 days) |
+| `giga_AL_2026-05.parquet` | 50,910 | 2026-05-01 → 05-31 (30 days) |
+| `giga_AL_2026-06.parquet` | 40,381 | 2026-06-01 → 06-30 (30 days) |
+| `giga_AL_2026-07.parquet` | 17,337 | 2026-07-01 → 07-31 (30 days) |
+
+2026-04 was not published, and 2026-02 is an empty export, so the series has two
+gaps. Read `load_traceroutes()` output as four observed months, not a continuous
+run — month-over-month deltas across the March→May gap span two months, not one.
+
+## Loading
+
+`pd.read_parquet()` fails on these files: they carry BigQuery `dbdate` pandas
+metadata that pandas cannot parse. Use the helper, which reads through pyarrow
+and skips the empty month:
+
+```python
+import sys; sys.path.insert(0, 'helpers')
+from load_traceroutes import load_traceroutes, hop_frame, upstream_adjacency
+tr = load_traceroutes('AL')
+```
+
+## Direction of measurement
+
+M-Lab runs the traceroute **from its server towards the client**, so a path in
+`forward_updated_node_details` starts at `dst_asn` (the server's host network)
+and ends at `src_asn` (the client's network in Albania):
+
+* `src_*` — the **client**: ASN, name, city, coordinates.
+* `dst_*` — the **M-Lab server**: site code (`tgd01` = Podgorica), host ASN.
+* `is_reaching_dst_asn` — the trace completed all the way into the *client's*
+  ASN. The "destination" in that name is the traceroute's target, i.e. the
+  client. Verified on 2026-07: all 6,362 flagged rows begin at `dst_asn`, and
+  6,338 end at `src_asn`; none of the 10,975 unflagged rows do.
+
+This matters for any transit claim. Every trace starts at the same server, so
+the early hops describe *M-Lab's* connectivity and are common to every Albanian
+ISP — Hrvatski Telekom appears on most paths for that reason, not because every
+Albanian ISP buys from it. Only the hops adjacent to the client distinguish one
+provider's upstream from another's, which is what `upstream_adjacency()` takes.
+
+## Scope
+
+These are **all NDT clients in Albania**, not only schools: 7,789 distinct
+client IPs across 481 /24s in June 2026, spread over residential and mobile
+ISPs. To isolate schools, join `id` — the NDT UUID, e.g.
+`ndt-2zjb9_1781008606_0000000000265E39` — against `uuid` in the Giga Meter
+measurements, the same key the traceroute cell of `meter_explorer_02.ipynb`
+uses.
+
+## Other caveats
+
+* `reverse_updated_node_details` is populated on only ~20% of rows (3,422 of
+  17,337 in July); the forward path is the reliable one.
+* Unresolved (`*`) hops appear with `addr = '*'`, a null ASN and `rtts = -1.0`.
+  `hop_frame()` flags these as `responded = False`.
+* `src_asn_name` is null for some networks even when the ASN is known; the hop
+  annotations name them, and `upstream_adjacency()` fills from there.
+* AS42313 appears as `Albtelecom Sh.a.` in `src_asn_name` and as
+  `ONE ALBANIA SH.A.` in hop annotations — the same operator under its
+  pre- and post-merger names.
+* `dst_site` is overwhelmingly `tgd01` (Podgorica): 96% of July traces. The
+  handful routed to `sof01`/`sof02` (Sofia), `beg01` (Belgrade) and `ath03`
+  (Athens) are not comparable baselines for distance or RTT.
