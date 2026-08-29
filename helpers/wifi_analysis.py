@@ -324,3 +324,65 @@ def wifi_country_profiles(wifi_all: pd.DataFrame, min_tests: int = 5,
         rows.append(row)
 
     return pd.DataFrame(rows).sort_values("schools", ascending=False).reset_index(drop=True)
+
+
+def band_comparison(wifi: pd.DataFrame, min_tests: int = 5) -> pd.DataFrame:
+    """
+    Compare the two bands *within* each school, one row per school.
+
+    Comparing bands across schools confounds the radio with everything else
+    that differs between schools — the connection behind it above all. A school
+    seen on both bands is its own control: same connection, same site, same
+    equipment, and only the radio changes.
+
+    Returns the per-school medians on each band and their difference, for
+    schools with at least `min_tests` on both.
+    """
+    usable = wifi[wifi["band"].notna() & ~wifi["over_phy"]]
+    per = (usable.groupby(["school_id_giga", "band"])
+                 .agg(tests=("download_speed", "size"),
+                      throughput=("download_speed", "median"),
+                      radio_rate=("wifi_tx_rate", "median"),
+                      signal=("wifi_signal", "median"))
+                 .reset_index())
+    per = per[per["tests"] >= min_tests]
+
+    wide = per.pivot(index="school_id_giga", columns="band")
+    if not {"2.4 GHz", "5 GHz"}.issubset(set(wide.columns.get_level_values(1))):
+        return pd.DataFrame()
+    wide = wide.dropna(subset=[("throughput", "2.4 GHz"), ("throughput", "5 GHz")])
+    if wide.empty:
+        return pd.DataFrame()
+
+    return pd.DataFrame({
+        "throughput_24": wide[("throughput", "2.4 GHz")],
+        "throughput_5": wide[("throughput", "5 GHz")],
+        "throughput_gain": wide[("throughput", "5 GHz")] - wide[("throughput", "2.4 GHz")],
+        "radio_gain": wide[("radio_rate", "5 GHz")] - wide[("radio_rate", "2.4 GHz")],
+        "signal_delta": wide[("signal", "5 GHz")] - wide[("signal", "2.4 GHz")],
+    }).reset_index()
+
+
+def band_verdict(comparison: pd.DataFrame) -> dict:
+    """
+    Whether moving a school to 5 GHz reliably helps, and how much of the
+    theoretical gain survives.
+
+    `conversion` is the share of the negotiated-rate gain that reaches actual
+    throughput. A low value means the radio was never the binding constraint,
+    so the band is not what is holding those schools back.
+    """
+    if comparison.empty:
+        return {}
+    from scipy import stats
+    gain = comparison["throughput_gain"]
+    radio = comparison["radio_gain"].median()
+    return {
+        "schools": len(comparison),
+        "median_radio_gain_mbps": round(float(radio), 1),
+        "median_throughput_gain_mbps": round(float(gain.median()), 1),
+        "conversion_pct": round(100 * float(gain.median()) / float(radio), 1) if radio else None,
+        "pct_faster_on_5ghz": round(100 * float((gain > 0).mean()), 1),
+        "pct_faster_on_24ghz": round(100 * float((gain < 0).mean()), 1),
+        "wilcoxon_p": float(stats.wilcoxon(gain).pvalue) if len(gain) > 10 else None,
+    }

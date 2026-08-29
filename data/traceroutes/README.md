@@ -146,26 +146,55 @@ in one month, Congo 105 with no completed paths, Grenada 136.
 ## The Wi-Fi profile
 
 `wifi_profiles.csv` answers the published reports' Wi-Fi section across every
-country at once. Two columns carry the finding:
+country at once, from 455,970 Giga Meter measurements in 23 countries.
 
-* **`capable_hw_pct`** — share of tests on hardware that can use 5 GHz
-  (802.11ac or ax). 84% across all countries.
-* **`capable_on_24ghz_pct`** — share of *that* hardware observed on 2.4 GHz
-  anyway. 64% across all countries, and above 85% in Kazakhstan, Zambia,
-  Malawi and Uzbekistan.
+**5 GHz is better on average, but it is not deterministic and it is usually not
+the constraint.** Three measurements say so.
 
-On capable hardware, 2.4 GHz negotiates a median 81 Mb/s and delivers 15.1;
-5 GHz negotiates 433 and delivers 56.5. Of 3,508 schools with capable hardware
-and at least five tests, 1,572 (44.8%) are never observed on 5 GHz at all.
+*Within schools seen on both bands* — the only comparison that controls for the
+connection behind the radio — 5 GHz is faster in 84.4% of 1,357 schools and
+slower in 15.6% (Wilcoxon p ≈ 5e-166). Real, but not a rule: 5 GHz attenuates
+faster and penetrates walls worse, so a school with distant or obstructed
+access points can genuinely do better on 2.4 GHz.
 
-One caveat governs how far that can be pushed. `wifi_model` names the
-**client's** adapter, not the access point, so "capable hardware" means a
-capable laptop. A school whose tests never reach 5 GHz may have an access point
-that cannot offer it, in which case the fix is procurement rather than
-configuration — but the measurement cannot tell those two apart, and neither
-can this column.
+*The gain barely converts.* Those same schools gain a median 361 Mb/s of
+negotiated rate and 25.4 Mb/s of actual throughput — **7%**. The rest is
+absorbed by whatever is upstream of the radio.
+
+*And the radio is rarely what binds.* The median test uses 15% of its
+negotiated rate, and only about 10% of tests reach half of it. For the other
+90% the radio has five-fold headroom or more, so the band is not what is
+holding those schools back.
+
+### Where the Wi-Fi is worth fixing, and where it is a distraction
+
+`median_ratio` and `radio_limited_pct` decide this, and they split the
+countries sharply:
+
+| | ratio | delivered | reading |
+|---|---:|---:|---|
+| Grenada, Belize, Saint Lucia, Trinidad | 0.31-0.50 | 24-80 Mb/s | radio near its ceiling — band and AP work pays |
+| Moldova, Albania, Botswana | 0.18-0.28 | 23-45 Mb/s | worth doing; Albania gains 45 Mb/s within-school |
+| Sri Lanka, Bosnia, Mongolia, Uzbekistan, Montenegro | 0.14-0.16 | 16-40 Mb/s | marginal |
+| Kenya, Fiji, South Africa, Malawi, Zambia, Rwanda, Namibia | 0.01-0.06 | 1-9 Mb/s | **the connection is the problem** |
+
+Namibia is the clearest case: 144 Mb/s negotiated, **1.0 Mb/s delivered**, and a
+within-school 5 GHz gain of −0.1 Mb/s. Nothing about the Wi-Fi is limiting those
+schools.
+
+### The capability columns, read with that caveat
+
+`capable_hw_pct` is the share of tests on hardware that can use 5 GHz (84%
+overall); `capable_on_24ghz_pct` is the share of that hardware observed on
+2.4 GHz anyway (64%, above 85% in Kazakhstan, Zambia, Malawi and Uzbekistan).
+That gap is real, but on the evidence above it is only worth acting on in the
+first two rows of the table — elsewhere the band would change the negotiated
+rate and not the result.
+
+`wifi_model` names the **client's** adapter, not the access point, so "capable
+hardware" means a capable laptop. A school never reaching 5 GHz may have an
+access point that cannot offer it, making the fix procurement rather than
+configuration; the measurement cannot separate those.
 
 The radio's negotiated rate correlates with throughput across schools in 12 of
-21 countries with enough schools to test; signal strength does so in 3. What
-varies with the result is the link the radio negotiated, not how well it is
-receiving.
+21 countries with enough schools to test; signal strength does so in 3.
