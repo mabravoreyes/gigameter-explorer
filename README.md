@@ -101,10 +101,15 @@ Two points decide whether a reading of this data holds. The traceroute runs
 *from the M-Lab server towards the client*, so `src_*` is the school-side
 network and `dst_*` the server — and because every trace starts at the same
 server, only the hops adjacent to the client identify an ISP's own upstream.
-And the exports are already filtered to known school IP ranges by the
-publisher, so the school calendar moves the series as much as the network does;
-they carry no school identity though, so join `id` (the NDT UUID) to `uuid` in
-the Giga Meter measurements to count schools rather than traces.
+And the exports are *not* filtered to schools — the publisher applies that
+filter downstream, so a third of the rows and most of the client IPs belong to
+non-school clients (see `data/traceroutes/README.md`). Join `id`, the NDT UUID,
+to `uuid` in the Giga Meter measurements to isolate schools, which is what the
+published reports do.
+
+`traceroute-report-parity.md` maps the site's 15 published report sections
+against what the notebook covers, what only approximates it, and what needs the
+Giga Meter join.
 
 ## Known limits
 * Only Albania and Belize are written up; `country_profiles.csv` summarises

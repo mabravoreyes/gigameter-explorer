@@ -55,27 +55,59 @@ the profile, the site published an *empty* export for those months — Saint
 Kitts has five empty of six — which is a property of the source, not a gap
 here.
 
-## What the publisher does upstream of these files
+## What the published reports do that these files do not
 
-From the site's own methodology note: *"Measurements come from M-Lab: NDT speed
+From the site's methodology note: *"Measurements come from M-Lab: NDT speed
 tests run by real users on school networks, annotated with per-hop routing
 detail. We filter each dataset to known school IP ranges, reconstruct the
 forward path to domestic and international test servers, and summarize path
 length, exchange-point crossings, transit-country dependency, latency
 decomposition, loss, and performance over time."*
 
-Two consequences. The school filter is applied before publication, so these are
-school measurements by construction rather than by inference. And the site's
-own figures cover path length, IXP crossings, transit-country dependency,
-latency decomposition, loss and change over time — `meter_traceroutes_07.ipynb`
-covers the same ground in Q4-Q6, which is the closest this repo gets to
-reproducing the published country pages.
+**That filter is applied downstream of these files, not to them.** The parquet
+is the pipeline's input — the Belize country page labels it *"everything
+fetched"* and reports the school-filtered subset separately. For Belize,
+July 2026:
 
-Note that the array stored in `forward_updated_node_details` runs server to
-client (verified in Q0: every path begins in `dst_asn`), the opposite of the
-"forward path to test servers" reading its name suggests. The analysis takes
-the hop adjacent to the client either way, so the direction changes the
-interpretation, not the arithmetic.
+| | this parquet | the published report |
+|---|---:|---:|
+| rows | 1,316 | 889 school measurements |
+| distinct client IPs | 204 | 28 school IPs |
+| tests to `mex01` / `mex04` | 698 / 618 | 442 / 447 |
+| AS10269 tests / IPs | 1,311 / 202 | 888 / 27 |
+| reachability | 23.7% | 14.7% |
+
+So the school-IP filter removes about a third of the rows and seven eighths of
+the addresses. **Anything computed here describes NDT clients in the country,
+not schools**, unless the filter is reproduced first — and it cannot be
+reproduced from these files alone, because the school IP ranges are Giga's and
+are not in the data.
+
+The route to it is the `id` column. The published reports do exactly this in
+their School-Level Study: they join the NDT UUID that both the traceroute
+record and the Giga Meter API carry, attributing 873 of 889 Belize traceroutes
+to 23 schools. That join also settles a question these files cannot: the report
+finds 23 IPs carrying 23 schools and warns the 1.00x agreement is coincidence,
+so **any per-school figure derived from counting client IPs is distorted**.
+
+Timing still shows the population is school-*dominated* — 60% of Albanian
+traces fall in the weekday 08:00-15:59 window against 24% under a uniform
+clock — which is consistent with roughly two thirds of rows surviving the
+filter. That is evidence about the mix, not a substitute for the filter.
+
+## Direction of measurement
+
+The site states it outright: *"Every path is a traceroute from an M-Lab server
+towards the school. Routing is often asymmetric, so these findings need not
+hold for traffic leaving the school."* This matches what Q0 of the notebook
+verifies from the data — every path begins in `dst_asn`.
+
+Two further definitions from the same note, worth carrying into any reading:
+*"Loss is not reachability"* — loss is end-to-end from the NDT transfer, while
+reachability is whether traceroute probes arrived, and a transfer can show zero
+loss while its traceroute stops short. And *"thresholds are relative"* — the
+published "underserved", "high" and "low" cuts come from each country's own
+distribution and do not compare across countries.
 
 ## Reading `country_profiles.csv`
 
