@@ -44,19 +44,21 @@ _DATA_ROOT = Path(__file__).resolve().parent.parent / "data" / "traceroutes"
 _NO_REPLY_RTT = -1.0
 
 
-def data_dir(country: str = "AL") -> Path:
-    return _DATA_ROOT / country.upper()
+def data_dir(country: str = "AL", data_root: Path | str | None = None) -> Path:
+    """Where a country's exports live; `data_root` overrides the committed tree."""
+    return Path(data_root or _DATA_ROOT) / country.upper()
 
 
-def manifest(country: str = "AL") -> dict:
-    """Provenance for the committed exports: source URL, rows, sha256 per month."""
-    return json.loads((data_dir(country) / "manifest.json").read_text())
+def manifest(country: str = "AL", data_root: Path | str | None = None) -> dict:
+    """Provenance for the exports: source URL, rows, sha256 per month."""
+    return json.loads((data_dir(country, data_root) / "manifest.json").read_text())
 
 
 def load_traceroutes(
     country: str = "AL",
     months: list[str] | None = None,
     columns: list[str] | None = None,
+    data_root: Path | str | None = None,
 ) -> pd.DataFrame:
     """
     Concatenate the monthly exports for `country` into one frame.
@@ -64,11 +66,13 @@ def load_traceroutes(
     months  — e.g. ['2026-05', '2026-06']; None loads every published month.
     columns — subset to read; None reads all. The two node-detail columns are
               large, so pass a subset when you only need the row-level fields.
+    data_root — read from here instead of the committed `data/traceroutes/`,
+              e.g. a bulk pull cached under `cache/`.
 
     Empty exports (a month the site published with zero rows) are skipped, and
     a `month` column is added so per-month grouping does not need re-parsing.
     """
-    d = data_dir(country)
+    d = data_dir(country, data_root)
     if not d.exists():
         raise FileNotFoundError(f"No committed traceroutes for {country!r} at {d}")
 
@@ -257,6 +261,13 @@ def upstream_concentration(upstream: pd.DataFrame, min_paths: int = 50) -> pd.Da
             "top_upstream_org": orgs.iloc[0] if len(orgs) else None,
             "top_upstream_share_pct": round(100 * counts.iloc[0] / counts.sum(), 1),
         })
-    return (pd.DataFrame(out)
+    columns = ["month", "client_asn", "client_asn_name", "completed_paths",
+               "upstreams", "hhi", "top_upstream_asn", "top_upstream_org",
+               "top_upstream_share_pct"]
+    if not out:
+        # A small country can have no ISP-month clearing min_paths. Return the
+        # empty frame with its columns so callers can filter it like any other.
+        return pd.DataFrame(columns=columns)
+    return (pd.DataFrame(out, columns=columns)
             .sort_values(["month", "completed_paths"], ascending=[True, False])
             .reset_index(drop=True))

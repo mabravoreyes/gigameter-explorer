@@ -104,14 +104,18 @@ def fetch_country(
     inv: dict | None = None,
     max_mb: float | None = None,
     overwrite: bool = False,
+    dest_root: Path | str | None = None,
 ) -> list[Path]:
     """
-    Download a country's exports into `data/traceroutes/<ISO2>/`.
+    Download a country's exports into `<dest_root>/<ISO2>/`.
 
     months    — e.g. ['2026-04']; None fetches every published month.
     max_mb    — skip any single file larger than this, for the countries whose
                 monthly export runs to hundreds of megabytes.
     overwrite — re-download files already on disk.
+    dest_root — where to write; defaults to `data/traceroutes/`, which is
+                tracked. Point it at `cache/` for a bulk pull you do not intend
+                to commit.
 
     Writes a manifest alongside the parquet, matching the committed Albania one.
     """
@@ -120,7 +124,7 @@ def fetch_country(
     if country not in inv:
         raise KeyError(f"{country!r} is not in the bucket; try inventory().keys()")
 
-    target = _DATA_ROOT / country
+    target = Path(dest_root or _DATA_ROOT) / country
     target.mkdir(parents=True, exist_ok=True)
     wanted = sorted(months or inv[country])
 
@@ -206,6 +210,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--months", nargs="+", help="limit to these months, e.g. 2026-04")
     parser.add_argument("--max-mb", type=float, help="skip files larger than this")
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--dest", help="write here instead of data/traceroutes/ "
+                                       "(e.g. cache/traceroutes for a bulk pull)")
     args = parser.parse_args(argv)
 
     inv = inventory()
@@ -215,8 +221,8 @@ def main(argv: list[str] | None = None) -> int:
 
     for country in (sorted(inv) if args.all else args.countries):
         print(f"{country}:")
-        fetch_country(country, months=args.months, inv=inv,
-                      max_mb=args.max_mb, overwrite=args.overwrite)
+        fetch_country(country, months=args.months, inv=inv, max_mb=args.max_mb,
+                      overwrite=args.overwrite, dest_root=args.dest)
     return 0
 
 
