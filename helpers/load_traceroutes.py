@@ -408,3 +408,193 @@ def unavoidable_transit(tr: pd.DataFrame, home_cc: str) -> list[str]:
         return []
     common = set.intersection(*(set(s) for s in sequences))
     return sorted(common - {home_cc})
+
+
+def country_transitions(tr: pd.DataFrame, home_cc: str) -> pd.DataFrame:
+    """
+    Country-to-country hand-offs, as a long table of from/to counts.
+
+    The ordered paths say what the whole route looks like; this decomposes them
+    into the individual border crossings, which is what a transition matrix
+    plots. Shares are of paths, so a crossing appearing twice on one path is
+    counted twice.
+    """
+    sequences = country_sequences(tr, home_cc).dropna()
+    sequences = sequences[sequences.map(len) > 1]
+    pairs: dict[tuple, int] = {}
+    for sequence in sequences:
+        for source, target in zip(sequence, sequence[1:]):
+            pairs[(source, target)] = pairs.get((source, target), 0) + 1
+
+    total = len(sequences)
+    rows = [{"from_cc": a, "to_cc": b, "paths": n,
+             "pct_of_paths": round(100 * n / total, 1)}
+            for (a, b), n in pairs.items()]
+    return (pd.DataFrame(rows).sort_values("paths", ascending=False)
+            .reset_index(drop=True))
+
+
+def transition_matrix(tr: pd.DataFrame, home_cc: str) -> pd.DataFrame:
+    """country_transitions() pivoted into a from x to matrix of path shares."""
+    long = country_transitions(tr, home_cc)
+    if long.empty:
+        return pd.DataFrame()
+    return (long.pivot(index="from_cc", columns="to_cc", values="pct_of_paths")
+                .fillna(0.0))
+
+
+def egress_views(tr: pd.DataFrame, home_cc: str) -> pd.DataFrame:
+    """
+    Where traffic leaves the country, under two definitions.
+
+    The published reports report three egress views; two of them can be
+    computed from these files:
+
+    * `first_transit` — the first AS after the school's own network. This is
+      the operator the school hands off to, and matches upstream_adjacency().
+    * `first_foreign` — the first hop that geolocates outside the home country.
+      This is the physical border crossing, which can be a different operator:
+      a domestic ISP carrying traffic abroad on its own network egresses under
+      its own ASN.
+
+    The third view — the first *foreign-registered* AS, i.e. the ownership
+    rather than geographic crossing — needs an ASN-to-registration-country
+    table, which is not in these files. Their gap from `first_foreign` is what
+    distinguishes a route that leaves the country from one that leaves domestic
+    ownership.
+
+    One row per completed path.
+    """
+    rows = []
+    completed = tr[tr["is_reaching_dst_asn"].fillna(False)]
+    for record in completed[["id", "month", "src_asn", "src_asn_name",
+                             "forward_updated_node_details"]].to_dict("records"):
+        hops = record["forward_updated_node_details"]
+        # Stored server-to-client; reverse so the walk starts at the school.
+        ordered = list(hops if hops is not None else [])[::-1]
+        client = record["src_asn"]
+
+        first_transit = first_foreign = None
+        for hop in ordered:
+            asn, cc = hop.get("associated_asn"), hop.get("cc")
+            if first_transit is None and asn and asn != client:
+                first_transit = (asn, hop.get("associated_org"))
+            if first_foreign is None and cc and cc.upper() != home_cc and asn:
+                first_foreign = (asn, hop.get("associated_org"))
+            if first_transit and first_foreign:
+                break
+
+        if first_transit is None and first_foreign is None:
+            continue
+        rows.append({
+            "id": record["id"], "month": record["month"],
+            "client_asn": client, "client_asn_name": record["src_asn_name"],
+            "first_transit_asn": first_transit[0] if first_transit else None,
+            "first_transit_org": first_transit[1] if first_transit else None,
+            "first_foreign_asn": first_foreign[0] if first_foreign else None,
+            "first_foreign_org": first_foreign[1] if first_foreign else None,
+        })
+    return pd.DataFrame(rows)
+
+
+def egress_concentration(egress: pd.DataFrame) -> pd.DataFrame:
+    """
+    HHI and top-operator share for each egress view, plus chokepoint coverage.
+
+    Chokepoint coverage is the share of paths crossing the single most-used
+    operator under that view — the fraction of traffic one operator could
+    disrupt. HHI is reported on 0-1, as the published reports do.
+    """
+    rows = []
+    for view in ("first_transit", "first_foreign"):
+        column = f"{view}_asn"
+        counts = egress[column].dropna().value_counts()
+        if counts.empty:
+            continue
+        shares = counts / counts.sum()
+        orgs = egress.loc[egress[column] == counts.index[0], f"{view}_org"].dropna()
+        rows.append({
+            "view": view,
+            "paths": int(counts.sum()),
+            "operators": int(counts.size),
+            "hhi": round(float((shares ** 2).sum()), 3),
+            "top_asn": counts.index[0],
+            "top_org": orgs.iloc[0] if len(orgs) else None,
+            "top_share_pct": round(100 * shares.iloc[0], 1),
+            "chokepoint_coverage_pct": round(100 * counts.iloc[0] / len(egress), 1),
+        })
+    return pd.DataFrame(rows)
+
+
+def rtt_attribution(tr: pd.DataFrame, by: str = "asn") -> pd.DataFrame:
+    """
+    Latency added per transit network, in milliseconds per traceroute.
+
+    Hop RTTs are cumulative from the server, so the increment between
+    consecutive responding hops is what that hop's network added. Increments
+    are attributed to the AS (or country) of the hop being entered, summed
+    within each traceroute, then averaged across the traceroutes where that
+    network appears — so a network on few paths is not flattered by them.
+
+    Routers answer out of order, which produces negative increments; these are
+    clamped to zero rather than allowed to subtract latency, the same treatment
+    the published reports apply. Shares of total RTT can therefore exceed 100%.
+
+    Two denominators are reported and they answer different questions.
+    `mean_ms` is per traceroute the network appears on — what that operator
+    adds to a school's round trip, which is the figure to quote about an
+    operator. `mean_ms_per_hop` divides by hops instead, so a network crossed
+    by many hops is not credited with more latency for that alone. The
+    published reports use the first for transit ASNs and the second for
+    countries; reading one as the other is why a country can look like it adds
+    77 ms when it adds 9 ms per hop.
+
+    `by` is 'asn', 'org' or 'cc'.
+    """
+    key = {"asn": "associated_asn", "org": "associated_org", "cc": "cc"}[by]
+
+    per_trace: dict[object, list[float]] = {}
+    hop_counts: dict[object, int] = {}
+    labels: dict[object, str] = {}
+    totals = []
+
+    for hops in tr["forward_updated_node_details"]:
+        responding = [h for h in (hops if hops is not None else [])
+                      if h.get("rtts") is not None and h["rtts"] != _NO_REPLY_RTT]
+        if len(responding) < 2:
+            continue
+        contribution: dict[object, float] = {}
+        for previous, hop in zip(responding, responding[1:]):
+            value = hop.get(key)
+            if value is None:
+                continue
+            if by == "cc":
+                value = value.upper()
+            contribution[value] = contribution.get(value, 0.0) + max(
+                0.0, hop["rtts"] - previous["rtts"])
+            hop_counts[value] = hop_counts.get(value, 0) + 1
+            if by == "asn" and hop.get("associated_org"):
+                labels[value] = hop["associated_org"]
+        if not contribution:
+            continue
+        totals.append(sum(contribution.values()))
+        for value, milliseconds in contribution.items():
+            per_trace.setdefault(value, []).append(milliseconds)
+
+    overall = pd.Series(totals).mean() if totals else float("nan")
+    rows = []
+    for value, series in per_trace.items():
+        values = pd.Series(series)
+        hops = hop_counts.get(value, 0)
+        rows.append({
+            by: value,
+            "org": labels.get(value),
+            "mean_ms": round(values.mean(), 1),
+            "median_ms": round(values.median(), 1),
+            "mean_pct_of_total": round(100 * values.mean() / overall, 1) if overall else None,
+            "mean_ms_per_hop": round(values.sum() / hops, 2) if hops else None,
+            "traces": len(values),
+            "hops": hops,
+        })
+    out = pd.DataFrame(rows).sort_values("mean_ms", ascending=False).reset_index(drop=True)
+    return out.drop(columns="org") if by != "asn" else out

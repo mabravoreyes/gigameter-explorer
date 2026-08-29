@@ -29,20 +29,19 @@ finding survives, the magnitude does not.
 | 04 | Average Path Length: Local vs International | Q5 | Has distance and countries crossed; **missing** IP-hop and AS-hop counts, and the local/international split |
 | 05 | IXP Crossing Analysis | Q5c | Equivalent (both find ~0 IXP crossings) |
 | 06 | Transit Country Dependency | Q5, Q5b | Has countries traversed; **missing** the IP-geolocation vs AS-registration split |
-| 07 | Country Traversal Graph | **Q8, Q8b** | Ordered paths, unavoidable transit and gated entry reproduced; transition matrix still missing |
-| 08 | International Transit Concentration | Q3, Q3b, Q3c | Closest match. Notebook's upstream-adjacency ≈ their "first observed transit"; **missing** their other two egress views and chokepoint coverage |
+| 07 | Country Traversal Graph | **Q8, Q8b, Q8c** | Reproduced: ordered paths, unavoidable transit, gated entry, transition matrix |
+| 08 | International Transit Concentration | **Q3-Q3d** | Two of three egress views and chokepoint coverage reproduced; the third (first foreign-*registered* AS) needs an ASN-to-country registry not in these files |
 | 09 | Loss Rate Analysis | Q6 | Has loss median; **missing** loss by AS-path-length and by distance bucket |
 | 10 | Per-School Performance | Q7 partial | Q7 counts schools correctly via UUID rather than IP, avoiding the distortion the report flags in its own version |
 | 11 | School-Level Study | **Q7, Q7b** | Join implemented via Trino (`helpers/join_schools.py`); routing-vs-performance correlations still missing |
 | 12 | Wi-Fi and School Performance | — | **Not possible here.** Wi-Fi fields are Giga Meter, not in the traceroute parquet |
 | 13 | Temporal Patterns | Q2, Q2b | Has hour-of-day and day-of-week; **missing** RTT/throughput/loss by hour and day |
 | 14 | Path Quality | Q6, Annex | Has reachability; **missing** geographic detour ratio and path stability |
-| 15 | RTT Decomposition | Q6, Q6b | Notebook splits domestic vs international; the report attributes per transit ASN and per country |
+| 15 | RTT Decomposition | **Q6-Q6c** | Reproduced: domestic/international split plus attribution per transit ASN and per country |
 
 ## Worth stealing
 
-Two of their constructs are still worth adding; a third (entry structure) is
-now implemented as Q8.
+One construct is still worth adding; the other three are now implemented.
 
 **Geographic detour ratio** (§14). Path distance over school-to-server
 great-circle distance. Belize July: mean 2.56, and 4.00 median for `mex04`
@@ -50,14 +49,11 @@ against 1.01 for `mex01`. It turns "the path is long" into "the path is 4x
 longer than it needs to be", which is the version that survives a policy
 conversation.
 
-**Three egress views** (§08). First observed transit AS, first AS outside the
-country, first foreign-registered AS. The notebook computes only the first.
-The gap between the physical border crossing and the ownership crossing is
-itself the finding.
-
-**RTT attributed per transit AS** (§15). Belize July: AS174 adds a mean 77.0 ms
-per traceroute. The notebook's domestic/international split is coarser; naming
-the AS is what makes it actionable.
+**The one remaining egress view** (§08). First foreign-*registered* AS — the
+ownership crossing rather than the geographic one. Needs an ASN-to-registration-
+country table; nothing in these files carries it. Q3d computes the other two,
+and for Albania hand-off and border crossing are the same operator on 92.6% of
+paths, so the gap that view would expose is small here.
 
 ## Their framing rules
 
@@ -95,3 +91,22 @@ file. Filtering the traceroutes to those 69 keeps 1,038 rows, not 889. The UUID
 join keeps 1,040 across 32 schools. Since the reports themselves warn that
 IP-keyed school figures are distorted, the UUID join is the better instrument
 regardless, and Q7 uses it.
+
+
+**RTT attribution (§15).** The strongest match of the three. Belize July, AS174:
+median 69.7 ms here against the report's 69.7 exactly; mean 79.3 against 77.0.
+By country per hop, MX is 4.18 ms against their 4.2.
+
+This one exposed a definitional trap worth keeping. Their per-ASN table is
+milliseconds *per traceroute*; their per-country table is *per hop*. Reading
+one as the other makes a country appear to add 77 ms when it adds 9 ms per hop.
+`rtt_attribution()` reports both columns for that reason.
+
+**Transition matrix (§07).** BZ→MX 46.7% against 49.2%, BZ→US 38.6% against
+43.0%, US→MX 54.3% against 50.8% — all tracking, all short by the school
+filter.
+
+**Egress views (§08).** First-transit HHI 0.666 against 0.785, first-out-of-
+country 0.713 against 0.838. Both views rank the same operator top (AS23520)
+and both agree the border view is more concentrated than the hand-off view,
+which is the qualitative finding.
