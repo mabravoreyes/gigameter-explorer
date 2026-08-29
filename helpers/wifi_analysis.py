@@ -198,3 +198,129 @@ def wifi_correlations(wifi: pd.DataFrame, min_tests: int = 5) -> pd.DataFrame:
                      "p": round(float(p), 3), "schools": len(per_school),
                      "significant": bool(p < 0.05)})
     return pd.DataFrame(rows)
+
+
+# ---------------------------------------------------------------------------
+# Cross-country view
+# ---------------------------------------------------------------------------
+
+_WIFI_COLUMNS = """
+    iso3_code, school_id_giga, measurement_uuid,
+    wifi_model, wifi_signal, wifi_tx_rate, wifi_frequency,
+    download_speed, latency, packet_loss_rate, detected_location_distance
+"""
+
+
+def fetch_wifi(iso3_codes: list[str], start: str, end: str, cursor=None,
+               use_cached: bool = True, cache_name: str = "wifi_all") -> pd.DataFrame:
+    """
+    Pull every Giga Meter measurement that reported a Wi-Fi link, for several
+    countries at once.
+
+    This deliberately does not go through the traceroute join. The Wi-Fi link
+    is inside the school and has nothing to do with the path to a test server,
+    so restricting to tests that happen to carry a traceroute would discard most
+    of the evidence for no gain — for these countries it is the difference
+    between roughly 455,000 measurements and a small fraction of them.
+    """
+    from pathlib import Path
+    cache = Path(__file__).resolve().parent.parent / "cache"
+    path = cache / f"{cache_name}_{start}_{end}.parquet"
+    if use_cached and path.exists():
+        return pd.read_parquet(path)
+
+    if cursor is None:
+        from load_measurements import get_trino_cursor
+        cursor = get_trino_cursor()
+
+    codes = "','".join(sorted(iso3_codes))
+    cursor.execute(f"""
+        SELECT {_WIFI_COLUMNS}
+        FROM all_gigameter_measurement_data
+        WHERE iso3_code IN ('{codes}')
+          AND date >= DATE '{start}' AND date <= DATE '{end}'
+          AND wifi_tx_rate IS NOT NULL
+    """)
+    frame = pd.DataFrame(cursor.fetchall(),
+                         columns=[d[0] for d in cursor.description])
+    cache.mkdir(parents=True, exist_ok=True)
+    frame.to_parquet(path, index=False)
+    return frame
+
+
+def wifi_country_profiles(wifi_all: pd.DataFrame, min_tests: int = 5,
+                          min_schools: int = 5) -> pd.DataFrame:
+    """
+    One row per country: the estate, the bottleneck, and whether the radio
+    explains the result.
+
+    Countries are summarised over schools rather than tests, so a country whose
+    measurements concentrate in a few heavily-tested schools is not described by
+    those schools. `min_tests` is the per-school threshold to be counted at all;
+    `min_schools` is the number of qualifying schools a country needs before its
+    correlations are reported, since a rank correlation over three points says
+    nothing.
+    """
+    from scipy import stats
+
+    rows = []
+    for iso3, group in wifi_all.groupby("iso3_code"):
+        wifi = classify_wifi(group.assign(id=group["measurement_uuid"]))
+        counts = wifi.groupby("school_id_giga").size()
+        keep = wifi[wifi["school_id_giga"].isin(counts[counts >= min_tests].index)]
+        if keep.empty:
+            continue
+
+        per_school = keep.groupby("school_id_giga").agg(
+            signal=("wifi_signal", "median"),
+            radio_rate=("wifi_tx_rate", "median"),
+            throughput=("download_speed", "median"),
+        ).dropna()
+
+        usable = keep[~keep["over_phy"]]
+        estate = wifi_estate(keep, min_tests=min_tests)
+
+        def modal(attribute):
+            subset = estate[estate["attribute"] == attribute]
+            if subset.empty:
+                return None, None
+            top = subset.sort_values("schools", ascending=False).iloc[0]
+            return top["value"], top["share_pct"]
+
+        generation, generation_share = modal("generation")
+        band, band_share = modal("band")
+
+        # Hardware that can use 5 GHz but is observed on 2.4 GHz. This is the
+        # difference between what a school owns and what it is configured to
+        # use, and it is a settings change rather than a procurement.
+        capable = wifi[wifi["generation"].isin(["802.11ac", "802.11ax"])]
+        stuck = (capable["band"] == "2.4 GHz").mean() if len(capable) else None
+
+        row = {
+            "iso3": iso3,
+            "wifi_tests": len(wifi),
+            "schools": int(keep["school_id_giga"].nunique()),
+            "capable_hw_pct": round(100 * len(capable) / len(wifi), 1) if len(wifi) else None,
+            "capable_on_24ghz_pct": round(100 * stuck, 1) if stuck is not None else None,
+            "modal_generation": generation, "generation_pct": generation_share,
+            "modal_band": band, "band_pct": band_share,
+            "median_radio_mbps": round(float(usable["wifi_tx_rate"].median()), 1)
+                                 if len(usable) else None,
+            "median_measured_mbps": round(float(usable["download_speed"].median()), 1)
+                                    if len(usable) else None,
+            "median_ratio": round(float(usable["phy_ratio"].median()), 2)
+                            if len(usable) else None,
+            "radio_limited_pct": round(100 * usable["radio_limited"].mean(), 1)
+                                 if len(usable) else None,
+            "over_phy_pct": round(100 * wifi["over_phy"].mean(), 1),
+        }
+
+        if len(per_school) >= min_schools:
+            for label, column in (("signal", "signal"), ("radio", "radio_rate")):
+                rho, p = stats.spearmanr(per_school[column].astype(float),
+                                         per_school["throughput"].astype(float))
+                row[f"rho_{label}_tput"] = round(float(rho), 2)
+                row[f"p_{label}_tput"] = round(float(p), 4)
+        rows.append(row)
+
+    return pd.DataFrame(rows).sort_values("schools", ascending=False).reset_index(drop=True)

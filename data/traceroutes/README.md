@@ -141,3 +141,31 @@ Three columns need care before anything is compared across countries:
 
 Countries with very few traces cannot support a claim: Saint Kitts has 4 traces
 in one month, Congo 105 with no completed paths, Grenada 136.
+
+
+## The Wi-Fi profile
+
+`wifi_profiles.csv` answers the published reports' Wi-Fi section across every
+country at once. Two columns carry the finding:
+
+* **`capable_hw_pct`** — share of tests on hardware that can use 5 GHz
+  (802.11ac or ax). 84% across all countries.
+* **`capable_on_24ghz_pct`** — share of *that* hardware observed on 2.4 GHz
+  anyway. 64% across all countries, and above 85% in Kazakhstan, Zambia,
+  Malawi and Uzbekistan.
+
+On capable hardware, 2.4 GHz negotiates a median 81 Mb/s and delivers 15.1;
+5 GHz negotiates 433 and delivers 56.5. Of 3,508 schools with capable hardware
+and at least five tests, 1,572 (44.8%) are never observed on 5 GHz at all.
+
+One caveat governs how far that can be pushed. `wifi_model` names the
+**client's** adapter, not the access point, so "capable hardware" means a
+capable laptop. A school whose tests never reach 5 GHz may have an access point
+that cannot offer it, in which case the fix is procurement rather than
+configuration — but the measurement cannot tell those two apart, and neither
+can this column.
+
+The radio's negotiated rate correlates with throughput across schools in 12 of
+21 countries with enough schools to test; signal strength does so in 3. What
+varies with the result is the link the radio negotiated, not how well it is
+receiving.

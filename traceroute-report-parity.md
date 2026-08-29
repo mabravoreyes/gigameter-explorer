@@ -34,7 +34,7 @@ finding survives, the magnitude does not.
 | 09 | Loss Rate Analysis | Q6 | Has loss median; **missing** loss by AS-path-length and by distance bucket |
 | 10 | Per-School Performance | Q7 partial | Q7 counts schools correctly via UUID rather than IP, avoiding the distortion the report flags in its own version |
 | 11 | School-Level Study | **Q7, Q7b** | Join implemented via Trino (`helpers/join_schools.py`); routing-vs-performance correlations still missing |
-| 12 | Wi-Fi and School Performance | **Q7c-Q7e** | Reproduced via the same Giga Meter join; security (WPA2) is the one attribute the measurement table does not carry |
+| 12 | Wi-Fi and School Performance | **Q7c-Q7e**, `wifi_profiles.csv` | Reproduced, and extended to all 23 countries with Wi-Fi data; security (WPA2) is the one attribute the measurement table does not carry |
 | 13 | Temporal Patterns | Q2, Q2b | Has hour-of-day and day-of-week; **missing** RTT/throughput/loss by hour and day |
 | 14 | Path Quality | Q6, Annex | Has reachability; **missing** geographic detour ratio and path stability |
 | 15 | RTT Decomposition | **Q6-Q6c** | Reproduced: domestic/international split plus attribution per transit ASN and per country |
@@ -95,13 +95,16 @@ Albania then showed why that conclusion must be derived and not asserted: there
 *both* correlations are significant (radio +0.43, signal +0.16), so the notebook
 picks its reading from the data rather than repeating Belize's.
 
-**The school filter itself could not be reproduced.** Their "known school IP
-ranges" is a curated list: for Belize July it keeps 889 rows from 28 IPs, where
-the measurement table exposes 102 IPs of which 69 intersect the traceroute
-file. Filtering the traceroutes to those 69 keeps 1,038 rows, not 889. The UUID
-join keeps 1,040 across 32 schools. Since the reports themselves warn that
-IP-keyed school figures are distorted, the UUID join is the better instrument
-regardless, and Q7 uses it.
+**The school filter is the UUID join, but does not reproduce their count.**
+Filtering the parquet to rows whose `id` matches a Giga Meter
+`measurement_uuid` for the month is the right mechanism and is what Q7 does. It
+lands high: 1,040 rows against the published 889, or 984 restricting to
+measurements that passed validity, and 80 distinct client IPs against their 28.
+The most likely cause is that the measurement table has been backfilled since
+the report was generated, so more UUIDs match now than did then; a curated
+IP-range list applied on top would also explain it. Either way, counts here run
+over a larger population than the site's, which is the systematic reason every
+magnitude in this document sits a few points high or low.
 
 
 **RTT attribution (§15).** The strongest match of the three. Belize July, AS174:
