@@ -49,10 +49,26 @@ provider's upstream from another's, which is what `upstream_adjacency()` takes.
 
 ## Scope
 
-These are **all NDT clients in Albania**, not only schools: 7,789 distinct
-client IPs across 481 /24s in June 2026, spread over residential and mobile
-ISPs. To isolate schools, join `id` — the NDT UUID, e.g.
-`ndt-2zjb9_1781008606_0000000000265E39` — against `uuid` in the Giga Meter
+The export is not filtered to schools by construction — it is NDT clients in
+Albania, 7,789 distinct client IPs across 481 /24s in June 2026 — but the
+timing says the panel is overwhelmingly school-driven. On weekdays 08:00-15:59
+local sit 60% of all traces against the 24% a uniform clock would put there;
+the hourly profile peaks hard at 08:00-09:00 and decays through the school day
+rather than rising into the evening as residential traffic does; and weekend
+days carry 7-8% of traces each against 16-18% for each weekday. Read the client
+IP count as dynamic addressing across roughly Albania's school estate, not as
+7,789 distinct premises.
+
+The same signature dates the series to the school calendar, which constrains
+what months can be compared. March through June hold the school-hours peak
+(58-66% of traces in the weekday window). July does not: the profile flattens
+to 48.6%, the weekend share rises, and daily volume falls 58% between the first
+and second half of the month as the school year ends. **July is not a like-for-
+like month against March-June** — a trend line drawn through it is measuring
+the summer holiday as much as anything else.
+
+To isolate schools exactly rather than by inference, join `id` — the NDT UUID,
+e.g. `ndt-2zjb9_1781008606_0000000000265E39` — against `uuid` in the Giga Meter
 measurements, the same key the traceroute cell of `meter_explorer_02.ipynb`
 uses.
 
