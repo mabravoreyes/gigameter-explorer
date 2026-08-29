@@ -29,11 +29,11 @@ finding survives, the magnitude does not.
 | 04 | Average Path Length: Local vs International | Q5 | Has distance and countries crossed; **missing** IP-hop and AS-hop counts, and the local/international split |
 | 05 | IXP Crossing Analysis | Q5c | Equivalent (both find ~0 IXP crossings) |
 | 06 | Transit Country Dependency | Q5, Q5b | Has countries traversed; **missing** the IP-geolocation vs AS-registration split |
-| 07 | Country Traversal Graph | — | **Missing.** Ordered country paths, transitions, entry structure (gated / first hop / always via) |
+| 07 | Country Traversal Graph | **Q8, Q8b** | Ordered paths, unavoidable transit and gated entry reproduced; transition matrix still missing |
 | 08 | International Transit Concentration | Q3, Q3b, Q3c | Closest match. Notebook's upstream-adjacency ≈ their "first observed transit"; **missing** their other two egress views and chokepoint coverage |
 | 09 | Loss Rate Analysis | Q6 | Has loss median; **missing** loss by AS-path-length and by distance bucket |
-| 10 | Per-School Performance | — | **Missing**, and the report warns its own version is distorted by IP-keying |
-| 11 | School-Level Study | — | **Not possible here.** Needs the Giga Meter join |
+| 10 | Per-School Performance | Q7 partial | Q7 counts schools correctly via UUID rather than IP, avoiding the distortion the report flags in its own version |
+| 11 | School-Level Study | **Q7, Q7b** | Join implemented via Trino (`helpers/join_schools.py`); routing-vs-performance correlations still missing |
 | 12 | Wi-Fi and School Performance | — | **Not possible here.** Wi-Fi fields are Giga Meter, not in the traceroute parquet |
 | 13 | Temporal Patterns | Q2, Q2b | Has hour-of-day and day-of-week; **missing** RTT/throughput/loss by hour and day |
 | 14 | Path Quality | Q6, Annex | Has reachability; **missing** geographic detour ratio and path stability |
@@ -41,8 +41,8 @@ finding survives, the magnitude does not.
 
 ## Worth stealing
 
-Four of their constructs are sharper than the notebook's and are cheap to add
-from the same fields:
+Two of their constructs are still worth adding; a third (entry structure) is
+now implemented as Q8.
 
 **Geographic detour ratio** (§14). Path distance over school-to-server
 great-circle distance. Belize July: mean 2.56, and 4.00 median for `mex04`
@@ -54,10 +54,6 @@ conversation.
 country, first foreign-registered AS. The notebook computes only the first.
 The gap between the physical border crossing and the ownership crossing is
 itself the finding.
-
-**Entry structure** (§07). Not just which countries carry the traffic but
-whether a country is only reachable through one predecessor — "gated". That is
-the difference between a transit country and a chokepoint.
 
 **RTT attributed per transit AS** (§15). Belize July: AS174 adds a mean 77.0 ms
 per traceroute. The notebook's domestic/international split is coarser; naming
@@ -76,3 +72,26 @@ Carried into the notebook and the data README:
 * *"Routing is often asymmetric, so these findings need not hold for traffic
   leaving the school."* The reverse path is present on only ~16% of rows, and
   the report measures 0.0% forward/reverse AS-path match for Belize.
+
+
+## Validation against the Belize report
+
+Two checks where their published figures let the method be tested.
+
+**Entry structure (§07).** Unavoidable transit reproduces exactly — MX, on
+every measured path. Mexico's main predecessor is US on 50.6% of paths against
+their 51%. The ordered paths track but do not match: BZ→MX 42.8% against their
+49.2%, BZ→US→MX 34.9% against 43.0%. The gap is the school filter (1,316 rows
+here against their 889) plus geolocation noise, which adds re-entrant paths
+like BZ→MX→US→MX that their cleaner subset does not show.
+
+**Transit concentration (§08).** Same top egress AS identified (AS23520), at
+77.2% and HHI 0.637 here against their 88.0% and 0.785 — again the filter.
+
+**The school filter itself could not be reproduced.** Their "known school IP
+ranges" is a curated list: for Belize July it keeps 889 rows from 28 IPs, where
+the measurement table exposes 102 IPs of which 69 intersect the traceroute
+file. Filtering the traceroutes to those 69 keeps 1,038 rows, not 889. The UUID
+join keeps 1,040 across 32 schools. Since the reports themselves warn that
+IP-keyed school figures are distorted, the UUID join is the better instrument
+regardless, and Q7 uses it.

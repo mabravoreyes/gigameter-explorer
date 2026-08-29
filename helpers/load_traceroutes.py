@@ -323,3 +323,88 @@ def latency_decomposition(tr: pd.DataFrame, home_cc: str) -> pd.DataFrame:
             "international_pct": round(100 * international / total, 1),
         })
     return pd.DataFrame(rows)
+
+
+def country_sequences(tr: pd.DataFrame, home_cc: str) -> pd.Series:
+    """
+    The ordered sequence of countries each path crosses, school first.
+
+    Hops are stored server-to-client, so the sequence is reversed to read in
+    the direction the published reports use — school outward to the server.
+    Consecutive repeats collapse, so the result is the order countries are
+    entered, not how many hops each contributes.
+    """
+    out = []
+    for hops in tr["forward_updated_node_details"]:
+        # cc arrives in mixed case; without folding, 'us' and 'US' become two
+        # different countries and the entry structure splits across them.
+        codes = [h["cc"].upper() for h in (hops if hops is not None else [])
+                 if h.get("cc")]
+        if not codes:
+            out.append(None)
+            continue
+        collapsed = [c for i, c in enumerate(codes) if i == 0 or c != codes[i - 1]]
+        collapsed.reverse()                      # server->client becomes school->server
+        # The school sits in the home country by definition, so anchor there:
+        # the client-side hops often fail to geolocate, which would otherwise
+        # start the path at whichever transit hop happened to resolve first.
+        if collapsed[0] != home_cc:
+            collapsed.insert(0, home_cc)
+        collapsed = [c for i, c in enumerate(collapsed) if i == 0 or c != collapsed[i - 1]]
+        out.append(tuple(collapsed))
+    return pd.Series(out, index=tr.index, dtype=object)
+
+
+def entry_structure(tr: pd.DataFrame, home_cc: str,
+                    gated_threshold: float = 0.8) -> pd.DataFrame:
+    """
+    How each foreign country on the path is entered, and from where.
+
+    The transit tables say *which* countries carry the traffic; this says *in
+    what order*, which is what separates a transit country from a chokepoint.
+    A country entered from a single foreign predecessor on `gated_threshold` or
+    more of its paths is **gated**: remove that predecessor and the route goes
+    with it. A country entered straight from home carries no such meaning, and
+    is marked `first_hop`.
+
+    `always_via` lists the countries that precede it on every single path.
+    """
+    sequences = country_sequences(tr, home_cc).dropna()
+    sequences = sequences[sequences.map(len) > 1]
+
+    predecessors: dict[str, list] = {}
+    preceding_sets: dict[str, list] = {}
+    for sequence in sequences:
+        for position, country in enumerate(sequence):
+            if position == 0 or country == home_cc:
+                continue
+            predecessors.setdefault(country, []).append(sequence[position - 1])
+            preceding_sets.setdefault(country, []).append(set(sequence[:position]))
+
+    rows = []
+    for country, prior in predecessors.items():
+        counts = pd.Series(prior).value_counts()
+        share = counts.iloc[0] / counts.sum()
+        always = set.intersection(*preceding_sets[country]) - {country}
+        rows.append({
+            "country": country,
+            "paths": len(prior),
+            "entered_from": counts.size,
+            "main_predecessor": counts.index[0],
+            "main_pct": round(100 * share, 1),
+            "gated": bool(share >= gated_threshold and counts.index[0] != home_cc),
+            "first_hop": bool(counts.index[0] == home_cc),
+            "always_via": ", ".join(sorted(always - {home_cc})) or "--",
+        })
+    return (pd.DataFrame(rows).sort_values("paths", ascending=False)
+            .reset_index(drop=True))
+
+
+def unavoidable_transit(tr: pd.DataFrame, home_cc: str) -> list[str]:
+    """Countries that appear on every measured path — no route avoids them."""
+    sequences = country_sequences(tr, home_cc).dropna()
+    sequences = sequences[sequences.map(len) > 1]
+    if sequences.empty:
+        return []
+    common = set.intersection(*(set(s) for s in sequences))
+    return sorted(common - {home_cc})
