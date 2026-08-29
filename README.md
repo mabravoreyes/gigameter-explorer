@@ -12,6 +12,7 @@ This repository contains a numbered set of country-parameterized notebooks that 
 | `meter_baseline_03.ipynb` | connectivity baseline and ISP performance review |
 | `meter_fleetprofile_04.ipynb` | fleet-wide profile: rhythm, seasonality, silence, churn, survivorship (server-side SQL) |
 | `meter_dropoff_05.ipynb` | per-country drop-off: who stopped, when, and what predicts it |
+| `meter_traceroutes_07.ipynb` | traceroute & internet geography: transit upstreams, routing, and what they cost in latency |
 
 Run the download/clean notebook first. It writes `<slug>_clean.parquet`, `<slug>_clean_unfiltered.parquet` and `<slug>_clean_params.json` to the country cache; both other notebooks open with a loader cell that reads those, so the cleaning decisions — servers kept, latency cutoff, school-hours window — are inherited rather than repeated, and every result traces back to the parameters that produced it.
 
@@ -70,8 +71,12 @@ Extend the file with a block for your country; patterns are lowercased substring
 
 Monthly M-Lab traceroute exports are committed under `data/traceroutes/<ISO2>/`
 (Albania so far), with provenance in `manifest.json` and the schema, direction
-of measurement and caveats in the country's `README.md`. Load them with
-`helpers/load_traceroutes.py`, which also reshapes hops into tidy frames:
+of measurement and caveats in the country's `README.md`.
+`meter_traceroutes_07.ipynb` runs the analysis: it verifies the direction of
+measurement, dates the panel against the school calendar, derives each ISP's
+transit upstream, and measures what that upstream costs in latency to a fixed
+destination. Load the data with `helpers/load_traceroutes.py`, which also
+reshapes hops into tidy frames:
 
 ```python
 import sys; sys.path.insert(0, 'helpers')
@@ -89,6 +94,9 @@ school calendar, not just the network, moves the series; join `id` (the NDT
 UUID) to `uuid` in the Giga Meter measurements to isolate schools exactly.
 
 ## Known limits
-* Traceroute analysis is bootstrapped: data and loader are in, per-country
-  notebooks are not written yet
+* Traceroute analysis covers Albania only, from four published months with two
+  gaps, and one M-Lab vantage point — routes are to that server, not to
+  "the internet" generally
+* Traceroutes are not yet joined to school identity; `id` (NDT UUID) to `uuid`
+  is the join that would turn trace shares into school counts
 * Ping data in process of being added
