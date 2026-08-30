@@ -261,6 +261,66 @@ last responding hop inside Dialog, not to the server. They establish that the
 *path* is domestic and short; they say nothing about how the application
 performs, which traceroute cannot see.
 
+## Can we say Sri Lanka Telecom's international routing is poor? No.
+
+The M-Lab data shows Sri Lanka Telecom reaching Indian test servers at 189 ms
+via Europe where a 55 ms path exists. It is tempting to generalise that to
+"SLT's international routing is poor". Measured directly against fixed
+destinations, that generalisation is false.
+
+Median minimum RTT, 2026-08-30, from probes in each network (measurements
+205913617-25, data in `data/atlas/`):
+
+| network | Sinhala Wikipedia | Mumbai anchor | Singapore anchor |
+|---|---:|---:|---:|
+| **Sri Lanka Telecom** | 78.9 ms | **26.6 ms** | **40.8 ms** |
+| **Dialog** | **39.6 ms** | 32.9 ms | 80.6 ms |
+| LEARN | 92.3 ms | 29.9 ms | 79.7 ms |
+
+**Sri Lanka Telecom is the fastest of the three to India, and twice as fast as
+Dialog to Singapore.** It is slower only to Wikipedia. Dialog is the mirror
+image: best to Wikipedia, worst to Singapore. Neither operator has "poor
+international routing"; they have different interconnection.
+
+### It is peering, not routing
+
+Every probe's resolver returns the same Wikipedia address —
+`103.102.166.224`, `text-lb.eqsin.wikimedia.org`, Wikimedia's **Singapore**
+datacentre — so all three networks are aiming at the same place. The AS paths
+show why they arrive differently:
+
+| from | AS path to Wikimedia | RTT |
+|---|---|---:|
+| Dialog | AS18001 → AS14907 Wikimedia | **39.3 ms** |
+| Sri Lanka Telecom | AS45489 SLT Global → AS14907 Wikimedia | 87.6 ms |
+| LEARN | AS38229 → AS18001 Dialog → AS14907 | 119.8 ms |
+
+Both large operators peer with Wikimedia directly, one AS hop. Dialog's
+interconnection with Wikimedia is evidently in or near Singapore; Sri Lanka
+Telecom's is not, because SLT reaches the Singapore *anchor* in 40.8 ms while
+taking 87.6 ms to a Wikimedia server in the same city. **The gap is where each
+operator meets that specific content network, not how either reaches the
+region.** LEARN, the national education network, has no direct route at all and
+transits Dialog to get there — 119.8 ms for the network built to serve
+education.
+
+### What this does to the M-Lab finding
+
+Sri Lanka Telecom reaches Mumbai in **26.6 ms**. Whatever produces its 189 ms
+path to the Indian M-Lab servers, it is not an inability to reach India. The
+M-Lab result is about the route to those particular destination networks — and
+possibly about the return direction, since M-Lab traces run server-to-client
+while the RTT is round-trip. It should be presented as a finding about **those
+paths**, not about SLT's international connectivity.
+
+The claim that survives all of this is narrower and more useful: **which content
+a Sri Lankan school reaches quickly depends on which operator it buys from, and
+the two large operators are good at opposite things.** A school on Dialog gets
+Wikipedia at 39 ms and Singapore at 81; a school on SLT gets Wikipedia at 79 and
+Singapore at 41. That is a procurement-relevant fact that no bandwidth figure
+would reveal — and LEARN, the network schools might expect to be best served by,
+is worst on two of the three.
+
 ## What to check before presenting
 
 * **The "direct" class is not stable across months.** SLT's direct paths read
@@ -278,3 +338,9 @@ performs, which traceroute cannot see.
 * Two of five school-serving networks have no live Atlas probe (IS Group at
   10.7% of traces, Hutchison), so the direct measurement covers about 85% of
   school traffic.
+* The Atlas probes are not in schools. They sit in the same networks, which is
+  what makes the operator comparison valid, but a school's own last mile is not
+  measured here.
+* Three or four probes per network is a small sample; the within-network spread
+  was tight (SLT 78.4-79.4 ms to Wikipedia) but LEARN ranged 76-120 ms.
+* The London anchor returned no replies and is excluded.
