@@ -21,23 +21,53 @@ completed traces:
 To reach a server across the Palk Strait, 84% of school traffic takes a longer
 route than one already in use — a fifth of it through Europe or North America.
 
-## Why this is a clean comparison
+## Why this is a clean comparison — with the server held fixed
 
-**Within one operator, one month, one destination.** Sri Lanka Telecom carries
-55.6% of school traceroutes. In July 2026 it sent 32.0% of its traffic direct
-and 63.7% through Europe:
+An earlier draft compared routes without holding the destination server
+constant, and that was not safe. Sri Lanka's four servers differ enormously in
+their own right: `maa03` runs a median 98.7 ms, `cok138754` 167.4, `maa01`
+198.6 and `maa02` 338.5. Any route comparison that lets the server vary is
+partly measuring server choice.
 
-| SLT, July 2026 | traces | median RTT |
+It also hid a second problem. The `LK → IN` country sequence is not one path.
+Decomposed by AS path, it holds at least seven, spanning **54 ms to 414 ms**:
+
+| AS path inside "LK → IN" | share | RTT | throughput |
+|---|---:|---:|---:|
+| Kerala Vision → Weblink → Sri Lanka Telecom | 46.1% | **54.3 ms** | 44.3 Mb/s |
+| Reliance Jio → Dialog | 18.0% | 84.7 ms | 6.1 Mb/s |
+| Kerala Vision → Dialog | 17.7% | 104.5 ms | 6.7 Mb/s |
+| Reliance Jio → Sri Lanka Telecom | 6.7% | 191.1 ms | 27.1 Mb/s |
+| Bharti Airtel → Sri Lanka Telecom | 2.2% | **413.9 ms** | 19.6 Mb/s |
+
+A country sequence is too coarse to carry a finding. The comparison below fixes
+**one operator, one server, one month**.
+
+**Sri Lanka Telecom to Kochi (`cok138754`), July 2026:**
+
+| route | traces | median RTT | median throughput |
+|---|---:|---:|---:|
+| direct LK → IN | 14,205 | **55.1 ms** | 42.6 Mb/s |
+| via Europe | 29,672 | **189.2 ms** | 38.9 Mb/s |
+
+**3.4x the latency for no throughput gain** — 42.6 against 38.9 Mb/s, so this is
+not a capacity trade. The same contrast appears at `maa01`, where SLT runs
+61.1 ms direct against 202.0 via Singapore.
+
+## But it is one operator's problem, not the country's
+
+Dialog, which carries a comparable share, shows almost no route effect once the
+server is fixed — and at Kochi the indirect path is *faster*:
+
+| Dialog | direct | via Singapore |
 |---|---:|---:|
-| direct LK → IN | 14,883 | **55.6 ms** |
-| via Europe | 29,691 | **189.2 ms** |
+| at `maa03` | 85.2 ms | 96.7 ms |
+| at `cok138754` | 104.6 ms | **82.6 ms** |
 
-Same network, same month, same destination country: **3.4x the latency**, on
-44,574 traces. The access network, the schools and the contract are held
-constant; only the route changes.
-
-**And one operator already does it.** Hutchison Telecommunications Lanka routes
-100% direct. This is not a limit of Sri Lankan infrastructure.
+So "Sri Lankan schools are routed the long way round" is wrong as a national
+claim. **Sri Lanka Telecom's routing is the finding**, and it matters because
+SLT carries 55.6% of school traceroutes. Hutchison routes 100% direct, which
+shows the path is available.
 
 ## Counted in schools
 
@@ -116,6 +146,40 @@ An earlier draft of this note read the rise as a capacity purchase paid for in
 latency. It was Simpson's paradox, and the same trap waits for any
 country-level trend line drawn over a panel whose composition is still moving —
 which, five months into a rollout, this one is.
+
+## Who is on the slow path
+
+Attributing traceroutes to schools by NDT UUID, over schools with at least five
+completed attributed paths:
+
+| | schools | median RTT |
+|---|---:|---:|
+| mostly direct | 431 | **57.6 ms** |
+| mostly indirect | **1,981** | **184.3 ms** |
+
+**1,981 schools sit on the slower path, paying a median 127 ms.** Restricting to
+the clean comparison — Sri Lanka Telecom at Kochi, schools with five or more
+tests — 1,134 schools route mostly through Europe at 188.1 ms while 416 route
+mostly direct at 53.5 ms.
+
+## It is also a geographic equity question
+
+Routing is not evenly distributed. Across 64 education zones with at least 15
+schools, the share of traffic taking the direct path correlates with median
+latency at **rho = -0.62 (p < 0.0001)** — and within Sri Lanka Telecom alone,
+across 53 zones, at **rho = -0.77 (p < 0.0001)**. It is not an artefact of
+which operator serves where.
+
+The north is worst served. Jaffna sits at 192.7 ms with 5.2% of its traffic
+direct; Valikamam 194.1 ms at 6.8%; Vadamaradchi 197.8 ms at 7.1%. Against
+Akuressa at 84.0 ms with 34.0% direct, and Maho at 96.8 ms with 32.1%.
+
+| province | schools | direct | median RTT |
+|---|---:|---:|---:|
+| North Western | 556 | 25.0% | 166.9 ms |
+| Southern | 466 | 16.7% | 178.5 ms |
+| Northern | 485 | 13.4% | 189.9 ms |
+| North Central | 215 | 8.0% | 191.6 ms |
 
 ## Controlling for fleet growth
 
