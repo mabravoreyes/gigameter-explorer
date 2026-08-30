@@ -220,6 +220,47 @@ experienced.
 * **A second, cheaper lever**: 1,170 schools run 5 GHz-capable hardware on
   2.4 GHz, worth a within-school median +25.4 Mb/s.
 
+## The routing finding does not describe the national learning platform
+
+Measured directly, 2026-08-30, from RIPE Atlas probes in the same networks that
+carry school traffic (measurement 205905591; data in `data/atlas/`).
+
+`e-thaksalawa.moe.gov.lk` — the Ministry of Education's e-learning platform —
+resolves to **122.255.40.216, inside Dialog's own network (AS18001)**. Every
+probe resolves it to that single address, so there is no split-horizon or
+regional variation to account for.
+
+**Every network reaches it domestically, in single-digit milliseconds:**
+
+| probe network | last responding hop | RTT |
+|---|---|---:|
+| Dialog AS18001 | `10.121.17.202` (inside Dialog) | **2.8 ms** |
+| LEARN AS38229 | `125.214.162.158` → Dialog | **8.3 ms** |
+| Sri Lanka Telecom AS9329 | `10.121.17.202` (inside Dialog) | **8.2 ms** |
+
+Sri Lanka Telecom and LEARN both enter Dialog over the same two hops,
+`218.100.61.13` and `125.214.162.158`, at 7.7-8.4 ms. **There is no foreign
+detour.** Sri Lanka Telecom schools pay about 5 ms more than Dialog schools to
+reach the platform, and that is the whole penalty.
+
+**So the 189 ms via-Europe path is about reaching an M-Lab server in India, and
+does not describe how schools reach the content they actually use.** The
+national platform is hosted in-country and reached in-country. Any framing that
+implies Sri Lankan schoolchildren wait 189 ms for their own ministry's learning
+material would be wrong.
+
+What the M-Lab finding does still support: Sri Lanka Telecom's *international*
+routing is poor, which bears on everything hosted abroad — and most of what a
+school uses beyond the national platform is hosted abroad. That is a narrower
+claim than the traceroute data alone appears to make, and it is the one to
+present.
+
+**A limit on this measurement.** The host answers neither ping nor traceroute:
+no probe got an ICMP reply and no trace completed. The figures above are to the
+last responding hop inside Dialog, not to the server. They establish that the
+*path* is domestic and short; they say nothing about how the application
+performs, which traceroute cannot see.
+
 ## What to check before presenting
 
 * **The "direct" class is not stable across months.** SLT's direct paths read
@@ -231,3 +272,9 @@ experienced.
 * **Client location is not verified**: schools are attributed by NDT UUID, but
   22.6 client IPs per school is high even for dynamic addressing.
 * Completion is 51.7%, so the route shares describe completed paths.
+* **The destination is an M-Lab server, not the content schools use.** The
+  section above measures the national platform directly and finds no foreign
+  detour; do not let the two be conflated.
+* Two of five school-serving networks have no live Atlas probe (IS Group at
+  10.7% of traces, Hutchison), so the direct measurement covers about 85% of
+  school traffic.
