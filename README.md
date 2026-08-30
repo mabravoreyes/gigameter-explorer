@@ -13,6 +13,7 @@ This repository contains a numbered set of country-parameterized notebooks that 
 | `meter_fleetprofile_04.ipynb` | fleet-wide profile: rhythm, seasonality, silence, churn, survivorship (server-side SQL) |
 | `meter_dropoff_05.ipynb` | per-country drop-off: who stopped, when, and what predicts it |
 | `meter_traceroutes_07.ipynb` | traceroute & internet geography: transit upstreams, routing, and what they cost in latency |
+| `ripeatlas_08.ipynb` | RIPE Atlas probe coverage against the networks that carry school traffic — whether a finding can be measured independently |
 
 Run the download/clean notebook first. It writes `<slug>_clean.parquet`, `<slug>_clean_unfiltered.parquet` and `<slug>_clean_params.json` to the country cache; both other notebooks open with a loader cell that reads those, so the cleaning decisions — servers kept, latency cutoff, school-hours window — are inherited rather than repeated, and every result traces back to the parameters that produced it.
 

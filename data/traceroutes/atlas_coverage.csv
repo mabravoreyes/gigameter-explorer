@@ -1,0 +1,29 @@
+cc,country,traces,probes_registered,probes_connected,anchors,school_asns,asns_with_live_probe,traces_measurable_pct,largest_asn,largest_asn_pct,largest_asn_measurable
+AL,Albania,140915,117,28,3,27,9,82.4,Abissnet sh.a.,45.6,True
+BA,Bosnia and Herzegovina,137635,57,15,2,12,4,56.3,BH Telecom d.d. Sarajevo,43.4,True
+BJ,Benin,810,87,8,0,2,0,0.0,SPACETEL BENIN SA,99.5,False
+BW,Botswana,21650,7,1,0,7,0,0.0,Mascom Wireless Ltd,33.8,False
+BZ,Belize,13993,24,0,0,6,0,0.0,Belize Telemedia Limited,96.2,False
+CG,Congo (Brazzaville),105,28,3,0,2,0,0.0,MTN CONGO,60.0,False
+DM,Dominica,1529,1,0,0,3,0,0.0,SAT TELECOMMUNICATIONS LTD,78.8,False
+FJ,Fiji,75146,19,1,0,5,0,0.0,Digicel Pacific Ltd,32.2,False
+GD,Grenada,136,4,0,0,2,0,0.0,Columbus Communications Grenada Ltd.,81.6,False
+HN,Honduras,10419,45,10,1,11,3,65.4,Telgua,40.8,True
+KE,Kenya,63645,77,16,4,11,3,13.6,Airtel Networks Kenya Limited,63.6,False
+KG,Kyrgyzstan,502,58,23,2,4,2,73.7,OJSC Kyrgyztelecom,48.6,True
+KN,Saint Kitts and Nevis,4,2,1,0,1,0,0.0,Columbus Telecommunications (Barbados) Limited,100.0,False
+KZ,Kazakhstan,68284,223,79,33,25,9,68.2,JSC Kazakhtelecom,32.4,True
+LC,Saint Lucia,612,8,1,0,3,1,0.8,Digicel St.Lucia Ltd,99.0,False
+LK,Sri Lanka,318551,66,13,4,5,2,85.2,Sri Lanka Telecom Internet,55.6,True
+LS,Lesotho,1678,5,1,0,3,0,0.0,Econet Telecom Lesotho (PTY) LTD,75.3,False
+MD,Republic of Moldova,32766,94,26,3,13,4,92.3,Moldtelecom SA,49.1,True
+ME,Montenegro,94555,27,7,0,5,3,62.1,Crnogorski Telekom a.d.Podgorica,57.1,True
+MN,Mongolia,109398,43,9,3,12,3,12.9,The first E-commerce and TriplePlay Service ISP in Mongolia.,56.1,False
+MW,Malawi,28211,14,1,0,4,0,0.0,Space Exploration Technologies Corporation,71.2,False
+NA,Namibia,40678,15,3,0,4,2,6.8,Telecom Namibia,93.2,False
+RW,Rwanda,5268,24,1,1,6,0,0.0,Airtel Rwanda Ltd.,34.8,False
+TT,Trinidad and Tobago,5206,12,2,1,5,1,7.7,Columbus Communications Trinidad Limited.,43.1,False
+UZ,Uzbekistan,86166,53,12,1,11,1,81.8,Uzbektelekom Joint Stock Company,81.8,True
+VC,Saint Vincent and the Gr,2435,2,0,0,1,0,0.0,Columbus Communication St. Vincent and the Grenadines Ltd.,100.0,False
+ZA,South Africa,85167,447,139,28,25,12,40.2,Telkom SA Ltd.,30.1,True
+ZM,Zambia,12978,21,5,0,4,1,0.1,Zain Zambia PLC,70.5,False
