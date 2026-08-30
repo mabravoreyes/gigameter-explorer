@@ -1,0 +1,291 @@
+<title>Measuring the Wrong Distance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F4F5F6; --surface:#FFFFFF; --surface-2:#FAFBFB;
+  --ink:#14191F; --ink-2:#3D4752; --muted:#5C6773; --faint:#8A939D;
+  --hair:#DFE3E7; --hair-strong:#C7CDD4;
+  --over:#B85C10; --mid:#7C8590; --under:#15629B;
+  --over-wash:#F6EBE1; --under-wash:#E4EDF5;
+  --shadow:0 1px 2px rgba(20,25,31,.05),0 8px 24px -12px rgba(20,25,31,.14);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1419; --surface:#161C22; --surface-2:#1B222A;
+    --ink:#E2E7EC; --ink-2:#C2CAD3; --muted:#8B96A2; --faint:#6C7783;
+    --hair:#252D35; --hair-strong:#333D47;
+    --over:#CE7628; --mid:#828B96; --under:#3B8FC7;
+    --over-wash:#2A1E14; --under-wash:#13202B;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1419; --surface:#161C22; --surface-2:#1B222A;
+  --ink:#E2E7EC; --ink-2:#C2CAD3; --muted:#8B96A2; --faint:#6C7783;
+  --hair:#252D35; --hair-strong:#333D47;
+  --over:#CE7628; --mid:#828B96; --under:#3B8FC7;
+  --over-wash:#2A1E14; --under-wash:#13202B;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  font-size:17px; line-height:1.62; margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px 96px}
+.col{max-width:66ch;margin:0 auto}
+h1,h2,h3,.eyebrow,.stat-n,th,.tag,.axis text,.legend,.tt{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+.mono,.num,td.n,.rat,.srv{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(38px,6vw,62px);line-height:1.02;font-weight:700;letter-spacing:-.025em;margin:.28em 0 .3em;text-wrap:balance}
+h2{font-size:clamp(23px,3vw,29px);font-weight:600;letter-spacing:-.014em;line-height:1.2;margin:0 0 .5em;text-wrap:balance}
+h3{font-size:18px;font-weight:600;letter-spacing:-.005em;margin:0 0 .4em}
+p{margin:0 0 1.05em}
+a{color:var(--under)}
+.lede{font-size:21px;line-height:1.55;color:var(--ink-2)}
+header.top{padding:76px 0 40px}
+.rule{height:1px;background:var(--hair);border:0;margin:0}
+section{padding:52px 0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hair);
+  border:1px solid var(--hair);border-radius:3px;overflow:hidden;margin:34px 0 8px}
+@media (min-width:620px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--surface);padding:18px 18px}
+.stat-n{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;display:block;margin-bottom:7px}
+.stat-l{font-size:13.5px;line-height:1.4;color:var(--muted);font-family:Archivo,sans-serif}
+.figure{background:var(--surface);border:1px solid var(--hair);border-radius:3px;padding:26px 24px 20px;
+  box-shadow:var(--shadow);margin:30px 0}
+.fig-head{display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:4px}
+.fig-t{font-family:Archivo,sans-serif;font-size:16px;font-weight:600;letter-spacing:-.005em}
+.fig-s{font-size:13.5px;color:var(--muted);font-family:Archivo,sans-serif;max-width:62ch;margin:.35em 0 16px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);align-items:center}
+.lg{display:inline-flex;align-items:center;gap:7px}
+.scroll{overflow-x:auto}
+svg{display:block}
+.axis text{font-size:11px;fill:var(--faint);font-family:"IBM Plex Mono",monospace}
+.axis line{stroke:var(--hair)}
+.rowline{stroke:var(--hair);stroke-width:1}
+.cty{font-family:Archivo,sans-serif;font-size:12.5px;fill:var(--ink-2)}
+.srv{font-size:10.5px;fill:var(--faint)}
+.rat{font-size:11.5px;font-weight:500}
+.hit{fill:transparent;cursor:pointer}
+.rowg:hover .rowbg{fill:var(--surface-2)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-family:Archivo,sans-serif}
+th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  padding:0 12px 9px;border-bottom:1px solid var(--hair-strong);white-space:nowrap}
+th.r,td.n{text-align:right}
+td{padding:9px 12px;border-bottom:1px solid var(--hair);vertical-align:baseline}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:13px}
+tr:hover td{background:var(--surface-2)}
+.tag{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.045em;text-transform:uppercase;
+  padding:2.5px 7px;border-radius:2px;white-space:nowrap}
+.tag.o{background:var(--over-wash);color:var(--over)}
+.tag.u{background:var(--under-wash);color:var(--under)}
+.tag.m{background:var(--surface-2);color:var(--mid);border:1px solid var(--hair-strong)}
+.callout{border-left:2px solid var(--over);padding:2px 0 2px 20px;margin:26px 0;color:var(--ink-2)}
+.callout.u{border-left-color:var(--under)}
+.note{font-size:14.5px;color:var(--muted);line-height:1.55}
+ul{padding-left:1.1em;margin:0 0 1.05em}
+li{margin-bottom:.45em}
+.tt{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--surface);
+  border:1px solid var(--hair-strong);border-radius:3px;padding:9px 11px;font-size:12px;box-shadow:var(--shadow);
+  z-index:20;max-width:240px;color:var(--ink)}
+.tt b{font-weight:600}
+.tt .r{display:flex;justify-content:space-between;gap:14px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+  color:var(--muted);margin-top:3px}
+.tt .r span:last-child{color:var(--ink)}
+footer{padding:44px 0 0;border-top:1px solid var(--hair);font-size:13.5px;color:var(--muted);font-family:Archivo,sans-serif}
+@media (max-width:720px){body{font-size:16px}.wrap{padding:0 18px 64px}header.top{padding:52px 0 30px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+:focus-visible{outline:2px solid var(--under);outline-offset:2px}
+</style>
+<div class="wrap">
+
+<header class="top col">
+  <div class="eyebrow">Giga · M-Lab traceroute studies · 22 countries</div>
+  <h1>Measuring the wrong distance</h1>
+  <p class="lede">School connectivity is judged by how quickly a test server answers. We measured how quickly the <em>content</em> answers, from inside the same networks. In 18 of 22 countries the two are not the same number — and the error runs both ways.</p>
+</header>
+
+<hr class="rule">
+
+<section class="col">
+  <h2>What was measured</h2>
+  <p>Every traceroute study describes the path from a school to an M-Lab test server. Whether that path resembles the one a pupil actually uses depends on something the study cannot see: where the content they open is served from.</p>
+  <p>So we asked the second question directly. From 46 RIPE Atlas probes sitting inside the networks that carry school traffic, we measured the round trip to five destinations a school actually opens — Google Classroom, YouTube, Claude, Khan Academy and Wikipedia — and compared it with the M-Lab server latency for the same country.</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-n">22</span><span class="stat-l">countries with probes in school-serving networks</span></div>
+    <div class="stat"><span class="stat-n">4</span><span class="stat-l">where the server is a fair proxy for the content</span></div>
+    <div class="stat"><span class="stat-n">5.6×</span><span class="stat-l">worst overstatement — Sri Lanka</span></div>
+    <div class="stat"><span class="stat-n">7.8×</span><span class="stat-l">worst understatement — Benin</span></div>
+  </div>
+  <p class="note">Ratio is M-Lab server RTT divided by the median RTT to Google Classroom, YouTube, Claude and Khan Academy. Wikipedia is reported separately because it behaves differently everywhere. “Fair proxy” means the ratio falls between 0.67 and 1.5.</p>
+</section>
+
+<section>
+  <div class="figure">
+    <div class="fig-head">
+      <div>
+        <div class="fig-t">Test-server latency against real content latency</div>
+        <div class="fig-s">One row per country. The ring is what the M-Lab server reports; the filled dot is what the content actually costs. A long connector means the two answers disagree.</div>
+      </div>
+      <div class="legend">
+        <span class="lg"><svg width="13" height="13"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg> M-Lab server</span>
+        <span class="lg"><svg width="13" height="13"><circle cx="6.5" cy="6.5" r="4.5" fill="currentColor"/></svg> Content</span>
+        <span class="lg"><svg width="15" height="4"><rect width="15" height="3" rx="1.5" fill="var(--over)"/></svg> Server further</span>
+        <span class="lg"><svg width="15" height="4"><rect width="15" height="3" rx="1.5" fill="var(--under)"/></svg> Content further</span>
+      </div>
+    </div>
+    <div class="scroll"><svg id="dumb" role="img" aria-label="Dumbbell chart comparing M-Lab server latency with content latency for 22 countries"></svg></div>
+  </div>
+</section>
+
+<section class="col">
+  <h2>When the server flatters</h2>
+  <p>Eleven countries look worse on the test than they are in practice. Sri Lanka is the extreme: its schools are measured against servers in India at <span class="mono">175&nbsp;ms</span>, while the content they open answers in <span class="mono">31&nbsp;ms</span>. Claude resolves in three milliseconds there. Any finding built on that Indian path — including a long-running story about routing through Europe — describes a journey the schools are not making.</p>
+  <div class="callout">
+    <p style="margin:0"><strong>Kazakhstan and Kyrgyzstan</strong> are measured against servers in <em>Pakistan</em>, at 234 and 235&nbsp;ms. Their content answers in 71 and 89. The server choice, not the country's connectivity, is producing most of that number.</p>
+  </div>
+</section>
+
+<section class="col">
+  <h2>When the server hides the problem</h2>
+  <p>The opposite failure is quieter and more consequential. Seven countries — most of them the ones with a domestic test server — look better on the test than their pupils experience.</p>
+  <p>Benin is the clearest case. Its server sits in Lagos, one short hop away, and reports <span class="mono">12.7&nbsp;ms</span>. The content its schools open answers in <span class="mono">99&nbsp;ms</span>, nearly eight times further. Mongolia, Montenegro and Kenya all have servers inside their own borders, and all three report latencies two to five times better than the content their schools actually reach.</p>
+  <div class="callout u">
+    <p style="margin:0">A domestic test server measures the last mile beautifully and says nothing about the journey that follows it. Where connectivity reporting is used to judge whether schools are adequately served, this is the direction that misleads.</p>
+  </div>
+</section>
+
+<section>
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Every country, every destination</div>
+      <div class="fig-s">Median round trip in milliseconds. Sorted by how far the test server's answer sits from the content's.</div>
+    </div></div>
+    <div class="scroll"><table id="tbl">
+      <thead><tr>
+        <th>Country</th><th>Server</th><th class="r">M-Lab</th><th class="r">Content</th><th class="r">Ratio</th>
+        <th class="r">Classroom</th><th class="r">YouTube</th><th class="r">Claude</th><th class="r">Khan</th><th class="r">Wikipedia</th>
+        <th>Reading</th>
+      </tr></thead><tbody></tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="col">
+  <h2>Wikipedia is nobody's neighbour</h2>
+  <p>One destination behaves unlike the rest. Wikipedia resolves to Amsterdam or Marseille for most of these countries — Singapore and Ashburn for a few — and answers in 37 to 193&nbsp;ms. Botswana reaches Google in eight milliseconds and Wikipedia in 174. Lesotho, nine and 184. South Africa, five and 182.</p>
+  <p>Google, Anthropic and Fastly have moved their edges close to these schools. Wikimedia has not. A single national figure for “latency to content” conceals a gap that large, which is why the table above keeps the destinations apart.</p>
+</section>
+
+<section class="col">
+  <h2>What follows from this</h2>
+  <ul>
+    <li><strong>A traceroute finding travels only as far as its server.</strong> Before a routing result is presented as something schools experience, check where the content in question is actually served.</li>
+    <li><strong>Adding a test server changes the reported numbers.</strong> When M-Lab brought a Kochi server into service in July, 1,123 Sri Lankan schools improved by 9.8% on latency and 23.1% on throughput without anything changing at the schools.</li>
+    <li><strong>Server placement is not neutral between operators.</strong> Servers hosted inside one ISP's network measure that ISP's customers on-net and everyone else across whatever interconnection exists.</li>
+    <li><strong>Namibia is the case where the two agree.</strong> Its server sits in Cape Town, and Google Classroom, YouTube and Claude are all served from South Africa. A routing finding there does describe the path to the content.</li>
+  </ul>
+</section>
+
+<section class="col">
+  <h2>Limits</h2>
+  <p class="note">Atlas probes sit in the same networks as schools, not in schools; a school's own last mile is not measured here. Probe coverage is uneven — Botswana, Lesotho, Rwanda, Benin, Malawi and Fiji had no probe inside a school-serving network, so any connected probe was used instead, and those rows describe the country's networks rather than its schools specifically. Sri Lanka's largest operator carries 55.6% of school traceroutes and is represented by one probe; Namibia's carries 93% and has none at all. Five destinations cannot stand for everything a school opens, and national learning platforms — often hosted domestically and reached in single-digit milliseconds — are excluded. One Uzbek probe returned roughly 3,000&nbsp;ms on every target and was dropped.</p>
+</section>
+
+<footer class="col">
+  RIPE Atlas measurements 205925873–205925883, run 30 August 2026 from 46 probes across 22 countries. M-Lab figures are median completed-path RTT from the Giga traceroute exports, February–July 2026. Data and analysis in <span class="mono">gigameter-explorer</span>.
+</footer>
+
+</div>
+<div class="tt" id="tt"></div>
+<script>
+const DATA=[{"cc":"LK","country":"Sri Lanka","server":"maa01","server_cc":"IN","domestic":false,"mlab":174.9,"content":31.2,"ratio":5.61,"wiki":59.2,"cov":85.2,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":3.3,"googleclassroom":40.4,"khanacademy":32.6,"wikipedia":59.2,"youtube":35.0}},{"cc":"KN","country":"Saint Kitts and Nevis","server":"bog05","server_cc":"CO","domestic":false,"mlab":170.7,"content":44.9,"ratio":3.8,"wiki":74.2,"cov":0.0,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":45.9,"googleclassroom":71.6,"khanacademy":43.9,"wikipedia":74.2,"youtube":43.8}},{"cc":"RW","country":"Rwanda","server":"nbo01","server_cc":"KE","domestic":false,"mlab":160.7,"content":48.0,"ratio":3.35,"wiki":160.1,"cov":0.0,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":74.5,"googleclassroom":20.5,"khanacademy":81.2,"wikipedia":160.1,"youtube":21.5}},{"cc":"KZ","country":"Kazakhstan","server":"lhe152605","server_cc":"PK","domestic":false,"mlab":233.7,"content":70.9,"ratio":3.3,"wiki":98.4,"cov":68.2,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":24.3,"googleclassroom":70.0,"khanacademy":98.6,"wikipedia":98.4,"youtube":71.8}},{"cc":"BW","country":"Botswana","server":"jnb01","server_cc":"ZA","domestic":false,"mlab":22.3,"content":7.8,"ratio":2.86,"wiki":173.5,"cov":0.0,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":7.8,"googleclassroom":7.8,"khanacademy":7.7,"wikipedia":173.5,"youtube":8.3}},{"cc":"KG","country":"Kyrgyzstan","server":"lhe152605","server_cc":"PK","domestic":false,"mlab":235.0,"content":88.6,"ratio":2.65,"wiki":112.2,"cov":73.7,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":17.3,"googleclassroom":94.8,"khanacademy":86.6,"wikipedia":112.2,"youtube":97.6}},{"cc":"FJ","country":"Fiji","server":"akl01","server_cc":"NZ","domestic":false,"mlab":89.7,"content":38.8,"ratio":2.31,"wiki":186.7,"cov":0.0,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":38.6,"googleclassroom":39.0,"khanacademy":38.6,"wikipedia":186.7,"youtube":38.9}},{"cc":"LC","country":"Saint Lucia","server":"bog05","server_cc":"CO","domestic":false,"mlab":121.9,"content":61.5,"ratio":1.98,"wiki":88.9,"cov":0.8,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":59.2,"googleclassroom":63.9,"khanacademy":59.2,"wikipedia":88.9,"youtube":64.5}},{"cc":"HN","country":"Honduras","server":"mex01","server_cc":"MX","domestic":false,"mlab":80.5,"content":43.8,"ratio":1.84,"wiki":83.1,"cov":65.8,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":57.3,"googleclassroom":40.6,"khanacademy":52.3,"wikipedia":83.1,"youtube":41.5}},{"cc":"TT","country":"Trinidad and Tobago","server":"bog05","server_cc":"CO","domestic":false,"mlab":114.4,"content":62.6,"ratio":1.83,"wiki":74.3,"cov":7.7,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":2.9,"googleclassroom":108.7,"khanacademy":61.7,"wikipedia":74.3,"youtube":63.6}},{"cc":"AL","country":"Albania","server":"tgd01","server_cc":"ME","domestic":false,"mlab":32.3,"content":19.1,"ratio":1.69,"wiki":37.4,"cov":82.4,"verdict":"M-Lab OVERSTATES latency","targets":{"claude":27.3,"googleclassroom":13.8,"khanacademy":33.5,"wikipedia":37.4,"youtube":13.7}},{"cc":"ZA","country":"South Africa","server":"cpt01","server_cc":"ZA","domestic":true,"mlab":26.0,"content":17.8,"ratio":1.46,"wiki":181.8,"cov":40.2,"verdict":"representative","targets":{"claude":5.3,"googleclassroom":23.5,"khanacademy":5.1,"wikipedia":181.8,"youtube":26.9}},{"cc":"MD","country":"Republic of Moldova","server":"sof02","server_cc":"BG","domestic":false,"mlab":42.1,"content":35.0,"ratio":1.2,"wiki":39.2,"cov":92.3,"verdict":"representative","targets":{"claude":0.8,"googleclassroom":39.0,"khanacademy":34.2,"wikipedia":39.2,"youtube":37.4}},{"cc":"LS","country":"Lesotho","server":"jnb01","server_cc":"ZA","domestic":false,"mlab":13.5,"content":12.1,"ratio":1.12,"wiki":184.2,"cov":0.0,"verdict":"representative","targets":{"claude":12.2,"googleclassroom":9.3,"khanacademy":12.0,"wikipedia":184.2,"youtube":12.6}},{"cc":"BA","country":"Bosnia and Herzegovina","server":"beg01","server_cc":"RS","domestic":false,"mlab":25.5,"content":24.8,"ratio":1.03,"wiki":41.3,"cov":56.3,"verdict":"representative","targets":{"claude":12.3,"googleclassroom":39.5,"khanacademy":20.2,"wikipedia":41.3,"youtube":25.7}},{"cc":"MW","country":"Malawi","server":"mpm02","server_cc":"MZ","domestic":false,"mlab":43.5,"content":64.6,"ratio":0.67,"wiki":167.7,"cov":0.0,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":41.6,"googleclassroom":118.2,"khanacademy":77.8,"wikipedia":167.7,"youtube":51.4}},{"cc":"NA","country":"Namibia","server":"cpt01","server_cc":"ZA","domestic":false,"mlab":42.0,"content":72.2,"ratio":0.58,"wiki":180.7,"cov":6.8,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":86.2,"googleclassroom":40.3,"khanacademy":108.3,"wikipedia":180.7,"youtube":56.5}},{"cc":"ZM","country":"Zambia","server":"jnb01","server_cc":"ZA","domestic":false,"mlab":25.7,"content":51.6,"ratio":0.5,"wiki":193.3,"cov":0.1,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":46.2,"googleclassroom":62.5,"khanacademy":49.5,"wikipedia":193.3,"youtube":53.8}},{"cc":"KE","country":"Kenya","server":"nbo01","server_cc":"KE","domestic":true,"mlab":19.5,"content":54.1,"ratio":0.36,"wiki":144.3,"cov":13.6,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":15.4,"googleclassroom":58.1,"khanacademy":75.2,"wikipedia":144.3,"youtube":18.6}},{"cc":"ME","country":"Montenegro","server":"tgd01","server_cc":"ME","domestic":true,"mlab":6.1,"content":21.3,"ratio":0.29,"wiki":39.5,"cov":62.1,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":12.4,"googleclassroom":43.3,"khanacademy":21.3,"wikipedia":39.5,"youtube":17.3}},{"cc":"MN","country":"Mongolia","server":"uln10076","server_cc":"MN","domestic":true,"mlab":10.5,"content":53.3,"ratio":0.2,"wiki":86.5,"cov":12.9,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":1.6,"googleclassroom":54.3,"khanacademy":62.0,"wikipedia":86.5,"youtube":54.0}},{"cc":"BJ","country":"Benin","server":"los02","server_cc":"NG","domestic":false,"mlab":12.7,"content":98.8,"ratio":0.13,"wiki":119.5,"cov":0.0,"verdict":"M-Lab UNDERSTATES latency","targets":{"claude":97.2,"googleclassroom":101.3,"khanacademy":89.3,"wikipedia":119.5,"youtube":101.6}}]
+;
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a={})=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n};
+const cls=d=>d.ratio>=1.5?"o":(d.ratio<=0.67?"u":"m");
+const col=d=>({o:"var(--over)",u:"var(--under)",m:"var(--mid)"})[cls(d)];
+const READ={o:"Server further",u:"Content further",m:"Fair proxy"};
+const tt=document.getElementById("tt");
+
+function draw(){
+  const host=document.getElementById("dumb");
+  host.textContent="";
+  const wrapW=host.parentElement.clientWidth||900;
+  const W=Math.max(760,wrapW), L=232, R=68, T=34, rowH=25.5;
+  const H=T+DATA.length*rowH+30;
+  host.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  host.setAttribute("width",W); host.setAttribute("height",H);
+  const max=240, x=v=>L+(v/max)*(W-L-R);
+
+  const ax=el("g",{class:"axis"});
+  [0,60,120,180,240].forEach(v=>{
+    ax.appendChild(el("line",{x1:x(v),x2:x(v),y1:T-10,y2:H-24}));
+    const t=el("text",{x:x(v),y:T-16,"text-anchor":"middle"});t.textContent=v;ax.appendChild(t);
+  });
+  const cap=el("text",{x:L,y:H-8,"text-anchor":"start",class:"srv"});
+  cap.textContent="median round trip (ms)"; ax.appendChild(cap);
+  host.appendChild(ax);
+
+  DATA.forEach((d,i)=>{
+    const y=T+i*rowH+rowH/2, c=col(d), g=el("g",{class:"rowg"});
+    g.appendChild(el("rect",{class:"rowbg",x:0,y:y-rowH/2,width:W,height:rowH,fill:"transparent"}));
+    g.appendChild(el("line",{class:"rowline",x1:L,x2:W-R,y1:y+rowH/2,y2:y+rowH/2}));
+
+    const name=el("text",{x:L-100,y:y+4,"text-anchor":"end",class:"cty"});
+    name.textContent=d.country.length>18?d.country.slice(0,17)+"…":d.country; g.appendChild(name);
+    const srv=el("text",{x:L-12,y:y+4,"text-anchor":"end",class:"srv"});
+    srv.textContent=d.server+" "+d.server_cc; g.appendChild(srv);
+
+    const a=x(d.mlab), b=x(d.content);
+    g.appendChild(el("line",{x1:a,x2:b,y1:y,y2:y,stroke:c,"stroke-width":3,"stroke-linecap":"round",opacity:.55}));
+    g.appendChild(el("circle",{cx:b,cy:y,r:5,fill:c,stroke:"var(--surface)","stroke-width":2}));
+    g.appendChild(el("circle",{cx:a,cy:y,r:4.5,fill:"var(--surface)",stroke:c,"stroke-width":2}));
+
+    const rl=el("text",{x:W-R+12,y:y+4,class:"rat",fill:c});
+    rl.textContent=(d.ratio>=1?d.ratio.toFixed(1)+"×":"÷"+(1/d.ratio).toFixed(1)); g.appendChild(rl);
+
+    const hit=el("rect",{class:"hit",x:0,y:y-rowH/2,width:W,height:rowH});
+    const show=e=>{
+      tt.innerHTML=`<b>${d.country}</b>`
+        +`<div class="r"><span>M-Lab · ${d.server}</span><span>${d.mlab} ms</span></div>`
+        +`<div class="r"><span>Content (median)</span><span>${d.content} ms</span></div>`
+        +`<div class="r"><span>Wikipedia</span><span>${d.wiki==null?"—":d.wiki+" ms"}</span></div>`
+        +`<div class="r"><span>Reading</span><span>${READ[cls(d)]}</span></div>`;
+      tt.style.opacity=1;
+      const w=250,h=104;
+      tt.style.left=Math.min(e.clientX+14,innerWidth-w-10)+"px";
+      tt.style.top=Math.min(e.clientY+14,innerHeight-h-10)+"px";
+    };
+    hit.addEventListener("mousemove",show);
+    hit.addEventListener("mouseenter",show);
+    hit.addEventListener("mouseleave",()=>tt.style.opacity=0);
+    g.appendChild(hit);
+    host.appendChild(g);
+  });
+}
+
+function table(){
+  const tb=document.querySelector("#tbl tbody");
+  const f=v=>v==null?"—":(+v).toFixed(0);
+  DATA.forEach(d=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${d.country}${d.domestic?' <span class="srv">domestic</span>':''}</td>`
+      +`<td class="mono" style="font-size:12px;color:var(--muted)">${d.server} · ${d.server_cc}</td>`
+      +`<td class="n">${f(d.mlab)}</td><td class="n">${f(d.content)}</td>`
+      +`<td class="n" style="color:${col(d)};font-weight:500">${d.ratio>=1?d.ratio.toFixed(1)+"×":"÷"+(1/d.ratio).toFixed(1)}</td>`
+      +`<td class="n">${f(d.targets.googleclassroom)}</td><td class="n">${f(d.targets.youtube)}</td>`
+      +`<td class="n">${f(d.targets.claude)}</td><td class="n">${f(d.targets.khanacademy)}</td>`
+      +`<td class="n">${f(d.targets.wikipedia)}</td>`
+      +`<td><span class="tag ${cls(d)}">${READ[cls(d)]}</span></td>`;
+    tb.appendChild(tr);
+  });
+}
+draw(); table();
+let t; addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(draw,140)});
+</script>
