@@ -150,29 +150,47 @@ schools trail on download (35.7 against 84.3 Mb/s) and upload (19.1 against
 72.3) but only slightly on latency (33 against 28 ms). That is access capacity,
 not routing, and it will not be fixed by peering.
 
-And the field labelled **packet loss is not packet loss**. It equals
-`s2c_bytes_retrans / s2c_bytes_sent` — verified on 100% of 112,607 Albanian
-rows — which is the server-to-client TCP *retransmission* rate under a transfer
-that is deliberately saturating the link. NDT7 pushes until it finds capacity,
-so retransmission is partly the test's own behaviour rather than a property of
-the path.
+**Retransmission is a loss measure, but a confounded one.** The field labelled
+`packet_loss_rate` is `s2c_bytes_retrans / s2c_bytes_sent`, verified on 100% of
+112,607 Albanian rows — TCP's response to loss on the download path. It is a
+reasonable loss proxy, byte-weighted rather than packet-counted, and an upper
+bound because reordering and early timeouts also trigger retransmission. It is
+not a different quantity from loss, and an earlier version of this note was
+wrong to say so.
 
-The values say so plainly. Albania's median is 3.83% and Uzbekistan's 3.43%;
-a real 3-4% packet loss would make a link barely usable, and these schools are
-downloading at 75 Mb/s. Nor does it behave like path loss: against latency the
-correlation is -0.007, effectively nothing, where genuine loss on a long
-congested path would show one.
+What it *is* is two signals mixed together, and Albania separates them cleanly.
 
-An earlier version of this note said loss "rises with throughput", explained by
-a faster transfer pushing harder. The intuition is reasonable but the data does
-not support stating it — the correlation with download is +0.099 and
-non-monotonic across deciles. What is solid is narrower: **slow connections far
-more often record exactly zero**, 30.8% of tests in the slowest download decile
-against 5.4% in the fastest, because they never pushed hard enough to
-retransmit at all.
+**Between routes it reads as path quality:**
 
-Treat the field as a saturation artefact of unclear interpretation, not as a
-quality measure, and do not call it packet loss.
+| route | download | retransmission | latency |
+|---|---:|---:|---:|
+| direct | 86.2 Mb/s | **0.04%** | 3 ms |
+| via Serbia/Croatia | 75.0 Mb/s | 4.91% | 27 ms |
+| via western Europe | 47.5 Mb/s | **5.87%** | 61 ms |
+
+The fastest route has the least retransmission and the slowest has the most, on
+*lower* throughput. If this were purely an artefact of a saturating test, the
+fastest route would show the most. It does not, so between paths the field
+carries genuine signal.
+
+**Within one route it reads as saturation.** Holding Abissnet and the
+Serbia/Croatia route fixed, across 197 schools, retransmission correlates
++0.33 with download and −0.29 with latency:
+
+| Abissnet, one route | retransmission | download | latency |
+|---|---:|---:|---:|
+| least-retransmitting quarter | 0.05% | 33.3 Mb/s | 28 ms |
+| most-retransmitting quarter | **13.60%** | **94.5 Mb/s** | 25 ms |
+
+The schools retransmitting most are the *fastest*. A school on a fat pipe
+pushes until it finds the bottleneck buffer; a school on a thin pipe never gets
+there. Within a path, this measures test intensity, not service quality.
+
+**So: usable between paths, not for ranking schools.** Comparing routes or
+countries on retransmission is defensible when throughput does not move against
+it. Saying "Albanian schools lose 3.8% of packets" is not — that national
+median mixes both effects, and the schools contributing most to it are the
+best-connected ones.
 
 ## The reversal is latency-only
 
@@ -187,9 +205,10 @@ reversal is specific to latency:
 | retransmission (%) | 5.24 | 4.85 | 5.11 | 3.77 |
 
 Download is at its best in July, in the same month latency is worst.
-(Retransmission is shown for completeness only — see the caveat above; note it
-falls while download rises, which is the opposite of a saturation artefact and
-is one reason not to over-read it in either direction.) The schools did not get worse; their *routing* did, which is
+Retransmission also falls, which is the direction path quality would move but
+the opposite of what rising throughput would produce under saturation — the two
+effects work against each other here, so read it as weakly favourable rather
+than as a clean result. The schools did not get worse; their *routing* did, which is
 consistent with the European share rising through June and July. Stated as "the
 gains reversed" the claim is wrong. Stated as "the latency gains reversed while
 capacity kept improving" it is right, and it is a cleaner argument for treating
