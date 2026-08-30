@@ -98,7 +98,28 @@ def chart_starlink_over_time(panel: pd.DataFrame) -> Path:
     linear axes the slow majority collapses onto the origin.
     """
     d = _prepare(panel)
-    sl = d[d["kind"] == "Starlink"].sort_values(["month", "country"])
+    sl = d[d["kind"] == "Starlink"].copy()
+
+    # Plotly Express builds one trace per colour category from the FIRST frame
+    # only. Countries whose first Starlink school appears later are dropped
+    # silently, legend and all — which removed 12 of 17 here, Malawi included.
+    # Padding every country into every frame with null coordinates registers
+    # the trace without drawing anything.
+    months = sorted(sl["month"].unique())
+    countries = sorted(sl["country"].unique())
+    grid = pd.MultiIndex.from_product([countries, months],
+                                      names=["country", "month"]).to_frame(index=False)
+    present = set(zip(sl["country"], sl["month"]))
+    padding = grid[[t not in present for t in zip(grid["country"], grid["month"])]].copy()
+    padding["school_id_giga"] = "_pad_" + padding["country"]
+    padding["school"] = ""
+    for column in ("rtt", "dl", "loss"):
+        padding[column] = float("nan")
+    padding["tests"] = 0          # marker size rejects NaN; null x/y hides the point
+    for column in ("iso3_code", "school_area_type"):
+        padding[column] = ""
+    sl = pd.concat([sl, padding], ignore_index=True)
+    sl = sl.sort_values(["month", "country"])
 
     fig = px.scatter(
         sl, x="rtt", y="dl",
