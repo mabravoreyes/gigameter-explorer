@@ -67,34 +67,60 @@ its school traffic is routed through western Europe. Of the eight worst-served
 schools, six are rural and five are Telekom Albania schools on the European
 route.
 
-## It improved over the campaign, and the improvement is real
+## It improved March to May, then gave much of it back
 
 The Giga Meter campaign began in March 2026 and the fleet grew from 99 schools
-to 856 by May. That growth alone would move any country-level average, so the
-comparison is restricted to schools present in **both** months:
+to 856 by May, so nothing can be read off a country-level series. The
+comparison below is restricted to schools present in **both** months of each
+pair — the balanced panel — which removes the arrival of new schools.
 
-| Albania, Mar → Jun | value |
-|---|---|
-| naive country change | -42.5% |
-| **balanced, 84 schools in both** | **-48.8%** |
-| schools that improved | **94.0%** |
-| median per-school change | **-22.0 ms** |
+**The endpoint chosen changes the answer, so all of them are shown:**
 
-Fleet growth *understated* the improvement. Two mechanisms drove it, and both
-survive the control:
+| pair | schools | start → end | change | improved |
+|---|---:|---|---:|---:|
+| Mar → Apr | 95 | 48.4 → 44.2 ms | -8.7% | 75.8% |
+| Mar → May | 93 | 48.3 → 25.1 ms | **-48.0%** | 92.5% |
+| Mar → Jun | 84 | 48.7 → 24.9 ms | **-48.8%** | 94.0% |
+| **Mar → Jul** | 42 | 45.9 → 41.5 ms | **-9.7%** | 83.3% |
+| Apr → May | 282 | 41.7 → 26.6 ms | -36.1% | 84.8% |
+| **Apr → Jun** | **253** | 41.7 → 26.3 ms | **-37.0%** | 79.4% |
+| Apr → Jul | 162 | 40.1 → 34.4 ms | -14.3% | 59.9% |
+| May → Jun | 670 | 28.3 → 29.9 ms | +5.4% | 48.1% |
+| **Jun → Jul** | 470 | 29.9 → 36.0 ms | **+20.3%** | 32.3% |
 
-* **44 of 60 schools never changed route** and still gained a median 21.2 ms —
-  the Serbia/Croatia path itself got faster, from 42.6 ms in March to 26.2 ms
-  in May.
-* **16 schools moved off the European route** onto the regional one and gained
-  a median 37.9 ms.
+The honest arc is **improvement to May, flat to June, deterioration into July**.
+Median school RTT falls from 48 ms to 25 ms and then rises again to 36 ms. On
+the June-to-July pair only 32.3% of the same 470 schools improved. A March-to-
+June headline of -48.8% is real but it is the most flattering pair available,
+and March-to-July on the same basis is -9.7%.
 
-And a third thing appeared: the direct AL → ME path did not exist in March,
-carried 1.3% of paths in April, and 8.5% by July. New regional interconnection
-is happening, and it is measurable.
+Two cautions on the July reversal. It coincides with the end of the school
+year, when volume falls 58% mid-month and the panel changes character; and the
+schools still testing in July may not be typical. But this is a balanced panel,
+so it is the *same* schools getting slower, not different ones.
 
-The gain is concentrated in March-May; May to June is flat (48% of schools
-improved, median 0.0 ms). This is not a trend to extrapolate.
+**April is the better starting point for any claim.** March had only 99 schools
+measuring, so a March-anchored panel is 42-95 schools; April gives 253 for the
+same April-to-June window, with the finding intact at -37.0% and 79.4% of
+schools improving.
+
+### What drove the improvement
+
+Restricting to schools with enough *completed* traces in both months — needed
+because classifying a route requires a path that reaches the client, and only
+53.1% of attributed traces complete — gives 60 schools for March to June, a
+strict subset of the 84 above. On that subset the improvement is slightly
+stronger (-52.6%, 98.3% improving), and it decomposes into two mechanisms:
+
+* **44 of the 60 never changed route** and still gained a median 21.2 ms: the
+  Serbia/Croatia path itself sped up, from 42.6 ms in March to 26.2 ms in May.
+* **16 moved off the European route** onto the regional one, gaining a median
+  37.9 ms.
+
+A third thing appeared alongside: the direct AL → ME path did not exist in
+March, carried 1.3% of paths in April, and 8.5% by July. New regional
+interconnection is happening and is measurable — and it is the one part of this
+picture that did not reverse.
 
 ## Why the routes are long in the first place
 
@@ -132,8 +158,9 @@ coverage and cannot be independently confirmed.
 * **Client location is not verified.** Median 0.21 km from the registered
   school, but 52 km at the 90th percentile and 1,015 tests beyond 10 km. Some
   "school" measurements were not taken at the school.
-* **The balanced panel is 84 schools**, because only 99 were measuring in March.
-  The direction is robust — 94% improved — but the magnitude rests on a small
-  early cohort.
+* **The March-anchored panel is small** — 84 schools, because only 99 were
+  measuring that month — and it is also the most flattering endpoint. Use the
+  April-anchored panel (253 schools, -37.0%) for anything load-bearing, and
+  state the July reversal alongside it.
 * **Regional cells are small.** Dibër is 9 schools and Lezhë 7; treat those
   medians as indicative.

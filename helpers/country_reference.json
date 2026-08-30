@@ -4,6 +4,11 @@
     "name": "Angola",
     "timezone": "Africa/Luanda"
   },
+  "AIA": {
+    "iso2": "AI",
+    "name": "Anguilla",
+    "timezone": "America/Anguilla"
+  },
   "ALB": {
     "iso2": "AL",
     "name": "Albania",
@@ -239,6 +244,11 @@
     "name": "Madagascar",
     "timezone": "Indian/Antananarivo"
   },
+  "MEX": {
+    "iso2": "MX",
+    "name": "Mexico",
+    "timezone": "America/Mexico_City"
+  },
   "MLI": {
     "iso2": "ML",
     "name": "Mali",
@@ -328,6 +338,11 @@
     "iso2": "ST",
     "name": "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
     "timezone": "Africa/Sao_Tome"
+  },
+  "TCA": {
+    "iso2": "TC",
+    "name": "Turks and Caicos Islands",
+    "timezone": "America/Grand_Turk"
   },
   "TCD": {
     "iso2": "TD",
