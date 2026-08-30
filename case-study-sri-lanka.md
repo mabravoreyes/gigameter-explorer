@@ -321,6 +321,51 @@ Singapore at 41. That is a procurement-relevant fact that no bandwidth figure
 would reveal — and LEARN, the network schools might expect to be best served by,
 is worst on two of the three.
 
+## Has the network shape changed, independent of fleet growth?
+
+Mostly no. The apparent transformation is a new test server, not a re-route.
+
+Taking the **170 schools present in all six months** — so fleet growth cannot
+contribute — the route mix looks like it collapses in July:
+
+| balanced panel | Feb | Mar | Apr | May | Jun | Jul |
+|---|---:|---:|---:|---:|---:|---:|
+| direct | 6.6 | 6.5 | 5.4 | 4.9 | 15.8 | **52.7** |
+| via Singapore | 84.5 | 85.6 | 88.7 | 88.4 | 75.9 | **20.3** |
+| median IP hops | 14 | 14 | 14 | 14 | 12 | **9** |
+| median countries | 3 | 3 | 3 | 3 | 3 | **2** |
+| median RTT | 207.8 | 208.9 | 180.7 | 115.0 | 194.6 | **74.7** |
+
+But the server mix moves with it. Those same schools were tested against
+Chennai (`maa01`, `maa03`) until June and against **Kochi (`cok138754`) for
+88.7% of July**. A closer server produces a shorter path; that is not the
+network changing.
+
+**Holding the server fixed, the dominant path is static.** At `maa01`, the same
+170 schools route via Singapore on 99.5-100% of paths in every month from
+February to July. Six months, no structural change.
+
+Two real changes do survive the control, both at `maa03`:
+
+* **The United States path was eliminated.** 27.9% of `maa03` paths in February,
+  28.0% in March, then 19.6, 23.7, **1.1 and 0.0%**. Traffic that had been
+  crossing the Pacific stopped.
+* **Direct routing grew**, 23.8% in February to 66.0% in July, against via
+  Singapore falling from 44.1% to 34.0%. July's `maa03` sample is thin (n=53),
+  so the size of that shift is uncertain even though its direction is
+  consistent across three months.
+
+**And 17.1% of the panel changed provider.** 29 of 170 schools switched
+dominant ISP at least once; 23 differ between February and July, 17 of them
+moving from Dialog to Sri Lanka Telecom. School-level churn of that size moves
+any aggregate on its own, and it is invisible unless the panel is held fixed.
+
+One oddity worth flagging rather than explaining away: at `maa01` the median
+path length jumps from 5,662 km in February to 11,129 in May while RTT *falls*
+from 214 to 114 ms. A longer path that is faster suggests the distance figure —
+summed from hop geolocation — is unreliable over that stretch, not that physics
+changed.
+
 ## What to check before presenting
 
 * **The "direct" class is not stable across months.** SLT's direct paths read
