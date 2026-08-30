@@ -150,10 +150,29 @@ schools trail on download (35.7 against 84.3 Mb/s) and upload (19.1 against
 72.3) but only slightly on latency (33 against 28 ms). That is access capacity,
 not routing, and it will not be fixed by peering.
 
-And **NDT7 loss should not be used as a quality measure here.** It rises with
-throughput rather than falling with it — the slowest quartile of schools shows
-0.44% loss and the fastest 4.83% (rho = +0.16, p = 0.0015) — which is what a
-faster transfer pushing harder looks like, not worse service.
+And the field labelled **packet loss is not packet loss**. It equals
+`s2c_bytes_retrans / s2c_bytes_sent` — verified on 100% of 112,607 Albanian
+rows — which is the server-to-client TCP *retransmission* rate under a transfer
+that is deliberately saturating the link. NDT7 pushes until it finds capacity,
+so retransmission is partly the test's own behaviour rather than a property of
+the path.
+
+The values say so plainly. Albania's median is 3.83% and Uzbekistan's 3.43%;
+a real 3-4% packet loss would make a link barely usable, and these schools are
+downloading at 75 Mb/s. Nor does it behave like path loss: against latency the
+correlation is -0.007, effectively nothing, where genuine loss on a long
+congested path would show one.
+
+An earlier version of this note said loss "rises with throughput", explained by
+a faster transfer pushing harder. The intuition is reasonable but the data does
+not support stating it — the correlation with download is +0.099 and
+non-monotonic across deciles. What is solid is narrower: **slow connections far
+more often record exactly zero**, 30.8% of tests in the slowest download decile
+against 5.4% in the fastest, because they never pushed hard enough to
+retransmit at all.
+
+Treat the field as a saturation artefact of unclear interpretation, not as a
+quality measure, and do not call it packet loss.
 
 ## The reversal is latency-only
 
@@ -165,10 +184,12 @@ reversal is specific to latency:
 | latency (ms) | 41.0 | 25.0 | 25.0 | **38.5** |
 | download (Mb/s) | 74.7 | 85.3 | 84.9 | **88.7** |
 | upload (Mb/s) | 62.9 | 83.9 | 76.3 | 78.2 |
-| loss (%) | 5.24 | 4.85 | 5.11 | **3.77** |
+| retransmission (%) | 5.24 | 4.85 | 5.11 | 3.77 |
 
-Download is at its best in July and loss at its lowest, in the same month
-latency is worst. The schools did not get worse; their *routing* did, which is
+Download is at its best in July, in the same month latency is worst.
+(Retransmission is shown for completeness only — see the caveat above; note it
+falls while download rises, which is the opposite of a saturation artefact and
+is one reason not to over-read it in either direction.) The schools did not get worse; their *routing* did, which is
 consistent with the European share rising through June and July. Stated as "the
 gains reversed" the claim is wrong. Stated as "the latency gains reversed while
 capacity kept improving" it is right, and it is a cleaner argument for treating
