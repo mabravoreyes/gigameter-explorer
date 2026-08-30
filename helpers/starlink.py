@@ -228,3 +228,108 @@ def congestion_summary(profile: pd.DataFrame, min_tests: int = 50,
             "median_loss_pct": round(100 * float(group["median_loss"].median()), 2),
         })
     return pd.DataFrame(rows).sort_values(["iso3", "kind"]).reset_index(drop=True)
+
+
+def ground_station_handoff(tr: pd.DataFrame) -> pd.DataFrame:
+    """
+    Where Starlink hands traffic to the terrestrial internet.
+
+    Starlink backhauls to a ground station before entering the normal internet,
+    and the first hop *after* the Starlink ASN is where that happens. That hop
+    is the reliable signal: it belongs to a third-party network and geolocates
+    on its own merits.
+
+    The Starlink hops themselves are not reliable for this. A large share of
+    them geolocate to Los Angeles or Hawthorne, California — SpaceX's
+    registered address — which is what geolocation databases return when they
+    know only the ASN's registration, not the prefix. Treat those as unknown
+    rather than as a Californian ground station.
+
+    Hops are stored server-to-client, so the walk is reversed to run outward
+    from the school.
+    """
+    rows = []
+    for hops in tr["forward_updated_node_details"]:
+        outward = list(hops if hops is not None else [])[::-1]
+        seen_starlink = False
+        for hop in outward:
+            asn = hop.get("associated_asn")
+            org = (hop.get("associated_org") or "")
+            starlink_hop = (asn == 14593 or "space explor" in org.lower()
+                            or "starlink" in org.lower())
+            if starlink_hop:
+                seen_starlink = True
+            elif seen_starlink:
+                rows.append({"handoff_org": org, "handoff_place": hop.get("place"),
+                             "handoff_cc": (hop.get("cc") or "").upper(),
+                             "handoff_asn": asn})
+                break
+    if not rows:
+        return pd.DataFrame()
+    frame = pd.DataFrame(rows)
+    out = (frame.groupby(["handoff_cc", "handoff_place", "handoff_org"])
+                .size().rename("traces").reset_index()
+                .sort_values("traces", ascending=False))
+    out["pct"] = (100 * out["traces"] / out["traces"].sum()).round(1)
+    return out.reset_index(drop=True)
+
+
+def within_school_comparison(iso3: str, min_tests: int = 20, cursor=None) -> pd.DataFrame:
+    """
+    Starlink against terrestrial *within the same school*.
+
+    Comparing Starlink schools with terrestrial schools compares the schools as
+    much as the technology — a deployment chooses where it goes, and in Malawi
+    the Starlink estate is 75% rural against 53% for terrestrial. A school that
+    measured on both links is its own control: same building, same region, same
+    curriculum, and the connection is the only thing that changes.
+
+    Requires `min_tests` on each link, since a handful of stray measurements on
+    the other technology does not support a comparison.
+    """
+    if cursor is None:
+        from load_measurements import get_trino_cursor
+        cursor = get_trino_cursor()
+
+    cursor.execute(f"""
+        SELECT school_id_giga, school_name, school_area_type,
+               CASE WHEN {STARLINK_SQL} THEN 'starlink' ELSE 'terrestrial' END AS kind,
+               count(*) AS tests,
+               approx_percentile(download_speed, 0.5) AS median_mbps,
+               approx_percentile(CAST(latency AS DOUBLE), 0.5) AS median_rtt,
+               approx_percentile(CAST(packet_loss_rate AS DOUBLE), 0.5) AS median_loss
+        FROM all_gigameter_measurement_data
+        WHERE iso3_code = '{iso3.upper()}'
+        GROUP BY 1, 2, 3, 4
+    """)
+    long = pd.DataFrame(cursor.fetchall(),
+                        columns=[d[0] for d in cursor.description])
+    wide = long.pivot_table(index=["school_id_giga", "school_name", "school_area_type"],
+                            columns="kind",
+                            values=["tests", "median_mbps", "median_rtt", "median_loss"],
+                            aggfunc="first")
+    wide.columns = [f"{a}_{b[:4]}" for a, b in wide.columns]
+    both = wide.dropna(subset=["tests_star", "tests_terr"])
+    solid = both[(both["tests_star"] >= min_tests) & (both["tests_terr"] >= min_tests)].copy()
+    solid["mbps_gain"] = solid["median_mbps_star"] - solid["median_mbps_terr"]
+    solid["rtt_gain"] = solid["median_rtt_terr"] - solid["median_rtt_star"]
+    solid["loss_delta"] = solid["median_loss_star"] - solid["median_loss_terr"]
+    return solid.reset_index().sort_values("mbps_gain", ascending=False)
+
+
+def within_school_verdict(comparison: pd.DataFrame) -> dict:
+    """Does Starlink beat the same school's terrestrial link, and by how much?"""
+    if comparison.empty:
+        return {}
+    from scipy import stats
+    return {
+        "schools": len(comparison),
+        "median_mbps_terrestrial": round(float(comparison["median_mbps_terr"].median()), 2),
+        "median_mbps_starlink": round(float(comparison["median_mbps_star"].median()), 2),
+        "median_mbps_gain": round(float(comparison["mbps_gain"].median()), 2),
+        "schools_faster_on_starlink": int((comparison["mbps_gain"] > 0).sum()),
+        "median_rtt_gain_ms": round(float(comparison["rtt_gain"].median()), 1),
+        "schools_lower_latency_on_starlink": int((comparison["rtt_gain"] > 0).sum()),
+        "wilcoxon_p_mbps": (float(stats.wilcoxon(comparison["mbps_gain"]).pvalue)
+                            if len(comparison) > 5 else None),
+    }
