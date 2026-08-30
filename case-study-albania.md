@@ -37,9 +37,22 @@ Montenegro and deliver 4 ms. **Telekom Albania sends 96.9% of its school
 traffic through Italy, Germany or Austria.** The country's regional
 interconnection is being done by its smallest operators.
 
-Within one operator the same pattern holds and rules out school-side
-explanations: Abissnet reaches the same server in 26.9 ms via Cogent and
-65.2 ms via Arelion, across 46,820 traces.
+Within one operator the same pattern holds, and it can be pushed further than a
+group comparison. Abissnet's two upstreams serve largely the same estate — 183
+of its 226 schools appear on both, and only one school is exclusive to Arelion
+— so each school can be compared against itself:
+
+| Abissnet, 129 schools with >=5 traces on both upstreams | |
+|---|---|
+| median via Cogent | **26.0 ms** |
+| median via Arelion | **64.0 ms** |
+| median within-school difference | **+37.0 ms** |
+| schools slower on Arelion | **128 of 129 (99%)** |
+| Wilcoxon signed-rank | p = 5.7e-23 |
+
+The school, its access network, its contract, its location and its destination
+are all held constant. Only the route changes, and 99% of schools are slower on
+the longer one. This is the strongest causal claim available in the dataset.
 
 ## The inequality is a routing inequality
 
