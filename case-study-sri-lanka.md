@@ -396,6 +396,76 @@ from 214 to 114 ms. A longer path that is faster suggests the distance figure �
 summed from hop geolocation — is unreliable over that stretch, not that physics
 changed.
 
+## The server change moved Giga Meter's own numbers
+
+This is the finding with the most direct consequence for reporting.
+
+Taking the **1,123 schools that measured against Chennai before July and
+against Kochi in July**, with at least five tests on each side, their reported
+NDT results improved substantially:
+
+| | Chennai (pre-July) | Kochi (July) | change | improved |
+|---|---:|---:|---:|---:|
+| median RTT | 200.4 ms | **180.8 ms** | -9.8% | 84.0% |
+| median throughput | 24.5 Mb/s | **30.1 Mb/s** | +23.1% | 69.4% |
+| median loss | 0.00 | 0.00 | — | — |
+
+Wilcoxon p = 3.6e-114 on RTT and 8.6e-47 on throughput. **Nothing changed at
+these schools.** Their operator did not change, their route to a fixed server
+did not change, and the balanced panel at `maa01` shows flat RTT across all six
+months. M-Lab added a server in Kochi.
+
+The cleanest form of the control holds schools, month *and* connection fixed and
+varies only the server. For the 769 schools that measured against both servers
+**within July**:
+
+| July only, same schools | Chennai | Kochi | delta |
+|---|---:|---:|---:|
+| median RTT | 191.1 ms | 183.9 ms | **-7.9 ms** (p = 1.3e-24) |
+| median throughput | 30.4 Mb/s | 35.7 Mb/s | **+2.4 Mb/s** (p = 3.1e-18) |
+
+**A country-level improvement in Giga Meter's Sri Lanka figures for July is
+therefore not evidence that Sri Lankan school connectivity improved.** Anyone
+reading the reported series without knowing the server fleet changed would draw
+the wrong conclusion.
+
+### And the benefit is unequal
+
+Which of the two Kochi paths a school landed on decides almost everything:
+
+| July path | schools | RTT before | RTT after | throughput before | after |
+|---|---:|---:|---:|---:|---:|
+| **Weblink, direct within India** | 188 | 198.8 ms | **54.1 ms** | 30.3 | **51.2 Mb/s** |
+| **Bharti Airtel, via Europe** | 781 | 203.7 ms | 186.0 ms | 28.0 | 33.2 Mb/s |
+| other | 154 | 194.3 ms | 79.0 ms | 9.9 | 9.2 Mb/s |
+
+188 schools saw latency fall by **73%**; the 781 on the Bharti path saw 9%. The
+aggregate improvement is real arithmetic over a benefit almost none of them
+shared equally.
+
+### The Europe detour is real, and it is Bharti Airtel's
+
+Hop RTTs confirm the geolocation rather than contradicting it. On the slow path
+the jump happens **inside Bharti Airtel**, between its Indian ingress and its
+handoff to Sri Lanka Telecom:
+
+| ttl | country | network | RTT |
+|---:|---|---|---:|
+| 1 | IN | Kerala Vision | 0.0 ms |
+| 2 | IN | Bharti Airtel | 1.9 ms |
+| 3 | IN | Bharti Airtel | **166.0 ms** |
+| 4 | NL | Sri Lanka Telecom | 162.0 ms |
+| 5 | LK | Sri Lanka Telecom | 187.9 ms |
+
+164 ms accrues within one AS before the handoff, which is consistent with a
+genuine long-haul detour and not with a mislabelled router. The equivalent
+Weblink path reaches Sri Lanka Telecom at 46 ms having never left India.
+
+So the mechanism is **where Bharti Airtel and Sri Lanka Telecom interconnect** —
+in northern Europe rather than in South Asia. It is not, as an earlier draft
+had it, a failing of Sri Lanka Telecom's international routing: Sri Lanka
+Telecom reaches Mumbai in 26.6 ms when measured directly.
+
 ## What to check before presenting
 
 * **The "direct" class is not stable across months.** SLT's direct paths read
