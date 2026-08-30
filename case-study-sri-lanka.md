@@ -55,10 +55,40 @@ route each school predominantly takes:
 Roughly 2,200 schools take a slower path to India than 603 other Sri Lankan
 schools demonstrably get.
 
-## A routing decision, visible as it happens
+## What every operator does
 
-Sri Lanka Telecom re-routed during the period, and it shows within that
-operator alone rather than in the country mix:
+The route is not a national property. Each operator makes its own choice, and
+they differ more than the country figures suggest:
+
+| operator | share of completed | route mix | RTT | throughput |
+|---|---:|---|---:|---:|
+| **Dialog Telekom** | 53.6% | 78.5% via SG · 11.7% direct | 113.5 / **86.4** ms | 6.2 / 6.4 Mb/s |
+| **Sri Lanka Telecom** | 42.4% | 43.3% via EU · 25.5% via SG · **25.3% direct** | 189.8 / 202.0 / **57.9** ms | 38.3 / 26.1 / **36.0** Mb/s |
+| **IS Group** | 4.0% | 99.1% via SG | 93.3 ms | 7.5 Mb/s |
+| **Hutchison** | small | **100% direct** | 99.6 ms | — |
+| Etisalat | small | 52.4% via EU · 47.6% via SG | — | — |
+
+Two things follow that a country-level reading would miss.
+
+**The same route performs differently for different operators.** LK → SG → IN
+costs Dialog 113.5 ms and Sri Lanka Telecom 202.0 ms — the same country
+sequence, 1.8x apart. The route shape is not the whole explanation; how each
+operator provisions it matters as much.
+
+**The operators are making opposite trades.** Dialog is the low-latency,
+low-throughput network (86-113 ms at 6 Mb/s); Sri Lanka Telecom is the
+high-latency, high-throughput one (58-210 ms at 26-38 Mb/s). A school's
+experience depends on which of those its provider chose, and neither is
+strictly better — they suit different things.
+
+Sri Lanka Telecom is where the spread lives: its own direct path runs 57.9 ms
+against 189.8 through Europe and 210.3 through the United States. It is the
+operator with both the best and the worst routes in the country.
+
+## The July shift — and what it is not
+
+Sri Lanka Telecom re-routed during the period, visible within that operator
+rather than in the country mix:
 
 | SLT share of its own completed paths | Feb | Mar | Apr | May | Jun | **Jul** |
 |---|---:|---:|---:|---:|---:|---:|
@@ -66,11 +96,26 @@ operator alone rather than in the country mix:
 | via Europe | 2.4 | 2.2 | 1.6 | 3.6 | 1.9 | **63.7** |
 | direct | 10.0 | 9.3 | 9.0 | 10.5 | 24.2 | **32.0** |
 
-The country-level effect was a trade: median RTT rose from 117.2 ms in June to
-169.1 ms in July, while median throughput more than doubled, 9.5 to 20.8 Mb/s.
-A capacity decision taken at the cost of latency — which is the wrong trade for
-video lessons and interactive tools, and is invisible to procurement written in
-Mb/s.
+**The country median RTT rose from 117.2 ms in June to 169.1 in July, and that
+rise is an artefact of who was measuring.** Every operator improved on both
+measures across those months:
+
+| operator | June RTT | July RTT | June Mb/s | July Mb/s |
+|---|---:|---:|---:|---:|
+| Dialog Telekom | 101.4 | **83.1** | 6.2 | 7.8 |
+| Sri Lanka Telecom | 204.7 | **180.1** | 24.0 | 38.6 |
+| IS Group | 93.2 | 93.4 | 7.3 | 7.5 |
+
+What changed is the mix: Sri Lanka Telecom, the slower network, went from 35.0%
+of completed paths in June to 63.1% in July while Dialog fell from 64.9% to
+27.9%. Holding June's operator mix and applying July's within-operator
+performance gives **117.1 ms** — indistinguishable from June's 117.2. The
+country got no slower; more of it was measured through the slow operator.
+
+An earlier draft of this note read the rise as a capacity purchase paid for in
+latency. It was Simpson's paradox, and the same trap waits for any
+country-level trend line drawn over a panel whose composition is still moving —
+which, five months into a rollout, this one is.
 
 ## What makes this the strongest candidate
 
