@@ -1,0 +1,231 @@
+cc,country,probe,target,ip,host,rdns,rtt,server,server_cc,domestic,school_cov,serve_loc,mlab_rtt
+AL,Albania,16235,googleclassroom,142.251.208.110,GOOGLE - Google LLC,lcsofb-ae-in-f14.1e100.net,8.498,tgd01,ME,False,82.4,Sofia BG,32.3
+AL,Albania,21663,googleclassroom,142.251.27.100,GOOGLE - Google LLC,cv-in-f100.1e100.net,19.198,tgd01,ME,False,82.4,,32.3
+BA,Bosnia and Herzegovina,4475,googleclassroom,172.217.171.174,GOOGLE - Google LLC,hhn05s02-in-f14.1e100.net,,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,14628,googleclassroom,142.251.27.100,GOOGLE - Google LLC,cv-in-f100.1e100.net,42.121,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,33681,googleclassroom,142.250.203.142,GOOGLE - Google LLC,lcbuda-al-in-f14.1e100.net,36.964,beg01,RS,False,56.3,Budapest HU,25.5
+BJ,Benin,13245,googleclassroom,172.217.20.238,GOOGLE - Google LLC,muc12s03-in-f14.1e100.net,105.624,los02,NG,False,0.0,,12.7
+BJ,Benin,60812,googleclassroom,172.217.20.46,GOOGLE - Google LLC,par10s09-in-f46.1e100.net,95.559,los02,NG,False,0.0,,12.7
+BJ,Benin,64328,googleclassroom,172.217.22.46,GOOGLE - Google LLC,fra15s16-in-f46.1e100.net,101.319,los02,NG,False,0.0,Frankfurt DE,12.7
+BW,Botswana,60649,googleclassroom,192.178.54.142,GOOGLE - Google LLC,tzjnba-ah-in-f14.1e100.net,7.78,jnb01,ZA,False,0.0,Johannesburg ZA,22.3
+CG,Congo (Brazzaville),64655,googleclassroom,142.250.129.100,GOOGLE - Google LLC,lclhrb-in-f100.1e100.net,179.049,los02,NG,False,0.0,London GB,
+CG,Congo (Brazzaville),65677,googleclassroom,192.178.54.14,GOOGLE - Google LLC,tzjnba-ac-in-f14.1e100.net,108.376,los02,NG,False,0.0,Johannesburg ZA,
+FJ,Fiji,60575,googleclassroom,142.251.222.238,GOOGLE - Google LLC,pnsyda-ag-in-f14.1e100.net,39.038,akl01,NZ,False,0.0,Sydney AU,89.7
+HN,Honduras,23023,googleclassroom,142.250.176.78,GOOGLE - Google LLC,atl26s26-in-f14.1e100.net,39.743,mex01,MX,False,65.8,,80.5
+HN,Honduras,61860,googleclassroom,192.178.50.46,GOOGLE - Google LLC,lcmiaa-aa-in-f14.1e100.net,41.454,mex01,MX,False,65.8,Miami US,80.5
+KE,Kenya,4078,googleclassroom,172.217.170.206,GOOGLE - Google LLC,mba01s10-in-f14.1e100.net,10.941,nbo01,KE,True,13.6,,19.5
+KE,Kenya,22218,googleclassroom,142.250.186.14,GOOGLE - Google LLC,lcmcta-ak-in-f14.1e100.net,127.05,nbo01,KE,True,13.6,,19.5
+KE,Kenya,50022,googleclassroom,142.251.38.14,GOOGLE - Google LLC,lcmcta-ac-in-f14.1e100.net,58.054,nbo01,KE,True,13.6,,19.5
+KG,Kyrgyzstan,64119,googleclassroom,142.250.154.100,GOOGLE - Google LLC,bt-in-f100.1e100.net,105.841,lhe152605,PK,False,73.7,,235.0
+KG,Kyrgyzstan,65240,googleclassroom,142.251.39.142,GOOGLE - Google LLC,tzamsa-af-in-f14.1e100.net,83.712,lhe152605,PK,False,73.7,Amsterdam NL,235.0
+KN,Saint Kitts and Nevis,1000988,googleclassroom,173.194.216.100,GOOGLE - Google LLC,vu-in-f100.1e100.net,71.633,bog05,CO,False,0.0,,170.7
+KZ,Kazakhstan,4485,googleclassroom,108.177.14.100,GOOGLE - Google LLC,lt-in-f100.1e100.net,69.979,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6730,googleclassroom,142.251.142.238,GOOGLE - Google LLC,lcarnb-ah-in-f14.1e100.net,85.161,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6881,googleclassroom,142.250.120.100,GOOGLE - Google LLC,zo-in-f100.1e100.net,68.72,lhe152605,PK,False,68.2,,233.7
+LC,Saint Lucia,27546,googleclassroom,142.251.215.14,GOOGLE - Google LLC,tzmiaa-ah-in-f14.1e100.net,63.881,bog05,CO,False,0.8,Miami US,121.9
+LK,Sri Lanka,35547,googleclassroom,142.251.10.100,GOOGLE - Google LLC,sd-in-f100.1e100.net,48.404,maa01,IN,False,85.2,,174.9
+LK,Sri Lanka,64185,googleclassroom,142.250.143.100,GOOGLE - Google LLC,pt-in-f100.1e100.net,32.471,maa01,IN,False,85.2,,174.9
+LS,Lesotho,62155,googleclassroom,142.251.216.142,GOOGLE - Google LLC,lcjnbi-ag-in-f14.1e100.net,9.264,jnb01,ZA,False,0.0,Johannesburg ZA,13.5
+MD,Republic of Moldova,11874,googleclassroom,142.250.154.100,GOOGLE - Google LLC,bt-in-f100.1e100.net,39.494,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,35796,googleclassroom,142.250.154.100,GOOGLE - Google LLC,bt-in-f100.1e100.net,34.279,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,64063,googleclassroom,142.251.127.100,GOOGLE - Google LLC,lcfrai-in-f100.1e100.net,39.009,sof02,BG,False,92.3,Frankfurt DE,42.1
+ME,Montenegro,33300,googleclassroom,142.251.27.100,GOOGLE - Google LLC,cv-in-f100.1e100.net,53.075,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,65986,googleclassroom,142.251.142.110,GOOGLE - Google LLC,lcsofa-an-in-f14.1e100.net,43.28,tgd01,ME,True,62.1,Sofia BG,6.1
+ME,Montenegro,1003553,googleclassroom,216.58.205.142,GOOGLE - Google LLC,mil04s27-in-f14.1e100.net,17.324,tgd01,ME,True,62.1,Milan IT,6.1
+MN,Mongolia,51529,googleclassroom,142.250.197.142,GOOGLE - Google LLC,nchkga-aj-in-f14.1e100.net,54.283,uln10076,MN,True,12.9,Hong Kong,10.5
+MN,Mongolia,52385,googleclassroom,142.251.119.100,GOOGLE - Google LLC,tv-in-f100.1e100.net,105.62,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,65904,googleclassroom,142.250.197.110,GOOGLE - Google LLC,nchkga-ai-in-f14.1e100.net,51.394,uln10076,MN,True,12.9,Hong Kong,10.5
+MW,Malawi,1004128,googleclassroom,142.251.47.46,GOOGLE - Google LLC,lcjnbi-aj-in-f14.1e100.net,118.186,mpm02,MZ,False,0.0,Johannesburg ZA,43.5
+NA,Namibia,12385,googleclassroom,142.251.47.14,GOOGLE - Google LLC,tzjnba-ar-in-f14.1e100.net,18.274,cpt01,ZA,False,6.8,Johannesburg ZA,42.0
+NA,Namibia,12803,googleclassroom,142.251.216.78,GOOGLE - Google LLC,jnb07s02-in-f14.1e100.net,62.258,cpt01,ZA,False,6.8,Johannesburg ZA,42.0
+RW,Rwanda,14955,googleclassroom,172.217.170.206,GOOGLE - Google LLC,mba01s10-in-f14.1e100.net,20.546,nbo01,KE,False,0.0,,160.7
+TT,Trinidad and Tobago,18923,googleclassroom,142.251.132.14,GOOGLE - Google LLC,ncboga-ae-in-f14.1e100.net,108.675,bog05,CO,False,7.7,Bogota CO,114.4
+UZ,Uzbekistan,7355,googleclassroom,172.217.20.174,GOOGLE - Google LLC,par10s49-in-f14.1e100.net,,lyp138910,PK,False,81.8,,226.4
+ZA,South Africa,242,googleclassroom,192.178.54.174,GOOGLE - Google LLC,tzjnba-ai-in-f14.1e100.net,23.473,cpt01,ZA,True,40.2,Johannesburg ZA,26.0
+ZA,South Africa,3454,googleclassroom,142.251.47.46,GOOGLE - Google LLC,lcjnbi-aj-in-f14.1e100.net,17.815,cpt01,ZA,True,40.2,Johannesburg ZA,26.0
+ZA,South Africa,4153,googleclassroom,142.251.216.142,GOOGLE - Google LLC,lcjnbi-ag-in-f14.1e100.net,29.945,cpt01,ZA,True,40.2,Johannesburg ZA,26.0
+ZM,Zambia,21336,googleclassroom,142.251.47.206,GOOGLE - Google LLC,jnb03s11-in-f14.1e100.net,62.465,jnb01,ZA,False,0.1,Johannesburg ZA,25.7
+AL,Albania,16235,youtube,142.251.150.4,GOOGLE - Google LLC,?,8.288,tgd01,ME,False,82.4,,32.3
+AL,Albania,21663,youtube,142.251.150.4,GOOGLE - Google LLC,?,19.061,tgd01,ME,False,82.4,,32.3
+BA,Bosnia and Herzegovina,4475,youtube,142.251.150.4,GOOGLE - Google LLC,?,,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,14628,youtube,142.251.150.4,GOOGLE - Google LLC,?,24.109,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,33681,youtube,142.251.150.4,GOOGLE - Google LLC,?,27.212,beg01,RS,False,56.3,,25.5
+BJ,Benin,13245,youtube,142.251.150.4,GOOGLE - Google LLC,?,108.786,los02,NG,False,0.0,,12.7
+BJ,Benin,60812,youtube,142.251.150.4,GOOGLE - Google LLC,?,26.791,los02,NG,False,0.0,,12.7
+BJ,Benin,64328,youtube,142.251.150.4,GOOGLE - Google LLC,?,101.55,los02,NG,False,0.0,,12.7
+BW,Botswana,60649,youtube,142.251.150.4,GOOGLE - Google LLC,?,8.317,jnb01,ZA,False,0.0,,22.3
+CG,Congo (Brazzaville),64655,youtube,142.251.150.4,GOOGLE - Google LLC,?,107.339,los02,NG,False,0.0,,
+CG,Congo (Brazzaville),65677,youtube,142.251.150.4,GOOGLE - Google LLC,?,46.768,los02,NG,False,0.0,,
+FJ,Fiji,60575,youtube,142.251.150.4,GOOGLE - Google LLC,?,38.907,akl01,NZ,False,0.0,,89.7
+HN,Honduras,23023,youtube,142.251.150.4,GOOGLE - Google LLC,?,37.392,mex01,MX,False,65.8,,80.5
+HN,Honduras,61860,youtube,142.251.150.4,GOOGLE - Google LLC,?,45.678,mex01,MX,False,65.8,,80.5
+KE,Kenya,4078,youtube,142.251.150.4,GOOGLE - Google LLC,?,53.464,nbo01,KE,True,13.6,,19.5
+KE,Kenya,22218,youtube,142.251.150.4,GOOGLE - Google LLC,?,18.554,nbo01,KE,True,13.6,,19.5
+KE,Kenya,50022,youtube,142.251.150.4,GOOGLE - Google LLC,?,8.542,nbo01,KE,True,13.6,,19.5
+KG,Kyrgyzstan,64119,youtube,142.251.150.4,GOOGLE - Google LLC,?,101.613,lhe152605,PK,False,73.7,,235.0
+KG,Kyrgyzstan,65240,youtube,142.251.150.4,GOOGLE - Google LLC,?,93.517,lhe152605,PK,False,73.7,,235.0
+KN,Saint Kitts and Nevis,1000988,youtube,142.251.150.4,GOOGLE - Google LLC,?,43.815,bog05,CO,False,0.0,,170.7
+KZ,Kazakhstan,4485,youtube,142.251.150.4,GOOGLE - Google LLC,?,71.793,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6730,youtube,142.251.150.4,GOOGLE - Google LLC,?,92.373,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6881,youtube,142.251.150.4,GOOGLE - Google LLC,?,66.761,lhe152605,PK,False,68.2,,233.7
+LC,Saint Lucia,27546,youtube,142.251.150.4,GOOGLE - Google LLC,?,64.498,bog05,CO,False,0.8,,121.9
+LK,Sri Lanka,35547,youtube,142.251.150.4,GOOGLE - Google LLC,?,40.057,maa01,IN,False,85.2,,174.9
+LK,Sri Lanka,64185,youtube,142.251.150.4,GOOGLE - Google LLC,?,29.856,maa01,IN,False,85.2,,174.9
+LS,Lesotho,62155,youtube,142.251.150.4,GOOGLE - Google LLC,?,12.605,jnb01,ZA,False,0.0,,13.5
+MD,Republic of Moldova,11874,youtube,142.251.150.4,GOOGLE - Google LLC,?,56.393,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,35796,youtube,142.251.150.4,GOOGLE - Google LLC,?,36.07,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,64063,youtube,142.251.150.4,GOOGLE - Google LLC,?,37.407,sof02,BG,False,92.3,,42.1
+ME,Montenegro,33300,youtube,142.251.150.4,GOOGLE - Google LLC,?,27.397,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,65986,youtube,142.251.150.4,GOOGLE - Google LLC,?,16.235,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,1003553,youtube,142.251.150.4,GOOGLE - Google LLC,?,17.265,tgd01,ME,True,62.1,,6.1
+MN,Mongolia,51529,youtube,142.251.150.4,GOOGLE - Google LLC,?,54.463,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,52385,youtube,142.251.150.4,GOOGLE - Google LLC,?,52.621,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,65904,youtube,142.251.150.4,GOOGLE - Google LLC,?,53.96,uln10076,MN,True,12.9,,10.5
+MW,Malawi,1004128,youtube,142.251.150.4,GOOGLE - Google LLC,?,51.432,mpm02,MZ,False,0.0,,43.5
+NA,Namibia,12385,youtube,142.251.150.4,GOOGLE - Google LLC,?,18.192,cpt01,ZA,False,6.8,,42.0
+NA,Namibia,12803,youtube,142.251.150.4,GOOGLE - Google LLC,?,94.794,cpt01,ZA,False,6.8,,42.0
+RW,Rwanda,14955,youtube,142.251.150.4,GOOGLE - Google LLC,?,21.472,nbo01,KE,False,0.0,,160.7
+TT,Trinidad and Tobago,18923,youtube,142.251.150.4,GOOGLE - Google LLC,?,63.567,bog05,CO,False,7.7,,114.4
+UZ,Uzbekistan,7355,youtube,142.251.150.4,GOOGLE - Google LLC,?,3061.426,lyp138910,PK,False,81.8,,226.4
+ZA,South Africa,242,youtube,142.251.150.4,GOOGLE - Google LLC,?,86.905,cpt01,ZA,True,40.2,,26.0
+ZA,South Africa,3454,youtube,142.251.150.4,GOOGLE - Google LLC,?,17.838,cpt01,ZA,True,40.2,,26.0
+ZA,South Africa,4153,youtube,142.251.150.4,GOOGLE - Google LLC,?,26.856,cpt01,ZA,True,40.2,,26.0
+ZM,Zambia,21336,youtube,142.251.150.4,GOOGLE - Google LLC,?,53.758,jnb01,ZA,False,0.1,,25.7
+AL,Albania,16235,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,8.441,tgd01,ME,False,82.4,,32.3
+AL,Albania,21663,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,46.241,tgd01,ME,False,82.4,,32.3
+BA,Bosnia and Herzegovina,4475,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,14628,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,15.561,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,33681,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,9.055,beg01,RS,False,56.3,,25.5
+BJ,Benin,13245,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,97.186,los02,NG,False,0.0,,12.7
+BJ,Benin,60812,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,75.531,los02,NG,False,0.0,,12.7
+BJ,Benin,64328,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,100.514,los02,NG,False,0.0,,12.7
+BW,Botswana,60649,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,7.829,jnb01,ZA,False,0.0,,22.3
+CG,Congo (Brazzaville),64655,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,60.986,los02,NG,False,0.0,,
+CG,Congo (Brazzaville),65677,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,72.514,los02,NG,False,0.0,,
+FJ,Fiji,60575,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,38.637,akl01,NZ,False,0.0,,89.7
+HN,Honduras,23023,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,72.686,mex01,MX,False,65.8,,80.5
+HN,Honduras,61860,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,41.885,mex01,MX,False,65.8,,80.5
+KE,Kenya,4078,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,12.177,nbo01,KE,True,13.6,,19.5
+KE,Kenya,22218,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,15.44,nbo01,KE,True,13.6,,19.5
+KE,Kenya,50022,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,54.814,nbo01,KE,True,13.6,,19.5
+KG,Kyrgyzstan,64119,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,33.75,lhe152605,PK,False,73.7,,235.0
+KG,Kyrgyzstan,65240,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,0.807,lhe152605,PK,False,73.7,,235.0
+KN,Saint Kitts and Nevis,1000988,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,45.911,bog05,CO,False,0.0,,170.7
+KZ,Kazakhstan,4485,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,17.743,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6730,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,24.321,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6881,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,56.016,lhe152605,PK,False,68.2,,233.7
+LC,Saint Lucia,27546,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,59.183,bog05,CO,False,0.8,,121.9
+LK,Sri Lanka,35547,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,3.709,maa01,IN,False,85.2,,174.9
+LK,Sri Lanka,64185,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,2.839,maa01,IN,False,85.2,,174.9
+LS,Lesotho,62155,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,12.187,jnb01,ZA,False,0.0,,13.5
+MD,Republic of Moldova,11874,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,0.8290000000000001,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,35796,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,0.505,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,64063,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,3.243,sof02,BG,False,92.3,,42.1
+ME,Montenegro,33300,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,21.722,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,65986,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,10.074,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,1003553,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,12.376,tgd01,ME,True,62.1,,6.1
+MN,Mongolia,51529,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,1.589,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,52385,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,1.807,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,65904,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,1.037,uln10076,MN,True,12.9,,10.5
+MW,Malawi,1004128,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,41.56,mpm02,MZ,False,0.0,,43.5
+NA,Namibia,12385,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,17.684,cpt01,ZA,False,6.8,,42.0
+NA,Namibia,12803,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,154.749,cpt01,ZA,False,6.8,,42.0
+RW,Rwanda,14955,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,74.527,nbo01,KE,False,0.0,,160.7
+TT,Trinidad and Tobago,18923,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,2.878,bog05,CO,False,7.7,,114.4
+UZ,Uzbekistan,7355,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,3061.42,lyp138910,PK,False,81.8,,226.4
+ZA,South Africa,242,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,8.995,cpt01,ZA,True,40.2,,26.0
+ZA,South Africa,3454,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,1.915,cpt01,ZA,True,40.2,,26.0
+ZA,South Africa,4153,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,5.257,cpt01,ZA,True,40.2,,26.0
+ZM,Zambia,21336,claude,160.79.104.10,"ANTHROPIC - Anthropic, P",?,46.197,jnb01,ZA,False,0.1,,25.7
+AL,Albania,16235,khanacademy,146.75.117.42,"FASTLY - Fastly, Inc.",?,36.235,tgd01,ME,False,82.4,,32.3
+AL,Albania,21663,khanacademy,146.75.117.42,"FASTLY - Fastly, Inc.",?,30.847,tgd01,ME,False,82.4,,32.3
+BA,Bosnia and Herzegovina,4475,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,14628,khanacademy,199.232.17.42,"FASTLY - Fastly, Inc.",?,25.42,beg01,RS,False,56.3,,25.5
+BA,Bosnia and Herzegovina,33681,khanacademy,199.232.17.42,"FASTLY - Fastly, Inc.",?,15.06,beg01,RS,False,56.3,,25.5
+BJ,Benin,13245,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,82.485,los02,NG,False,0.0,,12.7
+BJ,Benin,60812,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,89.261,los02,NG,False,0.0,,12.7
+BJ,Benin,64328,khanacademy,199.232.169.42,"FASTLY - Fastly, Inc.",?,101.034,los02,NG,False,0.0,,12.7
+BW,Botswana,60649,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,7.686,jnb01,ZA,False,0.0,,22.3
+CG,Congo (Brazzaville),64655,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,81.42,los02,NG,False,0.0,,
+CG,Congo (Brazzaville),65677,khanacademy,146.75.17.42,"FASTLY - Fastly, Inc.",?,166.426,los02,NG,False,0.0,,
+FJ,Fiji,60575,khanacademy,151.101.29.42,"FASTLY - Fastly, Inc.",?,38.626,akl01,NZ,False,0.0,,89.7
+HN,Honduras,23023,khanacademy,146.75.125.42,"FASTLY - Fastly, Inc.",?,47.062,mex01,MX,False,65.8,,80.5
+HN,Honduras,61860,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,57.526,mex01,MX,False,65.8,,80.5
+KE,Kenya,4078,khanacademy,151.101.225.42,"FASTLY - Fastly, Inc.",?,75.15,nbo01,KE,True,13.6,,19.5
+KE,Kenya,22218,khanacademy,151.101.225.42,"FASTLY - Fastly, Inc.",?,89.069,nbo01,KE,True,13.6,,19.5
+KE,Kenya,50022,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,59.868,nbo01,KE,True,13.6,,19.5
+KG,Kyrgyzstan,64119,khanacademy,151.101.5.42,"FASTLY - Fastly, Inc.",?,99.536,lhe152605,PK,False,73.7,,235.0
+KG,Kyrgyzstan,65240,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,73.7,lhe152605,PK,False,73.7,,235.0
+KN,Saint Kitts and Nevis,1000988,khanacademy,199.232.93.42,"FASTLY - Fastly, Inc.",?,43.899,bog05,CO,False,0.0,,170.7
+KZ,Kazakhstan,4485,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,103.302,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6730,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,98.626,lhe152605,PK,False,68.2,,233.7
+KZ,Kazakhstan,6881,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,73.239,lhe152605,PK,False,68.2,,233.7
+LC,Saint Lucia,27546,khanacademy,146.75.125.42,"FASTLY - Fastly, Inc.",?,59.167,bog05,CO,False,0.8,,121.9
+LK,Sri Lanka,35547,khanacademy,151.101.209.42,"FASTLY - Fastly, Inc.",?,26.327,maa01,IN,False,85.2,,174.9
+LK,Sri Lanka,64185,khanacademy,140.248.129.42,"FASTLY - Fastly, Inc.",?,38.946,maa01,IN,False,85.2,,174.9
+LS,Lesotho,62155,khanacademy,151.101.173.42,"FASTLY - Fastly, Inc.",?,11.974,jnb01,ZA,False,0.0,,13.5
+MD,Republic of Moldova,11874,khanacademy,146.75.121.42,"FASTLY - Fastly, Inc.",?,35.766,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,35796,khanacademy,146.75.121.42,"FASTLY - Fastly, Inc.",?,34.175,sof02,BG,False,92.3,,42.1
+MD,Republic of Moldova,64063,khanacademy,146.75.1.42,"FASTLY - Fastly, Inc.",?,17.727,sof02,BG,False,92.3,,42.1
+ME,Montenegro,33300,khanacademy,199.232.17.42,"FASTLY - Fastly, Inc.",?,32.05,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,65986,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,21.265,tgd01,ME,True,62.1,,6.1
+ME,Montenegro,1003553,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,21.305,tgd01,ME,True,62.1,,6.1
+MN,Mongolia,51529,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,61.999,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,52385,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,62.066,uln10076,MN,True,12.9,,10.5
+MN,Mongolia,65904,khanacademy,151.101.77.42,"FASTLY - Fastly, Inc.",?,52.717,uln10076,MN,True,12.9,,10.5
+MW,Malawi,1004128,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,77.808,mpm02,MZ,False,0.0,,43.5
+NA,Namibia,12385,khanacademy,199.232.57.42,"FASTLY - Fastly, Inc.",?,134.366,cpt01,ZA,False,6.8,,42.0
+NA,Namibia,12803,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,82.24,cpt01,ZA,False,6.8,,42.0
+RW,Rwanda,14955,khanacademy,,?,?,81.234,nbo01,KE,False,0.0,,160.7
+TT,Trinidad and Tobago,18923,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,61.691,bog05,CO,False,7.7,,114.4
+UZ,Uzbekistan,7355,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,3061.429,lyp138910,PK,False,81.8,,226.4
+ZA,South Africa,242,khanacademy,151.101.225.42,"FASTLY - Fastly, Inc.",?,22.871,cpt01,ZA,True,40.2,,26.0
+ZA,South Africa,3454,khanacademy,151.101.225.42,"FASTLY - Fastly, Inc.",?,2.069,cpt01,ZA,True,40.2,,26.0
+ZA,South Africa,4153,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,5.149,cpt01,ZA,True,40.2,,26.0
+ZM,Zambia,21336,khanacademy,151.101.1.42,"FASTLY - Fastly, Inc.",?,49.485,jnb01,ZA,False,0.1,,25.7
+AL,Albania,16235,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,48.616,tgd01,ME,False,82.4,Marseille FR,32.3
+AL,Albania,21663,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,26.254,tgd01,ME,False,82.4,Marseille FR,32.3
+BA,Bosnia and Herzegovina,4475,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,,beg01,RS,False,56.3,Amsterdam NL,25.5
+BA,Bosnia and Herzegovina,14628,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,52.558,beg01,RS,False,56.3,Amsterdam NL,25.5
+BA,Bosnia and Herzegovina,33681,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,30.082,beg01,RS,False,56.3,Amsterdam NL,25.5
+BJ,Benin,13245,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,119.51,los02,NG,False,0.0,Amsterdam NL,12.7
+BJ,Benin,60812,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,130.946,los02,NG,False,0.0,Marseille FR,12.7
+BJ,Benin,64328,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,109.771,los02,NG,False,0.0,Amsterdam NL,12.7
+BW,Botswana,60649,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,173.51,jnb01,ZA,False,0.0,Marseille FR,22.3
+CG,Congo (Brazzaville),64655,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,197.978,los02,NG,False,0.0,Amsterdam NL,
+CG,Congo (Brazzaville),65677,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,166.085,los02,NG,False,0.0,Amsterdam NL,
+FJ,Fiji,60575,wikipedia,103.102.166.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqsin.wikimedia.org,186.737,akl01,NZ,False,0.0,Singapore,89.7
+HN,Honduras,23023,wikipedia,208.80.154.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqiad.wikimedia.org,72.973,mex01,MX,False,65.8,Ashburn US,80.5
+HN,Honduras,61860,wikipedia,208.80.154.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqiad.wikimedia.org,93.318,mex01,MX,False,65.8,Ashburn US,80.5
+KE,Kenya,4078,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,144.256,nbo01,KE,True,13.6,Marseille FR,19.5
+KE,Kenya,22218,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,163.182,nbo01,KE,True,13.6,Marseille FR,19.5
+KE,Kenya,50022,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,132.796,nbo01,KE,True,13.6,Marseille FR,19.5
+KG,Kyrgyzstan,64119,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,125.975,lhe152605,PK,False,73.7,Amsterdam NL,235.0
+KG,Kyrgyzstan,65240,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,98.357,lhe152605,PK,False,73.7,Amsterdam NL,235.0
+KN,Saint Kitts and Nevis,1000988,wikipedia,208.80.154.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqiad.wikimedia.org,74.212,bog05,CO,False,0.0,Ashburn US,170.7
+KZ,Kazakhstan,4485,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,100.987,lhe152605,PK,False,68.2,Marseille FR,233.7
+KZ,Kazakhstan,6730,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,98.362,lhe152605,PK,False,68.2,Marseille FR,233.7
+KZ,Kazakhstan,6881,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,88.59,lhe152605,PK,False,68.2,Amsterdam NL,233.7
+LC,Saint Lucia,27546,wikipedia,208.80.154.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqiad.wikimedia.org,88.913,bog05,CO,False,0.8,Ashburn US,121.9
+LK,Sri Lanka,35547,wikipedia,103.102.166.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqsin.wikimedia.org,79.488,maa01,IN,False,85.2,Singapore,174.9
+LK,Sri Lanka,64185,wikipedia,103.102.166.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqsin.wikimedia.org,38.961,maa01,IN,False,85.2,Singapore,174.9
+LS,Lesotho,62155,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,184.196,jnb01,ZA,False,0.0,Marseille FR,13.5
+MD,Republic of Moldova,11874,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,,sof02,BG,False,92.3,Amsterdam NL,42.1
+MD,Republic of Moldova,35796,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,39.887,sof02,BG,False,92.3,Amsterdam NL,42.1
+MD,Republic of Moldova,64063,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,38.611,sof02,BG,False,92.3,Amsterdam NL,42.1
+ME,Montenegro,33300,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,45.722,tgd01,ME,True,62.1,Amsterdam NL,6.1
+ME,Montenegro,65986,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,39.452,tgd01,ME,True,62.1,Amsterdam NL,6.1
+ME,Montenegro,1003553,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,36.053,tgd01,ME,True,62.1,Amsterdam NL,6.1
+MN,Mongolia,51529,wikipedia,103.102.166.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqsin.wikimedia.org,86.477,uln10076,MN,True,12.9,Singapore,10.5
+MN,Mongolia,52385,wikipedia,103.102.166.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqsin.wikimedia.org,93.759,uln10076,MN,True,12.9,Singapore,10.5
+MN,Mongolia,65904,wikipedia,103.102.166.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqsin.wikimedia.org,85.752,uln10076,MN,True,12.9,Singapore,10.5
+MW,Malawi,1004128,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,167.689,mpm02,MZ,False,0.0,Marseille FR,43.5
+NA,Namibia,12385,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,144.124,cpt01,ZA,False,6.8,Amsterdam NL,42.0
+NA,Namibia,12803,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,217.23,cpt01,ZA,False,6.8,Amsterdam NL,42.0
+RW,Rwanda,14955,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,160.108,nbo01,KE,False,0.0,Marseille FR,160.7
+TT,Trinidad and Tobago,18923,wikipedia,208.80.154.224,WIKIMEDIA - Wikimedia Fo,text-lb.eqiad.wikimedia.org,74.313,bog05,CO,False,7.7,Ashburn US,114.4
+UZ,Uzbekistan,7355,wikipedia,185.15.59.224,WIKIMEDIA - Wikimedia Fo,text-lb.esams.wikimedia.org,3061.29,lyp138910,PK,False,81.8,Amsterdam NL,226.4
+ZA,South Africa,242,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,184.87,cpt01,ZA,True,40.2,Marseille FR,26.0
+ZA,South Africa,3454,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,181.804,cpt01,ZA,True,40.2,Marseille FR,26.0
+ZA,South Africa,4153,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,178.524,cpt01,ZA,True,40.2,Marseille FR,26.0
+ZM,Zambia,21336,wikipedia,185.15.58.224,WIKIMEDIA - Wikimedia Fo,text-lb.drmrs.wikimedia.org,193.345,jnb01,ZA,False,0.1,Marseille FR,25.7

@@ -1,0 +1,23 @@
+cc,country,server,server_cc,domestic,mlab_rtt,school_cov,content_rtt,wikipedia_rtt,ratio,verdict
+LK,Sri Lanka,maa01,IN,False,174.9,85.2,31.1635,59.2245,5.61,M-Lab OVERSTATES latency
+KN,Saint Kitts and Nevis,bog05,CO,False,170.7,0.0,44.905,74.212,3.8,M-Lab OVERSTATES latency
+RW,Rwanda,nbo01,KE,False,160.7,0.0,47.9995,160.108,3.35,M-Lab OVERSTATES latency
+KZ,Kazakhstan,lhe152605,PK,False,233.7,68.2,70.886,98.362,3.3,M-Lab OVERSTATES latency
+BW,Botswana,jnb01,ZA,False,22.3,0.0,7.8045,173.51,2.86,M-Lab OVERSTATES latency
+KG,Kyrgyzstan,lhe152605,PK,False,235.0,73.7,88.6145,112.166,2.65,M-Lab OVERSTATES latency
+FJ,Fiji,akl01,NZ,False,89.7,0.0,38.772,186.737,2.31,M-Lab OVERSTATES latency
+LC,Saint Lucia,bog05,CO,False,121.9,0.8,61.532,88.913,1.98,M-Lab OVERSTATES latency
+HN,Honduras,mex01,MX,False,80.5,65.8,43.7815,83.1455,1.84,M-Lab OVERSTATES latency
+TT,Trinidad and Tobago,bog05,CO,False,114.4,7.7,62.629,74.313,1.83,M-Lab OVERSTATES latency
+AL,Albania,tgd01,ME,False,32.3,82.4,19.1295,37.435,1.69,M-Lab OVERSTATES latency
+ZA,South Africa,cpt01,ZA,True,26.0,40.2,17.8265,181.804,1.46,representative
+MD,Republic of Moldova,sof02,BG,False,42.1,92.3,35.0225,39.249,1.2,representative
+LS,Lesotho,jnb01,ZA,False,13.5,0.0,12.0805,184.196,1.12,representative
+BA,Bosnia and Herzegovina,beg01,RS,False,25.5,56.3,24.7645,41.32,1.03,representative
+MW,Malawi,mpm02,MZ,False,43.5,0.0,64.62,167.689,0.67,M-Lab UNDERSTATES latency
+NA,Namibia,cpt01,ZA,False,42.0,6.8,72.249,180.677,0.58,M-Lab UNDERSTATES latency
+ZM,Zambia,jnb01,ZA,False,25.7,0.1,51.6215,193.345,0.5,M-Lab UNDERSTATES latency
+KE,Kenya,nbo01,KE,True,19.5,13.6,54.139,144.256,0.36,M-Lab UNDERSTATES latency
+ME,Montenegro,tgd01,ME,True,6.1,62.1,21.285,39.452,0.29,M-Lab UNDERSTATES latency
+MN,Mongolia,uln10076,MN,True,10.5,12.9,53.3385,86.477,0.2,M-Lab UNDERSTATES latency
+BJ,Benin,los02,NG,False,12.7,0.0,98.85,119.51,0.13,M-Lab UNDERSTATES latency
