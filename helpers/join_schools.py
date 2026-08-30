@@ -192,3 +192,70 @@ def balanced_panel(joined: pd.DataFrame, month_a: str, month_b: str,
         if out["naive_change_pct"] is not None and out["balanced_change_pct"] is not None:
             out["composition_pp"] = round(out["naive_change_pct"] - out["balanced_change_pct"], 1)
     return out
+
+
+def _iso3_for(country: str) -> str:
+    """Accept either ISO-2 or ISO-3 and return the ISO-3 the measurement table uses."""
+    import json
+
+    code = country.upper()
+    if len(code) == 3:
+        return code
+    reference = Path(__file__).resolve().parent / "country_reference.json"
+    with open(reference) as handle:
+        registry = json.load(handle)
+    for iso3, entry in registry.items():
+        if entry.get("iso2") == code:
+            return iso3
+    raise KeyError(f"no ISO-3 for {country!r} in country_reference.json")
+
+
+def load_school_traceroutes(
+    country: str = "FJ",
+    months: list[str] | None = None,
+    data_root: Path | str | None = None,
+    cursor=None,
+    use_cached: bool = True,
+    how: str = "inner",
+) -> pd.DataFrame:
+    """
+    Load one country's traceroutes already filtered to Giga Meter schools.
+
+    The published exports are every NDT test in the country, not every school
+    test, and the two are not close: Kenya's parquet is 3% schools, Fiji's is
+    90%. Any concentration, path-length or ISP figure taken from the raw file
+    therefore describes the national consumer internet wherever the school
+    share is low. This is the one call that gets you the school subset.
+
+    country   — ISO-2 (as the data directories are named) or ISO-3.
+    months    — passed through to `load_traceroutes`; None loads every month.
+    data_root — passed through to `load_traceroutes`.
+    how       — 'inner' keeps only attributed traceroutes; 'left' keeps all and
+                leaves `school_id_giga` null, for measuring coverage.
+
+    The join window is derived from the months actually loaded, so a call
+    restricted to one month does not query the whole series.
+
+    Coverage of the join is attached as `frame.attrs['attribution']` — read it
+    before reporting anything, since a country with a low attributed share has
+    a school panel too thin to characterise. Requires Trino.
+
+        tr = load_school_traceroutes('MW')
+        tr.attrs['attribution']['attributed_pct']    # 55.2
+    """
+    from load_traceroutes import load_traceroutes
+
+    tr = load_traceroutes(country, months=months, data_root=data_root)
+    if tr.empty:
+        return tr
+
+    span = pd.PeriodIndex(tr["month"].unique(), freq="M")
+    start = span.min().start_time.date().isoformat()
+    end = span.max().end_time.date().isoformat()
+
+    index = school_index(_iso3_for(country), start, end,
+                         cursor=cursor, use_cached=use_cached)
+    summary = attribution_summary(tr, index)
+    joined = attach_schools(tr, index, how=how)
+    joined.attrs["attribution"] = summary
+    return joined
