@@ -140,3 +140,55 @@ def schools_behind_upstream(joined: pd.DataFrame, upstream: pd.DataFrame) -> pd.
     out["school_pct"] = (100 * out["schools"]
                          / merged["school_id_giga"].nunique()).round(1)
     return out.reset_index(drop=True)
+
+
+def balanced_panel(joined: pd.DataFrame, month_a: str, month_b: str,
+                   metric: str = "ndt_rtt", min_tests: int = 3) -> dict:
+    """
+    Compare two months over the schools present in both, not over whatever was
+    measuring at the time.
+
+    A fleet that is still being rolled out changes composition every month, and
+    a country-level median then moves for two unrelated reasons: schools
+    performing differently, and different schools being measured. Restricting to
+    the schools common to both months removes the second, leaving the change a
+    school actually experienced.
+
+    Returns the naive change, the balanced change, and the gap between them —
+    which is the part of the headline that was composition.
+    """
+    frame = joined[joined["month"].isin([month_a, month_b])]
+    frame = frame[frame[metric].notna()]
+
+    per = (frame.groupby(["school_id_giga", "month"])[metric]
+                .agg(["median", "size"]).reset_index())
+    per = per[per["size"] >= min_tests]
+    wide = per.pivot(index="school_id_giga", columns="month", values="median")
+    if month_a not in wide.columns or month_b not in wide.columns:
+        return {}
+    both = wide.dropna(subset=[month_a, month_b])
+
+    naive_a = frame.loc[frame["month"] == month_a, metric].median()
+    naive_b = frame.loc[frame["month"] == month_b, metric].median()
+
+    out = {
+        "month_a": month_a, "month_b": month_b,
+        "schools_a": int(wide[month_a].notna().sum()),
+        "schools_b": int(wide[month_b].notna().sum()),
+        "schools_both": len(both),
+        "naive_a": round(float(naive_a), 1),
+        "naive_b": round(float(naive_b), 1),
+        "naive_change_pct": round(100 * (naive_b / naive_a - 1), 1) if naive_a else None,
+    }
+    if len(both) >= 5:
+        bal_a, bal_b = both[month_a].median(), both[month_b].median()
+        out.update({
+            "balanced_a": round(float(bal_a), 1),
+            "balanced_b": round(float(bal_b), 1),
+            "balanced_change_pct": round(100 * (bal_b / bal_a - 1), 1) if bal_a else None,
+            "median_school_delta": round(float((both[month_b] - both[month_a]).median()), 1),
+            "schools_improved_pct": round(100 * float((both[month_b] < both[month_a]).mean()), 1),
+        })
+        if out["naive_change_pct"] is not None and out["balanced_change_pct"] is not None:
+            out["composition_pp"] = round(out["naive_change_pct"] - out["balanced_change_pct"], 1)
+    return out

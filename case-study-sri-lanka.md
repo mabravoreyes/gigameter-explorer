@@ -117,6 +117,34 @@ latency. It was Simpson's paradox, and the same trap waits for any
 country-level trend line drawn over a panel whose composition is still moving —
 which, five months into a rollout, this one is.
 
+## Controlling for fleet growth
+
+The panel is not stable, so nothing about "over time" can be read off a
+country-level series. The Giga Meter fleet in Sri Lanka went from 1,191 schools
+in February to **3,191 in July** — a 2.3x jump in the final month alone, and the
+reason the operator mix moved.
+
+`balanced_panel()` compares only the schools present in **both** months, which
+removes the arrival of new schools from the comparison:
+
+| Sri Lanka | schools A → B | both | naive | balanced | composition |
+|---|---|---:|---:|---:|---:|
+| Jun → Jul | 1,002 → 2,779 | 953 | -10.2% | **-8.6%** | -1.6 pp |
+| Feb → Jul | 953 → 2,779 | 837 | -12.3% | **-9.9%** | -2.4 pp |
+| May → Jun | 1,166 → 1,002 | 893 | +0.9% | -0.8% | +1.7 pp |
+
+**On the schools that were there for both, latency fell.** 80.0% of the 953
+schools common to June and July improved, by a median 31.3 ms. Over the full
+period, 65.2% of 837 schools improved by a median 32.0 ms.
+
+Note this cuts against the completed-path country median reported above, which
+rose from 117.2 to 169.1 ms across the same two months. Both are computed
+correctly; they are different populations. The country median is over completed
+traceroute paths, whose operator mix moved sharply; the balanced panel is over
+schools, holding the schools fixed. **The balanced figure is the one to quote
+about schools**, because it is the only one that answers what a school
+experienced.
+
 ## What makes this the strongest candidate
 
 * **Largest evidence base**: 318,551 traces, 3,252 schools, six complete months.

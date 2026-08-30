@@ -266,3 +266,34 @@ configuration; the measurement cannot separate those.
 
 The radio's negotiated rate correlates with throughput across schools in 12 of
 21 countries with enough schools to test; signal strength does so in 3.
+
+
+## Fleet growth is the control every trend needs
+
+`fleet_growth.csv` records how many schools were measuring each month. Almost
+no country holds still: Albania goes 0 → 99 → 331 → 856 → 816 → 663 as its
+campaign rolls out, Sri Lanka jumps 1,368 → 3,191 in July alone, and Uzbekistan,
+Mongolia, Kazakhstan, Montenegro and Bosnia all *shrink* by 40% or more over
+the period.
+
+A country-level series over a moving panel changes for two unrelated reasons —
+schools performing differently, and different schools being measured — and the
+second can dominate. `join_schools.balanced_panel()` compares only the schools
+present in both months and reports the gap as the composition share.
+
+Two findings in this repository were checked that way and moved in opposite
+directions:
+
+* **Albania, March to June.** The naive fall is -42.5%; balanced over the 84
+  schools present in both, it is **-48.8%**, with 94.0% of them improving by a
+  median 22.0 ms. Fleet growth *masked* part of a real improvement. The gain is
+  concentrated in March-May; May to June is flat.
+* **Sri Lanka, June to July.** The naive fall of -10.2% survives at **-8.6%**
+  balanced, with 80.0% of 953 schools improving. But the *completed-path*
+  country median over the same months rose from 117.2 to 169.1 ms, purely
+  because the operator mix shifted toward the slower network. Same country,
+  same months, opposite directions, both arithmetically correct.
+
+The rule that follows: quote a balanced figure when the claim is about schools,
+and never read a rollout-period trend line without checking what the
+denominator did.
