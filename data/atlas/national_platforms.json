@@ -1,0 +1,146 @@
+[
+ {
+  "cc": "MN",
+  "domain": "medle.mn",
+  "ip": "202.5.205.6",
+  "rtt": 1.0,
+  "host": "AS10076 ASN-ERDEMNET # AS-ERDEMNET con",
+  "confirmed": false
+ },
+ {
+  "cc": "KZ",
+  "domain": "moocs.kz",
+  "ip": "212.154.154.222",
+  "rtt": 2.3,
+  "host": "AS50482 KAZAKHTELECOM-AS JSC Kazakhtel",
+  "confirmed": false
+ },
+ {
+  "cc": "ME",
+  "domain": "skolskiportal.edu.me",
+  "ip": "89.188.39.195",
+  "rtt": 2.3,
+  "host": "AS40981 UNIVCG University of Montenegr",
+  "confirmed": false
+ },
+ {
+  "cc": "RW",
+  "domain": "elearning.reb.rw",
+  "ip": "197.243.27.85",
+  "rtt": 2.5,
+  "host": "AS37228 KT RWANDA NETWORK Ltd - KT RWA",
+  "confirmed": true
+ },
+ {
+  "cc": "MD",
+  "domain": "educatieonline.md",
+  "ip": "92.115.144.122",
+  "rtt": 3.2,
+  "host": "AS8926 MOLDTELECOM-AS Moldtelecom SA",
+  "confirmed": false
+ },
+ {
+  "cc": "LK",
+  "domain": "e-thaksalawa.moe.gov.lk",
+  "ip": "122.255.40.216",
+  "rtt": 5.6,
+  "host": "AS18001 DIALOG-AS - Dialog Axiata PLC.",
+  "confirmed": false
+ },
+ {
+  "cc": "KG",
+  "domain": "ibilim.kg",
+  "ip": "172.67.168.128",
+  "rtt": 12.4,
+  "host": "AS13335 CLOUDFLARENET - Cloudflare, In",
+  "confirmed": true
+ },
+ {
+  "cc": "AL",
+  "domain": "akademi.al",
+  "ip": "34.49.190.2",
+  "rtt": 13.7,
+  "host": "AS396982 GOOGLE-CLOUD-PLATFORM - Google",
+  "confirmed": true
+ },
+ {
+  "cc": "HN",
+  "domain": "educatrachos.hn",
+  "ip": "201.190.5.180",
+  "rtt": 18.5,
+  "host": "AS14754 AS14754 - TELECOMUNICACIONES D",
+  "confirmed": false
+ },
+ {
+  "cc": "BA",
+  "domain": "enastava.skolers.org",
+  "ip": "185.150.194.57",
+  "rtt": 23.5,
+  "host": "AS16145 LANACO-AS Lanaco d.o.o. za Inf",
+  "confirmed": false
+ },
+ {
+  "cc": "NA",
+  "domain": "learnonone.org",
+  "ip": "172.67.146.240",
+  "rtt": 37.9,
+  "host": "AS13335 CLOUDFLARENET - Cloudflare, In",
+  "confirmed": true
+ },
+ {
+  "cc": "TT",
+  "domain": "learn.moe.gov.tt",
+  "ip": "4.227.224.23",
+  "rtt": 62.2,
+  "host": "AS8075 MICROSOFT-CORP-MSN-AS-BLOCK - ",
+  "confirmed": false
+ },
+ {
+  "cc": "BJ",
+  "domain": "infre-benin.org",
+  "ip": "85.13.147.190",
+  "rtt": 135.4,
+  "host": "AS34788 NMM-AS Neue Medien Muennich Gm",
+  "confirmed": true
+ },
+ {
+  "cc": "KE",
+  "domain": "elimika.kec.ac.ke",
+  "ip": "40.68.214.225",
+  "rtt": 139.2,
+  "host": "AS8075 MICROSOFT-CORP-MSN-AS-BLOCK - ",
+  "confirmed": false
+ },
+ {
+  "cc": "MW",
+  "domain": "tikwere.org",
+  "ip": "159.69.16.121",
+  "rtt": 195.8,
+  "host": "AS24940 HETZNER-AS Hetzner Online GmbH",
+  "confirmed": true
+ },
+ {
+  "cc": "ZA",
+  "domain": "dbecloud.org.za",
+  "ip": "103.224.182.253",
+  "rtt": 255.1,
+  "host": "AS133618 TRELLIAN-AS-AP - Trellian Pty.",
+  "confirmed": true
+ },
+ {
+  "cc": "ZM",
+  "domain": "notesmaster.com",
+  "ip": "52.41.34.251",
+  "rtt": 320.4,
+  "host": "AS16509 AMAZON-02 - Amazon.com, Inc.",
+  "confirmed": false
+ },
+ {
+  "cc": "UZ",
+  "domain": "maktab.uz",
+  "ip": "185.74.5.178",
+  "rtt": null,
+  "host": "AS202660 BRM-DataCenter \"Uzbektelekom\" ",
+  "confirmed": false
+ }
+]
