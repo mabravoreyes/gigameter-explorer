@@ -120,3 +120,111 @@ def adoption_summary(pen: pd.DataFrame, min_schools: int = 10) -> pd.DataFrame:
         })
     return (pd.DataFrame(rows).sort_values("share_latest_pct", ascending=False)
             .reset_index(drop=True))
+
+
+def compare_routing(tr: pd.DataFrame, country_iso2: str, min_traces: int = 100) -> pd.DataFrame:
+    """
+    Starlink against terrestrial routing in one country, destination held fixed.
+
+    Restricted to the country's modal M-Lab server, because Starlink and
+    terrestrial clients do not always select the same one and comparing across
+    servers would compare destinations rather than networks.
+
+    Returns one row per kind: latency, throughput, loss, path geography, the
+    dominant transit provider, and how often the trace completes.
+    """
+    from load_traceroutes import (upstream_adjacency, country_sequences,
+                                  latency_decomposition)
+
+    site = tr["dst_site"].value_counts().idxmax()
+    fixed = tr[tr["dst_site"] == site]
+    starlink = is_starlink(fixed["src_asn_name"])
+    upstream = upstream_adjacency(fixed)
+    sequences = country_sequences(fixed, country_iso2)
+
+    rows = []
+    for label, subset in (("starlink", fixed[starlink]),
+                          ("terrestrial", fixed[~starlink])):
+        if len(subset) < min_traces:
+            continue
+        done = subset[subset["is_reaching_dst_asn"].fillna(False)]
+        seq = sequences.reindex(subset.index).dropna()
+        ups = upstream[upstream["id"].isin(subset["id"])]["upstream_org"].value_counts()
+        decomposition = latency_decomposition(subset, country_iso2)
+        rows.append({
+            "kind": label, "site": site, "traces": len(subset),
+            "median_rtt_ms": round(float(subset["ndt_rtt"].median()), 1),
+            "median_mbps": round(float(subset["ndt_throughput"].median()), 1),
+            "median_loss_pct": round(100 * float(subset["ndt_loss_rate"].median()), 2),
+            "median_path_km": round(float(done["forward_distance"].median())) if len(done) else None,
+            "countries_crossed": round(float(seq.map(len).median()), 1) if len(seq) else None,
+            "completion_pct": round(100 * float(subset["is_reaching_dst_asn"].mean()), 1),
+            "top_upstream": ups.index[0] if len(ups) else None,
+            "top_upstream_pct": round(100 * float(ups.iloc[0] / ups.sum()), 1) if len(ups) else None,
+            "domestic_ms": round(float(decomposition["domestic_ms"].median()), 2) if len(decomposition) else None,
+            "international_ms": round(float(decomposition["international_ms"].median()), 1) if len(decomposition) else None,
+            "top_route": " -> ".join(seq.value_counts().idxmax()) if len(seq) else None,
+        })
+    return pd.DataFrame(rows)
+
+
+def congestion_profile(start: str = "2026-01-01", countries: list[str] | None = None,
+                       cursor=None, use_cached: bool = True) -> pd.DataFrame:
+    """
+    Performance by local hour, split by Starlink and terrestrial.
+
+    A wide swing across the school day means capacity is contended. Comparing
+    the two kinds *within* a country holds the schools, the calendar and the
+    destination roughly constant, so the difference is the access technology.
+    """
+    key = "-".join(sorted(countries)) if countries else "all"
+    path = _CACHE / f"starlink_congestion_{key}_{start}.parquet"
+    if use_cached and path.exists():
+        return pd.read_parquet(path)
+
+    if cursor is None:
+        from load_measurements import get_trino_cursor
+        cursor = get_trino_cursor()
+
+    clause = ""
+    if countries:
+        clause = "AND iso3_code IN ('" + "','".join(countries) + "')"
+    cursor.execute(f"""
+        SELECT iso3_code,
+               CASE WHEN {STARLINK_SQL} THEN 'starlink' ELSE 'terrestrial' END AS kind,
+               local_hour_of_measurement AS hour,
+               count(*) AS tests,
+               approx_percentile(download_speed, 0.5) AS median_mbps,
+               approx_percentile(CAST(latency AS DOUBLE), 0.5) AS median_rtt,
+               approx_percentile(CAST(packet_loss_rate AS DOUBLE), 0.5) AS median_loss
+        FROM all_gigameter_measurement_data
+        WHERE date >= DATE '{start}' {clause}
+          AND local_hour_of_measurement BETWEEN 7 AND 17
+        GROUP BY 1, 2, 3
+    """)
+    frame = pd.DataFrame(cursor.fetchall(),
+                         columns=[d[0] for d in cursor.description])
+    _CACHE.mkdir(parents=True, exist_ok=True)
+    frame.to_parquet(path, index=False)
+    return frame
+
+
+def congestion_summary(profile: pd.DataFrame, min_tests: int = 50,
+                       min_hours: int = 5) -> pd.DataFrame:
+    """Best against worst school hour, per country and access kind."""
+    solid = profile[profile["tests"] >= min_tests]
+    rows = []
+    for (iso3, kind), group in solid.groupby(["iso3_code", "kind"]):
+        if len(group) < min_hours:
+            continue
+        rows.append({
+            "iso3": iso3, "kind": kind, "tests": int(group["tests"].sum()),
+            "mbps_best": round(float(group["median_mbps"].max()), 1),
+            "mbps_worst": round(float(group["median_mbps"].min()), 1),
+            "mbps_swing_pct": round(100 * (group["median_mbps"].max() - group["median_mbps"].min())
+                                    / group["median_mbps"].max()),
+            "rtt_best": round(float(group["median_rtt"].min()), 1),
+            "rtt_worst": round(float(group["median_rtt"].max()), 1),
+            "median_loss_pct": round(100 * float(group["median_loss"].median()), 2),
+        })
+    return pd.DataFrame(rows).sort_values(["iso3", "kind"]).reset_index(drop=True)
