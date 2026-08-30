@@ -122,6 +122,58 @@ March, carried 1.3% of paths in April, and 8.5% by July. New regional
 interconnection is happening and is measurable — and it is the one part of this
 picture that did not reverse.
 
+## What the route does and does not affect
+
+Every Albanian measurement is NDT7 with download, upload, latency and loss
+populated, so the routing claim can be tested on more than round-trip time.
+Holding the operator fixed — Abissnet, which carries 49,000 traces across both
+its upstreams — separates what the route causes from what the operator does:
+
+| Abissnet via | traces | latency | download | upload | loss | path |
+|---|---:|---:|---:|---:|---:|---:|
+| Cogent | 39,715 | **27 ms** | 75.7 Mb/s | 65.6 Mb/s | 4.8% | 1,250 km |
+| Arelion | 3,295 | **64 ms** | 73.9 Mb/s | 53.3 Mb/s | 6.6% | 3,030 km |
+
+**The route costs latency, and barely touches download.** 2.4x the latency, a
+23% upload penalty, and a download difference of 2% that is noise. The
+cross-sectional throughput gap between routes — 85 Mb/s on the direct path
+against 30 on the European one — is therefore mostly *which operators take
+which route*, not the route itself.
+
+That narrows the claim and sharpens it. Routing is a latency problem, and
+latency is what governs video lessons, live classes and anything interactive.
+It is not a bandwidth problem, and presenting it as one invites a correct
+rebuttal.
+
+**Two consequences.** The rural/urban gap is a *different* problem: rural
+schools trail on download (35.7 against 84.3 Mb/s) and upload (19.1 against
+72.3) but only slightly on latency (33 against 28 ms). That is access capacity,
+not routing, and it will not be fixed by peering.
+
+And **NDT7 loss should not be used as a quality measure here.** It rises with
+throughput rather than falling with it — the slowest quartile of schools shows
+0.44% loss and the fastest 4.83% (rho = +0.16, p = 0.0015) — which is what a
+faster transfer pushing harder looks like, not worse service.
+
+## The reversal is latency-only
+
+Re-running the balanced panel of 67 schools on every NDT7 metric shows the July
+reversal is specific to latency:
+
+| balanced panel, 67 schools | Apr | May | Jun | Jul |
+|---|---:|---:|---:|---:|
+| latency (ms) | 41.0 | 25.0 | 25.0 | **38.5** |
+| download (Mb/s) | 74.7 | 85.3 | 84.9 | **88.7** |
+| upload (Mb/s) | 62.9 | 83.9 | 76.3 | 78.2 |
+| loss (%) | 5.24 | 4.85 | 5.11 | **3.77** |
+
+Download is at its best in July and loss at its lowest, in the same month
+latency is worst. The schools did not get worse; their *routing* did, which is
+consistent with the European share rising through June and July. Stated as "the
+gains reversed" the claim is wrong. Stated as "the latency gains reversed while
+capacity kept improving" it is right, and it is a cleaner argument for treating
+routing as its own policy object.
+
 ## Why the routes are long in the first place
 
 Across 1.16 million observed hops, **83 cross a known internet exchange point —
