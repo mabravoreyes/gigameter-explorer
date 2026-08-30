@@ -345,20 +345,50 @@ network changing.
 170 schools route via Singapore on 99.5-100% of paths in every month from
 February to July. Six months, no structural change.
 
-Two real changes do survive the control, both at `maa03`:
+The two changes that appeared to survive that control do not survive a closer
+one. **Nothing measurable about Sri Lanka's network changed over the period;
+M-Lab's server fleet did.**
 
-* **The United States path was eliminated.** 27.9% of `maa03` paths in February,
-  28.0% in March, then 19.6, 23.7, **1.1 and 0.0%**. Traffic that had been
-  crossing the Pacific stopped.
-* **Direct routing grew**, 23.8% in February to 66.0% in July, against via
-  Singapore falling from 44.1% to 34.0%. July's `maa03` sample is thin (n=53),
-  so the size of that shift is uncertain even though its direction is
-  consistent across three months.
+Each server sits in exactly one hosting network, one to one:
+
+| server | hosted by | US-transiting share |
+|---|---|---:|
+| `maa01` Chennai | Tata Communications | 8.8% |
+| `maa03` Chennai | Reliance Jio | 9.7% |
+| `maa02` Chennai | Bharti Airtel | 24.8% |
+| `cok138754` Kochi | Kerala Vision | **0.4%** |
+
+So "the United States path was eliminated" is a change in which server was being
+measured, not in how Sri Lanka routes. The Kochi server — which barely transits
+the US — appears in July and takes 88.7% of the traffic, displacing servers that
+transit the US on 9-25% of paths. The country-wide US share falls from 12.1% to
+1.3% without any Sri Lankan network doing anything.
+
+The intermediary makes it concrete. Sri Lanka Telecom's US-crossing paths ran
+through **Telstra International**, and within `maa01` that path is *still there*
+in July, unchanged:
+
+| SLT at `maa01` | Feb | Mar | Apr | May | Jun | Jul |
+|---|---:|---:|---:|---:|---:|---:|
+| via Telstra | 79.8% | 85.3% | 81.3% | 89.3% | 86.9% | **88.7%** |
+| median RTT | 200.8 | 203.0 | 197.4 | 200.3 | 203.6 | **198.7** |
+
+Six months, no change. What moved was the destination: across all of Sri Lanka
+Telecom's paths, Kerala Vision goes from 0% of traces before July to 95.1% in
+July, while Tata falls from 77% to 3.0%.
 
 **And 17.1% of the panel changed provider.** 29 of 170 schools switched
 dominant ISP at least once; 23 differ between February and July, 17 of them
 moving from Dialog to Sri Lanka Telecom. School-level churn of that size moves
 any aggregate on its own, and it is invisible unless the panel is held fixed.
+
+This is the third temporal finding in this case study to dissolve under
+control, after the July "capacity trade" (operator mix) and the July route
+collapse (server mix). The pattern is consistent and worth stating plainly:
+**M-Lab's own infrastructure changed more over these six months than Sri
+Lanka's networks did**, and any trend drawn from this data without fixing the
+destination server is measuring M-Lab. The cross-sectional findings — one
+operator, one server, one month — are unaffected.
 
 One oddity worth flagging rather than explaining away: at `maa01` the median
 path length jumps from 5,662 km in February to 11,129 in May while RTT *falls*
