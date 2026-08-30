@@ -466,6 +466,57 @@ in northern Europe rather than in South Asia. It is not, as an earlier draft
 had it, a failing of Sri Lanka Telecom's international routing: Sri Lanka
 Telecom reaches Mumbai in 26.6 ms when measured directly.
 
+## Transit country dependency, over time and with the server held fixed
+
+The published country page reports transit-country dependency — "by IP
+geolocation, FR is the dominant transit country, appearing in 74.6% of
+international tests". Tracked month by month, that dependency appears to
+change completely:
+
+| all servers | Feb | Mar | Apr | May | Jun | **Jul** |
+|---|---:|---:|---:|---:|---:|---:|
+| Singapore | 79.9 | 87.5 | 86.2 | 89.9 | 82.2 | **21.0** |
+| France | 0.0 | 0.0 | 0.0 | 0.8 | 0.0 | **36.0** |
+| United States | 12.1 | 8.9 | 15.9 | 8.7 | 5.1 | **1.3** |
+
+Read as a national statistic that says Sri Lanka's external dependency shifted
+from Singapore to France in a single month. It did not.
+
+**Held to one server, nothing moves.** At `maa01` (Tata-hosted), Singapore is
+the transit country on 97.8-99.0% of paths in *every* month, and France is
+**0.0% in every month including July**:
+
+| `maa01` only | Feb | Mar | Apr | May | Jun | Jul |
+|---|---:|---:|---:|---:|---:|---:|
+| Singapore | 97.8 | 98.9 | 98.3 | 97.9 | 98.1 | **99.0** |
+| France | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | **0.0** |
+
+At `maa03` (Reliance Jio) France sits at 1.5-2.8% throughout, with no trend.
+France appears **only** at `cok138754`, the Kochi server that entered service in
+July, where it is the transit country on 38.7% of paths.
+
+So the dominant transit country is a property of **which server is being
+measured**, not of Sri Lanka. On the Tata-hosted server the answer is Singapore
+and always has been; on the Kerala Vision server it is France, because the
+Bharti Airtel path to Sri Lanka Telecom hands off in northern Europe.
+
+The median number of transit countries is **1.0 in every month and on every
+server**. The exposure did not deepen; the identity of the single transit
+country changed with the destination.
+
+### What the metric measures
+
+Transit-country dependency describes the path to the measurement server. That
+is a real property of the route, and for a country whose traffic must leave to
+reach anything it is worth reporting. But it is not a general statement about
+where a country's traffic goes: the same schools, in the same month, transit
+Singapore when measured against Chennai and France when measured against
+Kochi.
+
+The direct measurements bear this out. Sri Lankan school networks reach the
+national learning platform without leaving the country, and reach Mumbai in
+26.6 ms and Singapore in 40.8 ms. None of those paths transit France.
+
 ## What to check before presenting
 
 * **The "direct" class is not stable across months.** SLT's direct paths read
