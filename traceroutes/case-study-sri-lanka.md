@@ -215,7 +215,7 @@ experienced.
 * **The counterfactual is measured, not modelled** — 603 schools already get the
   fast path.
 * **Verifiable**: 85.2% of school traffic sits in networks with a live RIPE
-  Atlas probe (`ripeatlas_08.ipynb`), against 6.8% for Namibia. A follow-up can
+  Atlas probe (`atlas_probe_coverage.ipynb`), against 6.8% for Namibia. A follow-up can
   test these routes toward destinations schools actually use.
 * **A second, cheaper lever**: 1,170 schools run 5 GHz-capable hardware on
   2.4 GHz, worth a within-school median +25.4 Mb/s.

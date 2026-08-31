@@ -12,9 +12,7 @@ This repository contains a numbered set of country-parameterized notebooks that 
 | `meter_baseline_03.ipynb` | connectivity baseline and ISP performance review |
 | `meter_fleetprofile_04.ipynb` | fleet-wide profile: rhythm, seasonality, silence, churn, survivorship (server-side SQL) |
 | `meter_dropoff_05.ipynb` | per-country drop-off: who stopped, when, and what predicts it |
-| `meter_traceroutes_07.ipynb` | traceroute & internet geography: transit upstreams, routing, and what they cost in latency |
-| `starlink_09.ipynb` | Starlink as a school ISP: adoption by country and month, routing against terrestrial, and where it wins and loses |
-| `ripeatlas_08.ipynb` | RIPE Atlas probe coverage against the networks that carry school traffic — whether a finding can be measured independently |
+| `meter_singleschooldive_06.ipynb` | single-school deep dive |
 
 Run the download/clean notebook first. It writes `<slug>_clean.parquet`, `<slug>_clean_unfiltered.parquet` and `<slug>_clean_params.json` to the country cache; both other notebooks open with a loader cell that reads those, so the cleaning decisions — servers kept, latency cutoff, school-hours window — are inherited rather than repeated, and every result traces back to the parameters that produced it.
 
@@ -69,6 +67,14 @@ Raw ISP names split one provider across near-duplicate strings — quotes, legal
 
 Extend the file with a block for your country; patterns are lowercased substrings matched after cleaning.
 
+## Traceroute exploration
+
+Exploratory traceroute work lives in `traceroutes/` — `internet_geography`,
+`atlas_probe_coverage` and `starlink`, with their notes and case studies. It is
+deliberately outside the numbered pipeline above: those notebooks read this
+repository's outputs, and none of `00`-`06` depend on them. See
+`traceroutes/README.md`.
+
 ## Traceroute data
 
 The M-Lab traceroute study publishes a monthly export per country for 28
@@ -87,7 +93,7 @@ python helpers/fetch_traceroutes.py AL BZ                        # just what you
 python helpers/fetch_traceroutes.py --all --max-mb 100           # all 28, ~1 min
 python helpers/fetch_traceroutes.py UZ --dest cache/traceroutes  # UZ in full, ~1 GB
 ```
-`meter_traceroutes_07.ipynb` runs the analysis: it verifies the direction of
+`traceroutes/internet_geography.ipynb` runs the analysis: it verifies the direction of
 measurement, dates the panel against the school calendar, derives each ISP's
 transit upstream, and measures what that upstream costs in latency to a fixed
 destination. Load the data with `helpers/load_traceroutes.py`, which also
@@ -109,7 +115,7 @@ non-school clients (see `data/traceroutes/README.md`). Join `id`, the NDT UUID,
 to `uuid` in the Giga Meter measurements to isolate schools, which is what the
 published reports do.
 
-`traceroute-report-parity.md` maps the site's 15 published report sections
+`traceroutes/report-parity.md` maps the site's 15 published report sections
 against what the notebook covers, what only approximates it, and what needs the
 Giga Meter join.
 

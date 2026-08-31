@@ -29,7 +29,7 @@ one theme will fall out of step.
 
 ## Regenerating the numbers
 
-The figures are computed by the analysis in `meter_traceroutes_07.ipynb` and
+The figures are computed by the analysis in `traceroutes/internet_geography.ipynb` and
 `helpers/`. `case-study-albania.md` states each figure's population, weighting
 and caveats, and is the place to check before quoting anything.
 

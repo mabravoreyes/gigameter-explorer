@@ -34,7 +34,7 @@ The geography is more extreme than Albania's. Traces terminate at Mexico City
 server two countries away. Median path length ranges 4,600-9,900 km against
 Albania's 1,250 km, and median RTT sits at 72-82 ms.
 
-`meter_traceroutes_07.ipynb` has a `COUNTRY_CONFIG` entry for `BZ`
+`traceroutes/internet_geography.ipynb` has a `COUNTRY_CONFIG` entry for `BZ`
 (vantage points `mex01`/`mex04`, UTC-6, school year February-June); set
 `COUNTRY_ISO2 = "BZ"` in the config cell and the notebook runs unchanged.
 

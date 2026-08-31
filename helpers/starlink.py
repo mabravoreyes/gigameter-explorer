@@ -274,7 +274,8 @@ def ground_station_handoff(tr: pd.DataFrame) -> pd.DataFrame:
     return out.reset_index(drop=True)
 
 
-def within_school_comparison(iso3: str, min_tests: int = 20, cursor=None) -> pd.DataFrame:
+def within_school_comparison(iso3: str, min_tests: int = 20, cursor=None,
+                             use_cached: bool = True) -> pd.DataFrame:
     """
     Starlink against terrestrial *within the same school*.
 
@@ -287,6 +288,13 @@ def within_school_comparison(iso3: str, min_tests: int = 20, cursor=None) -> pd.
     Requires `min_tests` on each link, since a handful of stray measurements on
     the other technology does not support a comparison.
     """
+    # Cached like the other pulls: this is the figure the whole selection
+    # correction rests on, and it should not vanish from the notebook because a
+    # cluster credential expired.
+    path = _CACHE / f"starlink_within_school_{iso3.upper()}_{min_tests}.parquet"
+    if use_cached and path.exists():
+        return pd.read_parquet(path)
+
     if cursor is None:
         from load_measurements import get_trino_cursor
         cursor = get_trino_cursor()
@@ -314,7 +322,10 @@ def within_school_comparison(iso3: str, min_tests: int = 20, cursor=None) -> pd.
     solid["mbps_gain"] = solid["median_mbps_star"] - solid["median_mbps_terr"]
     solid["rtt_gain"] = solid["median_rtt_terr"] - solid["median_rtt_star"]
     solid["loss_delta"] = solid["median_loss_star"] - solid["median_loss_terr"]
-    return solid.reset_index().sort_values("mbps_gain", ascending=False)
+    out = solid.reset_index().sort_values("mbps_gain", ascending=False)
+    _CACHE.mkdir(parents=True, exist_ok=True)
+    out.to_parquet(path, index=False)
+    return out
 
 
 def within_school_verdict(comparison: pd.DataFrame) -> dict:

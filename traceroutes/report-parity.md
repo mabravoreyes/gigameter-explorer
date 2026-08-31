@@ -1,4 +1,4 @@
-# Published country reports vs `meter_traceroutes_07.ipynb`
+# Published country reports vs `internet_geography.ipynb`
 
 The GIGA Traceroute Studies site publishes a report per country-month in 15
 sections. This maps them against the notebook, so it is clear what is
