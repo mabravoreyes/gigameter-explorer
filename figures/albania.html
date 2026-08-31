@@ -1,0 +1,584 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Three Routes Out of Albania</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#161616; --ink-2:#393939; --ink-3:#6f6f6f; --ink-4:#989898;
+  --ground:#fbfbfc; --card:#ffffff; --rule:#e4e6ea; --rule-2:#eef0f3;
+  --r1:#5495ff; --r2:#0050e6; --r3:#002d76;
+  --accent:#0050e6; --accent-soft:#eaf2ff;
+  --warn:#b8560f;
+  --grid:#eceef2;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#f2f3f5; --ink-2:#d3d6db; --ink-3:#9aa0a9; --ink-4:#767c85;
+  --ground:#131417; --card:#1a1c20; --rule:#2b2e34; --rule-2:#232629;
+  --r1:#a9caff; --r2:#5495ff; --r3:#0050e6;
+  --accent:#7eb0ff; --accent-soft:#16233c;
+  --warn:#e8a06a;
+  --grid:#25282e;
+}}
+:root[data-theme="dark"]{
+  --ink:#f2f3f5; --ink-2:#d3d6db; --ink-3:#9aa0a9; --ink-4:#767c85;
+  --ground:#131417; --card:#1a1c20; --rule:#2b2e34; --rule-2:#232629;
+  --r1:#a9caff; --r2:#5495ff; --r3:#0050e6;
+  --accent:#7eb0ff; --accent-soft:#16233c;
+  --warn:#e8a06a;
+  --grid:#25282e;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);
+  font-family:"Open Sans",-apple-system,Segoe UI,sans-serif;font-size:15px;line-height:1.65;
+  margin:0;padding:0 20px 100px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3,.num{font-family:Manrope,"Open Sans",sans-serif}
+h1{font-size:clamp(30px,5vw,50px);line-height:1.06;font-weight:700;letter-spacing:-.022em;
+  margin:0 0 18px;text-wrap:balance;max-width:19ch}
+h2{font-size:clamp(20px,2.6vw,27px);font-weight:600;letter-spacing:-.014em;margin:0 0 6px;text-wrap:balance}
+h3{font-size:15px;font-weight:600;letter-spacing:-.005em;margin:0 0 3px}
+p{margin:0 0 15px;max-width:66ch;color:var(--ink-2)}
+.lede{font-size:18px;line-height:1.6;color:var(--ink-2);max-width:60ch}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-4);margin:0 0 12px}
+header{padding:66px 0 30px;border-bottom:1px solid var(--rule)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:26px;font-size:12.5px;color:var(--ink-3)}
+.meta b{color:var(--ink-2);font-weight:600}
+section{padding:52px 0;border-bottom:1px solid var(--rule-2)}
+.fig{background:var(--card);border:1px solid var(--rule);border-radius:10px;
+  padding:24px 24px 18px;margin:26px 0 0;overflow-x:auto}
+.fig-t{font-size:14.5px;font-weight:600;font-family:Manrope,sans-serif;margin:0 0 2px}
+.fig-s{font-size:12.5px;color:var(--ink-3);margin:0 0 20px;max-width:70ch}
+.note{font-size:12.5px;color:var(--ink-3);margin:14px 0 0;padding-top:13px;border-top:1px solid var(--rule-2)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:26px 0 0}
+.tile{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:19px}
+.tile .num{font-size:33px;font-weight:700;letter-spacing:-.028em;line-height:1.05;
+  font-variant-numeric:tabular-nums}
+.tile .cap{font-size:12.5px;color:var(--ink-3);margin-top:7px;line-height:1.45}
+.legend{display:flex;flex-wrap:wrap;gap:7px 20px;margin:0 0 18px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:7px}
+.sw{width:11px;height:11px;border-radius:3px;flex:none}
+svg{display:block;overflow:visible;max-width:100%}
+.tick{font-size:11px;fill:var(--ink-4);font-family:"Open Sans",sans-serif}
+.lbl{font-size:12px;fill:var(--ink-2);font-family:"Open Sans",sans-serif}
+.val{font-size:12px;font-weight:600;fill:var(--ink);font-family:Manrope,sans-serif;
+  font-variant-numeric:tabular-nums}
+.gl{stroke:var(--grid);stroke-width:1}
+.mark{transition:opacity .12s}
+.fig:hover .mark:not(:hover){opacity:.78}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:6px}
+th,td{text-align:right;padding:8px 10px;border-bottom:1px solid var(--rule-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);font-weight:600}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);
+  padding:15px 19px;border-radius:0 8px 8px 0;margin:22px 0;font-size:14.5px;color:var(--ink-2)}
+.callout b{color:var(--ink)}
+.caveat{border-left:3px solid var(--warn)}
+ul{margin:0 0 15px;padding-left:19px;max-width:66ch;color:var(--ink-2)}
+li{margin-bottom:8px}
+#tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:60;
+  background:var(--ink);color:var(--ground);font-size:12px;line-height:1.5;padding:8px 11px;
+  border-radius:7px;font-family:"Open Sans",sans-serif;max-width:250px;
+  box-shadow:0 6px 22px rgba(0,0,0,.22)}
+#tip b{font-family:Manrope,sans-serif}
+footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Giga Meter · traceroute study</p>
+  <h1>Three routes out of Albania</h1>
+  <p class="lede">Albanian schools reach the same test server 130&nbsp;km away by three different
+  paths, and which one a school gets is decided by its internet provider — not by where the
+  school is. The slowest is fourteen times the latency of the fastest — and the cost lands on
+  latency, not bandwidth.</p>
+  <p class="fig-s" style="max-width:60ch;margin-top:-4px">Everything here is restricted to
+  traceroutes attributable to a Giga-registered school by NDT test ID — 94,315 of the 140,915
+  in the Albanian export. The other third are non-school clients on the same networks.</p>
+  <div class="meta">
+    <span><b>94,315</b> school traceroutes</span>
+    <span><b>854</b> schools</span>
+    <span><b>Mar–Jul 2026</b></span>
+    <span><b>M-Lab</b> · server tgd01, Podgorica</span>
+  </div>
+</header>
+
+<section>
+  <h2>Almost none of the delay is Albanian</h2>
+  <p>Albania has no domestic M-Lab server, so every school measurement crosses the border.
+  Splitting each path into the milliseconds accrued inside the country and outside it shows
+  where the problem lives — and where a national operator has any leverage at all. Figures are
+  medians of <i>per-school</i> medians, so a school that ran 1,871 tests counts once, like a
+  school that ran five.</p>
+  <div class="tiles">
+    <div class="tile"><div class="num" style="color:var(--r1)">0.94<span style="font-size:17px;color:var(--ink-3)"> ms</span></div>
+      <div class="cap">accrues <b>inside</b> Albania — the median school's domestic segment</div></div>
+    <div class="tile"><div class="num" style="color:var(--r3)">29.9<span style="font-size:17px;color:var(--ink-3)"> ms</span></div>
+      <div class="cap">accrues <b>outside</b> it — 97% of the round trip</div></div>
+    <div class="tile"><div class="num">59</div>
+      <div class="cap">hops crossing an internet exchange, out of <b>1,037,213</b> observed — 0.006%</div></div>
+  </div>
+  <div class="callout">With effectively no exchange-point interconnection, there is nowhere
+  regional to hand traffic off. It goes to a global transit provider and it travels.</div>
+</section>
+
+<section>
+  <p class="eyebrow">The finding</p>
+  <h2>Same country, same destination, 14× apart</h2>
+  <p>Every school below is reaching one M-Lab server in Podgorica. The only thing that differs
+  is the path its traffic takes to get there.</p>
+  <div class="fig">
+    <p class="fig-t">Median round-trip time by route, per school</p>
+    <p class="fig-s">One point per school, so a heavily-tested school cannot stand in for a district.
+    Bar length is latency; the school count is the population behind each.</p>
+    <div id="c-routes"></div>
+    <p class="note">The direct path is not hypothetical — 19 schools already use it. The
+    throughput differences between routes are largely <i>which operators take which route</i>;
+    the section below separates the two.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">The mechanism</p>
+  <h2>The route follows the provider</h2>
+  <p>Four small operators peer directly into Montenegro and deliver 4&nbsp;ms. The incumbent,
+  Telekom Albania, sends 96.9% of its school traffic through Italy, Germany or Austria.
+  Albania's regional interconnection is being done by its smallest providers.</p>
+  <div class="fig">
+    <p class="fig-t">How each operator routes its school traffic</p>
+    <p class="fig-s">Each school's own route split, averaged across that operator's schools —
+    so one school with 1,871 tests counts the same as one with five, and a school that uses two
+    routes still shows both. Latency is the median of per-school medians. Schools need five
+    completed traces to count; operators need 250.</p>
+    <div class="legend" id="lg-ops"></div>
+    <div id="c-ops"></div>
+  </div>
+  <p class="note" style="border:0;padding:0;margin:14px 0 0">Counting every trace instead
+  barely moves the two largest — Abissnet 91.9% via Serbia against 91.3%, Telekom Albania 96.6%
+  via Europe against 97.7%. It moves the small ones: Albtelecom's European share reads 16.6% by
+  trace and 26.9% by school, and Tele.Co.Albania 64.4% via Serbia against 39.1%. Their heaviest
+  testers are not typical of their estates.</p>
+  <div class="callout"><b>The same school, routed two ways, is 37&nbsp;ms slower on the long
+  path.</b> 129 Abissnet schools have enough traces on both upstreams to compare against
+  themselves: median 26&nbsp;ms via Cogent against 64&nbsp;ms via Arelion, and
+  <b>128 of the 129 are slower on Arelion</b> (Wilcoxon p&nbsp;=&nbsp;6&times;10⁻²³). The
+  school, its access network, its contract and its destination are all held constant. Only the
+  route changes.</div>
+</section>
+
+<section>
+  <p class="eyebrow">Robustness</p>
+  <h2>The route costs latency, not bandwidth</h2>
+  <p>Every measurement here is NDT7, with download, upload, latency and loss recorded. Holding
+  the operator fixed separates what the route causes from what the operator does — Abissnet
+  carries 43,000 traces across two different upstreams to the same server.</p>
+  <div class="fig">
+    <p class="fig-t">One network, two upstreams, same destination</p>
+    <p class="fig-s">Abissnet's completed traceroutes to Podgorica, split by the transit
+    provider they hand off to. Same access network by construction — and largely the same
+    schools: <b>183 of 226</b> appear on both upstreams, with only one school exclusive to
+    Arelion. The ribbon carries the countries each path crosses.</p>
+    <div id="c-flow"></div>
+    <p class="note">Ribbon width follows trace volume, with the thinner path widened to stay
+    legible — Arelion carries 7.7% of school traces but reaches 184 of Abissnet's 226 schools,
+    so most of the network's schools are seen on the long path at some point.</p>
+  </div>
+  <div class="fig">
+    <p class="fig-t">What the longer route costs</p>
+    <p class="fig-s">Each bar is how much <i>worse</i> the longer route is on that measure —
+    always positive, whichever direction the underlying number moves. Latency and retransmission
+    go up; upload and download go down. Raw values at right.</p>
+    <div id="c-ndt"></div>
+    <p class="note">Latency more than doubles, retransmission rises a third and upload falls a
+    fifth — but download is within 2%, which is noise. The cross-sectional throughput gap between
+    routes is therefore composition, not causation. Retransmission is meaningful <i>here</i>
+    because download is held nearly equal, so it is not standing in for how hard the link was
+    pushed.</p>
+  </div>
+  <div class="callout"><b>This is a latency argument, and only a latency argument.</b> Latency
+  governs video lessons, live classes and anything interactive. Presenting routing as a
+  bandwidth problem invites a rebuttal the data would not survive.</div>
+</section>
+
+<section>
+  <p class="eyebrow">Who pays for it</p>
+  <h2>Two different problems, often confused</h2>
+  <p>The regional pattern <i>is</i> routing: Dibër is closer to Podgorica than Tirana is, and it
+  is slow because 89% of its traffic goes through western Europe. The rural–urban gap is not.
+  Rural schools trail on download and upload but barely on latency — that is access capacity,
+  and peering will not fix it.</p>
+  <div class="fig">
+    <p class="fig-t">Regions on the European route are the slow regions</p>
+    <p class="fig-s">Each circle is a region, sized by schools measured. Regions sending more
+    traffic through western Europe sit higher.</p>
+    <div id="c-regions"></div>
+    <p class="note">Dibër (9 schools) and Vlorë (6) are small cells — indicative, not settled.</p>
+  </div>
+  <div class="fig">
+    <p class="fig-t">Rural and urban schools, on every measure</p>
+    <p class="fig-s">The gap is in capacity, not in the route: 2.4× on download and 3.8× on
+    upload, against 1.2× on latency.</p>
+    <div id="c-area"></div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">The trajectory</p>
+  <h2>It improved to May, then gave much of it back</h2>
+  <p>The Giga Meter campaign began in March 2026 and the fleet grew from 99 schools to 856 by
+  May, so a country average would move on composition alone. This tracks only the 67 schools
+  present in every month from April to July — the same schools throughout.</p>
+  <div class="fig">
+    <p class="fig-t">Median school latency, balanced panel of 67 schools</p>
+    <p class="fig-s">Schools measured in all four months. Any change here is schools performing
+    differently, not different schools being measured.</p>
+    <div id="c-arc"></div>
+    <p class="note">On the June-to-July pair only 32% of these schools improved on latency. The
+    reversal coincides with the end of the school year, but this is the same panel throughout.</p>
+  </div>
+  <div class="fig">
+    <p class="fig-t">Only latency reversed</p>
+    <p class="fig-s">The same 67 schools on all four NDT7 measures, each indexed to its April
+    value. Download is at its best in July, in the month latency is worst.</p>
+    <div class="legend" id="lg-m"></div>
+    <div id="c-multi"></div>
+    <p class="note">The schools did not get worse — their routing did. "The gains reversed" is
+    wrong; "the latency gains reversed while capacity kept improving" is right, and is a cleaner
+    argument for treating routing as its own policy object. <b>Retransmission is shown for
+    completeness only:</b> the field labelled packet loss is <i>s2c_bytes_retrans ÷
+    s2c_bytes_sent</i>, a TCP retransmission rate under a test that deliberately saturates the
+    link — not loss on the path. Don't build a claim on it.</p>
+  </div>
+  <div class="callout">The one trend that did not reverse: the direct Albania→Montenegro path
+  <b>did not exist in March</b> and carried 4.3% of attributed school paths by July. New regional
+  interconnection is appearing, and it is measurable.</div>
+  <div class="fig">
+    <p class="fig-t">Share of schools whose main route is the direct one</p>
+    <p class="fig-s">One school, one vote, among schools with at least five completed traces
+    that month. Counted by traces instead it reads lower — 4.3% in July — because the
+    heaviest-testing schools are not the ones on the direct path.</p>
+    <div id="c-direct"></div>
+  </div>
+</section>
+
+<section>
+  <h2>What would undercut this</h2>
+  <div class="callout caveat">
+  <ul style="margin:0">
+    <li><b>One vantage point.</b> 96% of traces end at Podgorica. These are routes to that
+    server, not to the internet in general — the direct path's 4&nbsp;ms says Montenegro is
+    close, not that those schools are fast to everything.</li>
+    <li><b>The panel is small early.</b> March had 99 schools measuring. A March-anchored
+    comparison rests on 84 schools and is also the most flattering endpoint available;
+    April-to-June (253 schools, −37%) is the load-bearing version.</li>
+    <li><b>Client location is not verified.</b> The median test sat 0.21&nbsp;km from its
+    registered school, but 52&nbsp;km at the 90th percentile, with 1,015 tests beyond 10&nbsp;km.</li>
+    <li><b>"Packet loss" is not packet loss.</b> The field is
+    <i>s2c_bytes_retrans ÷ s2c_bytes_sent</i> — a retransmission rate under a saturating
+    transfer. Albania's median reads 3.83%, which would cripple a link if it were real loss.
+    It carries no quality claim here.</li>
+    <li><b>Counts run above the published country pages.</b> The school filter is applied
+    downstream of the source files; the join used here lands about 17% high.</li>
+  </ul>
+  </div>
+  <p style="margin-top:22px">Unlike most findings in this dataset, this one can be checked
+  independently: <b>82.4%</b> of Albanian school traffic sits in a network with a live RIPE Atlas
+  probe, so the routes can be re-tested toward destinations schools actually use.</p>
+</section>
+
+<footer>Giga Meter traceroute analysis · M-Lab measurements, March–July 2026 ·
+schools attributed by NDT UUID to the Giga Meter record</footer>
+</div>
+<div id="tip"></div>
+
+<script>
+const D={
+ routes:[{k:'Direct AL → ME',s:19,rtt:4.0,mbps:83.8,km:56,c:'--r1'},
+         {k:'via Serbia & Croatia',s:283,rtt:27.1,mbps:72.8,km:1250,c:'--r2'},
+         {k:'via Italy / Germany / Austria',s:81,rtt:54.9,mbps:31.1,km:3001,c:'--r3'}],
+ ops:[{n:'I.B.C shpk',d:95.0,r:1.4,e:3.6,rtt:3.1,t:566,s:10},
+      {n:'Abissnet sh.a.',d:0,r:91.3,e:7.4,rtt:26.9,t:43101,s:208},
+      {n:'Albanian Telecom. Union',d:0,r:89.4,e:4.4,rtt:27.7,t:632,s:20},
+      {n:'Albtelecom Sh.a.',d:0,r:71.1,e:26.9,rtt:33.0,t:879,s:24},
+      {n:'Tele.Co.Albania',d:0,r:39.1,e:8.6,rtt:34.7,t:298,s:9},
+      {n:'Telekom Albania',d:0,r:0.0,e:97.7,rtt:61.3,t:935,s:51}],
+ regions:[{n:'Lezhë',s:7,rtt:3.8,eu:14.3},{n:'Shkodër',s:13,rtt:25.9,eu:7.7},
+      {n:'Elbasan',s:29,rtt:27.2,eu:20.7},{n:'Tiranë',s:211,rtt:27.5,eu:15.2},
+      {n:'Berat',s:29,rtt:28.0,eu:10.3},{n:'Durrës',s:42,rtt:32.2,eu:11.9},
+      {n:'Korçë',s:13,rtt:36.7,eu:46.2},{n:'Fier',s:24,rtt:40.0,eu:58.3},
+      {n:'Vlorë',s:6,rtt:48.6,eu:50.0},{n:'Dibër',s:9,rtt:59.2,eu:88.9}],
+ arc:[{m:'Apr',v:40.4},{m:'May',v:25.4},{m:'Jun',v:25.2},{m:'Jul',v:38.3}],
+ direct:[{m:'Mar',v:0.0,n:68},{m:'Apr',v:2.5,n:159},{m:'May',v:4.0,n:299},
+         {m:'Jun',v:4.4,n:293},{m:'Jul',v:6.3,n:174}],
+ area:[{n:'Urban',s:178,dl:84.3,ul:72.3,lat:28},{n:'Rural',s:212,dl:35.7,ul:19.1,lat:33}],
+ flow:{total:49191,
+   lanes:[{up:'Cogent',asn:'AS174',n:39715,sch:225,rtt:26.5,km:1250,
+           via:['RS','HR'],pct:92.3,c:'--r2'},
+          {up:'Arelion',asn:'AS1299',n:3295,sch:184,rtt:64.1,km:3030,
+           via:['IT','DE','AT','HR'],pct:7.7,c:'--r3'}]},
+ ndt:[{k:'Latency',a:27,b:64,u:'ms',dir:'up',pen:137},
+      {k:'Retransmission',a:4.83,b:6.64,u:'%',dir:'up',pen:37},
+      {k:'Upload',a:65.6,b:53.3,u:'Mb/s',dir:'down',pen:19},
+      {k:'Download',a:75.7,b:73.9,u:'Mb/s',dir:'down',pen:2}],
+ multi:[{k:'Latency',v:[41.0,25.0,25.0,38.5],u:'ms'},
+        {k:'Download',v:[74.7,85.3,84.9,88.7],u:'Mb/s'},
+        {k:'Upload',v:[62.9,83.9,76.3,78.2],u:'Mb/s'},
+        {k:'Retrans.',v:[5.24,4.85,5.11,3.77],u:'%'}]
+};
+const SVG='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const n=document.createElementNS(SVG,t);for(const k in a)n.setAttribute(k,a[k]);return n};
+const tip=document.getElementById('tip');
+function hov(node,html){
+  node.classList.add('mark');
+  node.addEventListener('pointerenter',e=>{tip.innerHTML=html;tip.style.opacity=1});
+  node.addEventListener('pointermove',e=>{
+    const r=tip.getBoundingClientRect();
+    tip.style.left=Math.min(e.clientX+14,innerWidth-r.width-10)+'px';
+    tip.style.top=Math.max(8,e.clientY-r.height-12)+'px';});
+  node.addEventListener('pointerleave',()=>tip.style.opacity=0);
+}
+const W=()=>Math.min(1000,document.querySelector('.wrap').clientWidth-52);
+
+/* 1 — routes */
+(function(){
+  const w=W(),bh=46,gap=16,pad=210,h=D.routes.length*(bh+gap);
+  const max=60,sc=x=>(w-pad-96)*x/max;
+  const s=el('svg',{width:w,height:h+30,viewBox:`0 0 ${w} ${h+30}`});
+  D.routes.forEach((d,i)=>{
+    const y=i*(bh+gap);
+    const t=el('text',{x:0,y:y+19,class:'lbl'});t.textContent=d.k;s.appendChild(t);
+    const t2=el('text',{x:0,y:y+36,class:'tick'});t2.textContent=d.s+' schools · '+d.km.toLocaleString()+' km';s.appendChild(t2);
+    const r=el('rect',{x:pad,y:y+6,width:Math.max(3,sc(d.rtt)),height:26,rx:4,
+      fill:`var(${d.c})`});
+    hov(r,`<b>${d.k}</b><br>${d.rtt} ms median · ${d.mbps} Mb/s<br>${d.s} schools · ${d.km.toLocaleString()} km path`);
+    s.appendChild(r);
+    const v=el('text',{x:pad+sc(d.rtt)+11,y:y+25,class:'val'});v.textContent=d.rtt+' ms';s.appendChild(v);
+  });
+  document.getElementById('c-routes').appendChild(s);
+})();
+
+/* 2 — operators */
+(function(){
+  const lg=document.getElementById('lg-ops');
+  [['Direct','--r1'],['via Serbia & Croatia','--r2'],['via Italy / Germany / Austria','--r3']]
+    .forEach(([n,c])=>{const d=document.createElement('span');
+      d.innerHTML=`<i class="sw" style="background:var(${c})"></i>${n}`;lg.appendChild(d)});
+  const w=W(),bh=22,gap=13,pad=178,rp=76,h=D.ops.length*(bh+gap);
+  const bw=w-pad-rp, s=el('svg',{width:w,height:h+8,viewBox:`0 0 ${w} ${h+8}`});
+  D.ops.forEach((o,i)=>{
+    const y=i*(bh+gap);
+    const t=el('text',{x:0,y:y+15,class:'lbl'});t.textContent=o.n;s.appendChild(t);
+    let x=pad;
+    [['d','--r1','Direct'],['r','--r2','via Serbia & Croatia'],['e','--r3','via Italy / Germany / Austria']]
+      .forEach(([k,c,nm])=>{
+      const ww=bw*o[k]/100; if(ww<=0.4)return;
+      const r=el('rect',{x:x,y:y,width:Math.max(2,ww-2),height:bh,rx:3,fill:`var(${c})`});
+      hov(r,`<b>${o.n}</b><br>${nm}: ${o[k]}% of the average school's traffic<br>median ${o.rtt} ms · ${o.s} schools · ${o.t.toLocaleString()} traces`);
+      s.appendChild(r); x+=ww;
+    });
+    const v=el('text',{x:w-rp+10,y:y+15,class:'val'});v.textContent=o.rtt+' ms';s.appendChild(v);
+  });
+  document.getElementById('c-ops').appendChild(s);
+})();
+
+/* 3 — regions scatter */
+(function(){
+  const w=W(),h=310,ml=46,mb=42,mt=14,mr=16;
+  const iw=w-ml-mr, ih=h-mb-mt;
+  const X=v=>ml+iw*v/100, Y=v=>mt+ih-ih*v/65;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  [0,20,40,60].forEach(v=>{const g=el('line',{x1:ml,x2:w-mr,y1:Y(v),y2:Y(v),class:'gl'});s.appendChild(g);
+    const t=el('text',{x:ml-9,y:Y(v)+4,class:'tick','text-anchor':'end'});t.textContent=v;s.appendChild(t)});
+  [0,25,50,75,100].forEach(v=>{const t=el('text',{x:X(v),y:h-mb+20,class:'tick','text-anchor':'middle'});
+    t.textContent=v+'%';s.appendChild(t)});
+  const ax=el('text',{x:ml+iw/2,y:h-4,class:'tick','text-anchor':'middle'});
+  ax.textContent='share of the region’s school traffic routed through western Europe';s.appendChild(ax);
+  const ay=el('text',{x:-(mt+ih/2),y:13,class:'tick','text-anchor':'middle',transform:'rotate(-90)'});
+  ay.textContent='median RTT (ms)';s.appendChild(ay);
+  D.regions.forEach(r=>{
+    const rad=Math.max(6,Math.min(23,Math.sqrt(r.s)*1.55));
+    const c=el('circle',{cx:X(r.eu),cy:Y(r.rtt),r:rad,fill:'var(--r2)','fill-opacity':.62,
+      stroke:'var(--card)','stroke-width':2});
+    hov(c,`<b>${r.n}</b><br>${r.rtt} ms median · ${r.s} schools<br>${r.eu}% via western Europe`);
+    s.appendChild(c);
+    if(['Dibër','Fier','Tiranë','Lezhë','Vlorë','Korçë'].includes(r.n)){
+      const t=el('text',{x:X(r.eu),y:Y(r.rtt)-rad-7,class:'lbl','text-anchor':'middle'});
+      t.textContent=r.n;s.appendChild(t);}
+  });
+  document.getElementById('c-regions').appendChild(s);
+})();
+
+/* 4 — rural / urban, three metrics */
+(function(){
+  const w=W(),rows=[['dl','Download (Mb/s)',90],['ul','Upload (Mb/s)',80],['lat','Latency (ms)',40]];
+  const pad=132,rp=104,bw=w-pad-rp,h=rows.length*62+16;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  rows.forEach(([k,lab,max],i)=>{
+    const y=i*62;
+    const t=el('text',{x:0,y:y+22,class:'lbl'});t.textContent=lab;s.appendChild(t);
+    D.area.forEach((a,jx)=>{
+      const yy=y+jx*20+4;
+      const r=el('rect',{x:pad,y:yy,width:Math.max(3,bw*a[k]/max),height:16,rx:3,
+        fill:jx?'var(--r3)':'var(--r1)'});
+      hov(r,`<b>${a.n} schools</b> (${a.s})<br>${lab}: ${a[k]}<br>download ${a.dl} · upload ${a.ul} · latency ${a.lat} ms`);
+      s.appendChild(r);
+      const v=el('text',{x:pad+bw*a[k]/max+9,y:yy+13,class:'val'});v.textContent=a[k];s.appendChild(v);
+    });
+  });
+  document.getElementById('c-area').appendChild(s);
+  const lgx=document.createElement('div');lgx.className='legend';
+  lgx.innerHTML='<span><i class="sw" style="background:var(--r1)"></i>Urban (178 schools)</span>'+
+                '<span><i class="sw" style="background:var(--r3)"></i>Rural (212 schools)</span>';
+  document.getElementById('c-area').parentNode.insertBefore(lgx,document.getElementById('c-area'));
+})();
+
+/* 4a — flow: one network, two upstreams */
+(function(){
+  const F=D.flow,w=W(),h=214;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  const xA=104, xB=w-92, yc=[62,150];
+  const NAMES={RS:'Serbia',HR:'Croatia',IT:'Italy',DE:'Germany',AT:'Austria'};
+  // endpoints
+  [[xA,'Albania','390 schools','start'],[xB,'Podgorica','tgd01 · Montenegro','end']]
+   .forEach(([x,t1,t2,k])=>{
+    const g=el('rect',{x:x-46,y:44,width:92,height:124,rx:9,fill:'var(--accent-soft)',
+      stroke:'var(--rule)'});s.appendChild(g);
+    const a=el('text',{x:x,y:100,class:'val','text-anchor':'middle'});a.textContent=t1;s.appendChild(a);
+    const b=el('text',{x:x,y:117,class:'tick','text-anchor':'middle'});b.textContent=t2;s.appendChild(b);
+  });
+  F.lanes.forEach((L,i)=>{
+    const y=yc[i], th=Math.max(9,30*L.pct/100);
+    const x0=xA+46, x1=xB-46, mid=(x0+x1)/2;
+    const d=`M${x0},106 C${x0+46},106 ${x0+30},${y} ${x0+82},${y} L${x1-82},${y} `+
+            `C${x1-30},${y} ${x1-46},106 ${x1},106`;
+    const path=el('path',{d:d,fill:'none',stroke:`var(${L.c})`,'stroke-width':th,
+      'stroke-linecap':'round','stroke-opacity':.92});
+    hov(path,`<b>via ${L.up}</b> (${L.asn})<br>${L.n.toLocaleString()} traces · ${L.pct}% · ${L.sch} schools`+
+             `<br>${L.rtt} ms · ${L.km.toLocaleString()} km<br>Albania → ${L.via.map(v=>NAMES[v]||v).join(' → ')} → Montenegro`);
+    s.appendChild(path);
+    // upstream label at left of lane
+    const ut=el('text',{x:x0+86,y:y-th/2-9,class:'val'});ut.textContent=L.up;s.appendChild(ut);
+    const un=el('text',{x:x0+86,y:y+th/2+16,class:'tick'});
+    un.textContent=`${L.pct}% of traces · ${L.sch} schools · ${L.rtt} ms · ${L.km.toLocaleString()} km`;
+    s.appendChild(un);
+    // country pills along the lane
+    const span=(x1-92)-(x0+188);
+    L.via.forEach((cc,k)=>{
+      const x=x0+188+span*(k+0.5)/L.via.length;
+      const pill=el('rect',{x:x-19,y:y-11,width:38,height:22,rx:6,fill:'var(--card)',
+        stroke:`var(${L.c})`,'stroke-width':1.5});
+      hov(pill,`<b>${NAMES[cc]||cc}</b><br>on the ${L.up} path`);
+      s.appendChild(pill);
+      const t=el('text',{x:x,y:y+4,class:'val','text-anchor':'middle'});t.textContent=cc;s.appendChild(t);
+    });
+  });
+  document.getElementById('c-flow').appendChild(s);
+})();
+
+/* 4b — Abissnet within-operator penalty */
+(function(){
+  const w=W(),pad=128,rp=176,bw=w-pad-rp,h=D.ndt.length*44+32;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  const max=150, X=v=>pad+bw*Math.min(v,max)/max;
+  [0,50,100,150].forEach(v=>{
+    s.appendChild(el('line',{x1:X(v),x2:X(v),y1:0,y2:h-28,
+      stroke:v===0?'var(--ink-4)':'var(--grid)','stroke-width':v===0?1.5:1}));
+    const t=el('text',{x:X(v),y:h-9,class:'tick','text-anchor':'middle'});
+    t.textContent=(v?'+':'')+v+'%';s.appendChild(t);
+  });
+  D.ndt.forEach((d,i)=>{
+    const y=i*44+4;
+    const t=el('text',{x:0,y:y+21,class:'lbl'});t.textContent=d.k;s.appendChild(t);
+    const r=el('rect',{x:X(0),y:y+4,width:Math.max(2,X(d.pen)-X(0)),height:24,rx:4,
+      fill:d.pen>=30?'var(--r3)':'var(--r2)','fill-opacity':d.pen>=30?1:.4});
+    const arrow=d.dir==='up'?'higher':'lower';
+    hov(r,`<b>${d.k}</b><br>via Cogent ${d.a} ${d.u} · via Arelion ${d.b} ${d.u}<br>`+
+          `${d.pen}% worse on the longer route (${arrow})`);
+    s.appendChild(r);
+    const v=el('text',{x:X(d.pen)+10,y:y+21,class:'val'});
+    v.textContent=`${d.a} → ${d.b} ${d.u}`;s.appendChild(v);
+  });
+  document.getElementById('c-ndt').appendChild(s);
+})();
+
+/* 5 — balanced arc */
+(function(){
+  const w=W(),h=250,ml=44,mb=34,mt=16,mr=20;
+  const iw=w-ml-mr,ih=h-mb-mt;
+  const X=i=>ml+iw*i/(D.arc.length-1), Y=v=>mt+ih-ih*(v-15)/32;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  [20,30,40].forEach(v=>{s.appendChild(el('line',{x1:ml,x2:w-mr,y1:Y(v),y2:Y(v),class:'gl'}));
+    const t=el('text',{x:ml-9,y:Y(v)+4,class:'tick','text-anchor':'end'});t.textContent=v;s.appendChild(t)});
+  const p=D.arc.map((d,i)=>`${X(i)},${Y(d.v)}`).join(' ');
+  s.appendChild(el('polyline',{points:p,fill:'none',stroke:'var(--r2)','stroke-width':2,
+    'stroke-linejoin':'round','stroke-linecap':'round'}));
+  D.arc.forEach((d,i)=>{
+    const c=el('circle',{cx:X(i),cy:Y(d.v),r:5.5,fill:'var(--r2)',stroke:'var(--card)','stroke-width':2});
+    hov(c,`<b>${d.m} 2026</b><br>${d.v} ms median<br>across the same 67 schools`);s.appendChild(c);
+    const t=el('text',{x:X(i),y:h-mb+19,class:'tick','text-anchor':'middle'});t.textContent=d.m;s.appendChild(t);
+    const v=el('text',{x:X(i),y:Y(d.v)-14,class:'val','text-anchor':'middle'});v.textContent=d.v;s.appendChild(v);
+  });
+  const ay=el('text',{x:-(mt+ih/2),y:13,class:'tick','text-anchor':'middle',transform:'rotate(-90)'});
+  ay.textContent='median RTT (ms)';s.appendChild(ay);
+  document.getElementById('c-arc').appendChild(s);
+})();
+
+/* 6 — direct path growth */
+(function(){
+  const w=W(),h=150,ml=34,mb=30,mt=18,mr=20;
+  const iw=w-ml-mr,ih=h-mb-mt;
+  const X=i=>ml+iw*i/(D.direct.length-1), Y=v=>mt+ih-ih*v/7;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  [0,3,6].forEach(v=>{s.appendChild(el('line',{x1:ml,x2:w-mr,y1:Y(v),y2:Y(v),class:'gl'}));
+    const t=el('text',{x:ml-9,y:Y(v)+4,class:'tick','text-anchor':'end'});t.textContent=v+'%';s.appendChild(t)});
+  const area=D.direct.map((d,i)=>`${X(i)},${Y(d.v)}`).join(' ')+` ${X(D.direct.length-1)},${Y(0)} ${X(0)},${Y(0)}`;
+  s.appendChild(el('polygon',{points:area,fill:'var(--r1)','fill-opacity':.2}));
+  s.appendChild(el('polyline',{points:D.direct.map((d,i)=>`${X(i)},${Y(d.v)}`).join(' '),
+    fill:'none',stroke:'var(--r1)','stroke-width':2,'stroke-linejoin':'round'}));
+  D.direct.forEach((d,i)=>{
+    const c=el('circle',{cx:X(i),cy:Y(d.v),r:4.5,fill:'var(--r1)',stroke:'var(--card)','stroke-width':2});
+    hov(c,`<b>${d.m} 2026</b><br>${d.v}% of ${d.n} schools<br>mainly used the direct route`);s.appendChild(c);
+    const t=el('text',{x:X(i),y:h-mb+19,class:'tick','text-anchor':'middle'});t.textContent=d.m;s.appendChild(t);
+  });
+  const last=D.direct[D.direct.length-1];
+  const v=el('text',{x:X(D.direct.length-1),y:Y(last.v)-13,class:'val','text-anchor':'end'});
+  v.textContent=last.v+'%';s.appendChild(v);
+  document.getElementById('c-direct').appendChild(s);
+})();
+
+/* 7 — four metrics indexed to April */
+(function(){
+  const lg=document.getElementById('lg-m');
+  const cols=['var(--r3)','var(--r1)','var(--r2)','var(--ink-4)'];
+  D.multi.forEach((m,i)=>{const d=document.createElement('span');
+    d.innerHTML=`<i class="sw" style="background:${cols[i]}"></i>${m.k}`;lg.appendChild(d)});
+  const w=W(),h=270,ml=48,mb=34,mt=18,mr=110,iw=w-ml-mr,ih=h-mb-mt;
+  const mons=['Apr','May','Jun','Jul'];
+  const X=i=>ml+iw*i/3, Y=v=>mt+ih-ih*(v-60)/85;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  [70,100,130].forEach(v=>{
+    s.appendChild(el('line',{x1:ml,x2:ml+iw,y1:Y(v),y2:Y(v),
+      stroke:v===100?'var(--ink-4)':'var(--grid)','stroke-width':v===100?1.4:1,
+      'stroke-dasharray':v===100?'4 3':''}));
+    const t=el('text',{x:ml-9,y:Y(v)+4,class:'tick','text-anchor':'end'});t.textContent=v+'%';s.appendChild(t)});
+  mons.forEach((m,i)=>{const t=el('text',{x:X(i),y:h-mb+19,class:'tick','text-anchor':'middle'});
+    t.textContent=m;s.appendChild(t)});
+  D.multi.forEach((m,mi)=>{
+    const idx=m.v.map(v=>v/m.v[0]*100);
+    s.appendChild(el('polyline',{points:idx.map((v,i)=>`${X(i)},${Y(v)}`).join(' '),
+      fill:'none',stroke:cols[mi],'stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    idx.forEach((v,i)=>{
+      const c=el('circle',{cx:X(i),cy:Y(v),r:4.5,fill:cols[mi],stroke:'var(--card)','stroke-width':2});
+      hov(c,`<b>${m.k} · ${mons[i]}</b><br>${m.v[i]} ${m.u}<br>${Math.round(v)}% of April`);
+      s.appendChild(c);
+    });
+    const t=el('text',{x:X(3)+11,y:Y(idx[3])+4,class:'val',fill:cols[mi]});
+    t.textContent=m.k;s.appendChild(t);
+  });
+  const ay=el('text',{x:-(mt+ih/2),y:13,class:'tick','text-anchor':'middle',transform:'rotate(-90)'});
+  ay.textContent='indexed to April = 100%';s.appendChild(ay);
+})();
+</script>

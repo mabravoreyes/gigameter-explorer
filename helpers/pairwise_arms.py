@@ -64,8 +64,10 @@ from load_traceroutes import load_traceroutes
 _ROOT = Path(__file__).resolve().parent.parent
 _REFERENCE = json.loads((Path(__file__).resolve().parent / "country_reference.json").read_text())
 
-# The window every cached school index covers. Traces outside it would be
-# unattributable by construction and would inflate the unattributed arm.
+# Most cached school indexes cover this window; a country whose cache differs
+# (Grenada stops at June) is read from its own cache instead - see
+# `cached_window`. Traces outside the index window would be unattributable by
+# construction and would inflate the unattributed arm.
 INDEX_START, INDEX_END = "2026-02-01", "2026-07-31"
 
 # Held fixed in every comparison: the access network and the M-Lab server.
@@ -94,6 +96,21 @@ def iso3_of(iso2: str) -> str:
     raise KeyError(f"No ISO-3 for {iso2!r} in country_reference.json")
 
 
+def cached_window(iso3: str) -> tuple[str, str]:
+    """
+    The widest school-index window already cached for `iso3`.
+
+    Keeps the sweep offline and correct at once: every country is compared over
+    the window its own index actually covers, rather than a shared window that
+    would silently query Trino for the countries that do not match it.
+    """
+    cached = sorted((_ROOT / "cache" / iso3).glob("school_index_*.parquet"))
+    if not cached:
+        raise FileNotFoundError(f"No cached school index for {iso3}")
+    windows = [path.stem.replace("school_index_", "").split("_") for path in cached]
+    return max(windows, key=lambda w: (pd.Timestamp(w[1]) - pd.Timestamp(w[0])).days)
+
+
 def _local_clock(frame: pd.DataFrame, iso3: str) -> pd.DataFrame:
     """
     Attach the client's local hour, weekday and 3-hour daypart.
@@ -113,7 +130,7 @@ def _local_clock(frame: pd.DataFrame, iso3: str) -> pd.DataFrame:
 
 def arm_frame(country: str = "AL", iso3: str | None = None,
               data_root: Path | str | None = None,
-              start: str = INDEX_START, end: str = INDEX_END) -> pd.DataFrame:
+              start: str | None = None, end: str | None = None) -> pd.DataFrame:
     """
     Traces for `country` labelled `school` or `unattributed`, on the local clock.
 
@@ -122,6 +139,8 @@ def arm_frame(country: str = "AL", iso3: str | None = None,
     Join coverage is left on `frame.attrs['attribution']`.
     """
     iso3 = iso3 or iso3_of(country)
+    if start is None or end is None:
+        start, end = cached_window(iso3)
     tr = load_traceroutes(country, columns=_COLUMNS, data_root=data_root)
     tr = tr[tr["partition_date"].between(pd.Timestamp(start), pd.Timestamp(end))]
     if tr.empty:
@@ -137,6 +156,7 @@ def arm_frame(country: str = "AL", iso3: str | None = None,
         "school": int((frame["arm"] == "school").sum()),
         "school_pct": round(100 * (frame["arm"] == "school").mean(), 1),
         "schools": int(frame["school_id_giga"].nunique()),
+        "window": f"{start}..{end}",
     }
     return frame
 
@@ -294,7 +314,7 @@ def run(countries: list[str] | None = None, data_root: Path | str | None = None,
     for country in countries:
         try:
             found = country_rows(country, data_root=root, metrics=metrics, min_n=min_n)
-        except (FileNotFoundError, ValueError, KeyError) as error:
+        except (FileNotFoundError, ValueError, KeyError) as error:  # no data, no index, no window
             skipped.append((country, str(error)[:60]))
             continue
         if found:
