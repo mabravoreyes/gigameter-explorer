@@ -303,6 +303,50 @@ routes toward destinations schools actually use, rather than only toward an
 M-Lab server. For comparison, Namibia's equivalent finding sits at 6.8%
 coverage and cannot be independently confirmed.
 
+## Does the upstream ranking hold beyond this one server?
+
+Partly, and the limit matters. Albanian school traces reach three destinations
+often enough to compare, and Cogent beats Arelion at all three:
+
+| destination | Cogent | Arelion | ratio |
+|---|---:|---:|---:|
+| Podgorica, Montenegro | 26.9 ms | 65.2 ms | 2.4x |
+| Sofia `sof01`, Bulgaria | 15.0 ms | 54.6 ms | 3.6x |
+| Sofia `sof02`, Bulgaria | 13.4 ms | 62.1 ms | 4.6x |
+
+The mechanism is the same each time. Cogent routes regionally — `AL → RS → BG`
+on 98% of Sofia paths — while Arelion goes `AL → IT → DE → AT → …` to western
+Europe and back, whatever the target.
+
+**But all three destinations are in the Balkans, 300-800 km away in the same
+direction.** What this establishes is that Arelion's path is a detour *for
+regional destinations*. It does not establish that Cogent is the better
+upstream generally, and there is good reason to think it is not: Arelion's
+route already runs through Milan, Frankfurt and Vienna, so for a destination in
+western Europe — or a CDN cache there, which is where most school traffic
+actually goes — that path is not a detour at all and may well be shorter.
+
+This project already has a worked example of the generalisation failing. The
+Sri Lanka analysis inferred from M-Lab data that Sri Lanka Telecom had poor
+international routing; measured against fixed destinations, SLT was the fastest
+of three networks to Mumbai and twice as fast as Dialog to Singapore, and was
+slower only to Wikipedia. The M-Lab servers had been standing in for "the
+internet", and they do not.
+
+**The claim to make is therefore narrower than it looks.** Not "Abissnet should
+buy transit from Cogent", but: *the same school, on the same network, gets
+26 ms or 64 ms to a neighbouring country depending on which upstream carries
+it, and the slow path leaves the region to do it.* Regional interconnection is
+the subject; upstream league tables are not.
+
+**Testing the general case is feasible.** Albania has 30 connected RIPE Atlas
+probes including one inside Abissnet, and four in Albtelecom. Pointing those at
+the destinations schools actually use — the ministry platform, Google and
+Microsoft caches, a Frankfurt anchor — would settle whether the regional
+disadvantage extends to the traffic that matters. Atlas cannot force a probe
+through a chosen upstream, so it answers "where does Albanian school traffic
+actually go, and how long does it take", not the counterfactual.
+
 ## What would undercut this
 
 * **One vantage point.** 96% of traces terminate at Podgorica. These are routes

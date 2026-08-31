@@ -83,7 +83,7 @@ METRICS = {
     "is_reaching_dst_asn": "pp",
 }
 
-_COLUMNS = ["id", "partition_date", "window_start", "src_asn", "src_asn_name",
+_COLUMNS = ["id", "client_ip", "partition_date", "window_start", "src_asn", "src_asn_name",
             "dst_site", "dst_asn", "ndt_rtt", "ndt_throughput", "ndt_loss_rate",
             "is_reaching_dst_asn", "forward_distance"]
 
@@ -230,7 +230,7 @@ def pooled_delta(frame: pd.DataFrame, metric: str = "ndt_rtt",
     keys = PAIR + CLOCK
     cells = stratum_table(frame, {metric: kind}, min_n=min_n, keys=keys)
     if cells.empty:
-        return {"metric": metric, "cells": 0, "traces": 0, "crude": np.nan,
+        return {"metric": metric, "cells": 0, "cell_traces": 0, "crude": np.nan,
                 "stratified": np.nan, "lo": np.nan, "hi": np.nan}
 
     kept = frame.set_index(keys).index.isin(cells.index)
@@ -260,7 +260,7 @@ def pooled_delta(frame: pd.DataFrame, metric: str = "ndt_rtt",
         "cells": int(len(effects)),
         "networks": int(cells.index.get_level_values("src_asn").nunique()),
         "servers": int(cells.index.get_level_values("dst_site").nunique()),
-        "traces": int(len(rows)),
+        "cell_traces": int(len(rows)),
         "n_school": int((rows["arm"] == "school").sum()),
         "n_other": int((rows["arm"] == "unattributed").sum()),
         "crude": _effect(crude_school, crude_other, kind),
@@ -289,18 +289,47 @@ def clock_gap(frame: pd.DataFrame) -> dict:
     }
 
 
+def arm_purity(frame: pd.DataFrame) -> dict:
+    """
+    How much of the unattributed arm is plausibly school traffic anyway.
+
+    An unattributed trace from a client IP that *also* carries attributed
+    traces is very likely a school test the Meter backend has no record of,
+    not a household. `shared_ip_pct` is the share of the unattributed arm in
+    that position - the closer it is to 100, the more the comparison is
+    school-against-school and the smaller any true difference should look.
+
+    The country reports warn that one IP is not one school, so this bounds the
+    contamination rather than identifying which traces are misfiled.
+    """
+    if "client_ip" not in frame.columns:
+        return {"shared_ip_pct": np.nan}
+    school_ips = set(frame.loc[frame["arm"] == "school", "client_ip"].dropna())
+    other = frame.loc[frame["arm"] == "unattributed", "client_ip"].dropna()
+    if not len(other):
+        return {"shared_ip_pct": np.nan}
+    return {"shared_ip_pct": round(100 * other.isin(school_ips).mean(), 1)}
+
+
 def country_rows(country: str, data_root: Path | str | None = None,
                  metrics: dict | None = None, min_n: int = 30) -> list[dict]:
     """One row per metric for `country`, or [] if nothing is comparable."""
     metrics = metrics or METRICS
     frame = arm_frame(country, data_root=data_root)
     attribution, clock = frame.attrs["attribution"], clock_gap(frame)
+    purity = arm_purity(frame)
     rows = []
     for metric, kind in metrics.items():
         result = pooled_delta(frame, metric, kind, min_n=min_n)
         if not result["cells"]:
             continue
-        rows.append({**{"country": country}, **attribution, **clock, **result})
+        merged = {**attribution, **clock, **purity, **result}
+        # A repeated key would silently overwrite one summary with another:
+        # `traces` is the country total, `cell_traces` only what survives the
+        # cell filter, and the two once collided.
+        assert len(merged) == sum(map(len, (attribution, clock, purity, result))), \
+            "key collision between the per-country and per-metric summaries"
+        rows.append(merged)
     return rows
 
 
