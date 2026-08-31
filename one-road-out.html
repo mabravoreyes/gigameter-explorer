@@ -1,0 +1,814 @@
+<title>One Road Out</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    /* Giga Product Design System — grey ramp for ink, primary blue ramp for data */
+    --ground:      #fbfbfc;
+    --surface:     #ffffff;
+    --surface-2:   #eef0f3;
+    --ink:         #161616;
+    --ink-2:       #393939;
+    --ink-3:       #6f6f6f;
+    --rule:        #e4e6ea;
+    --rule-soft:   #eef0f3;
+
+    --accent:      #0050e6;
+    --accent-deep: #002d76;
+    --accent-soft: #eaf2ff;
+
+    --seq-100: #eaf2ff; --seq-200: #a9caff; --seq-300: #7eb0ff;
+    --seq-450: #5495ff; --seq-550: #0050e6; --seq-700: #002d76;
+
+    --warning:  #b8560f;
+    --on-warn:  #ffffff;
+    --cell-strong-ink: #ffffff;
+    --critical: #ed1c24;
+    --track:    #eef0f3;
+
+    --retail:    #5495ff;
+    --wholesale: #002d76;
+    --measure: 68ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131417;
+      --surface:     #1a1c20;
+      --surface-2:   #232629;
+      --ink:         #f2f3f5;
+      --ink-2:       #d3d6db;
+      --ink-3:       #9aa0a9;
+      --rule:        #2b2e34;
+      --rule-soft:   #232629;
+
+      --accent:      #7eb0ff;
+      --accent-deep: #a9caff;
+      --accent-soft: #16233c;
+
+      --seq-100: #16233c; --seq-200: #002d76; --seq-300: #0050e6;
+      --seq-450: #277aff; --seq-550: #5495ff; --seq-700: #a9caff;
+
+      --warning:  #e8a06a;
+      --on-warn:  #161616;
+      --cell-strong-ink: #161616;
+      --critical: #ed1c24;
+      --track:    #2b2e34;
+
+      --retail:    #a9caff;
+      --wholesale: #5495ff;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:    #131417;
+    --surface:     #1a1c20;
+    --surface-2:   #232629;
+    --ink:       #f2f3f5;
+    --ink-2:     #d3d6db;
+    --ink-3:     #9aa0a9;
+    --rule:      #2b2e34;
+    --rule-soft:   #232629;
+
+    --accent:    #7eb0ff;
+    --accent-deep: #a9caff;
+    --accent-soft: #16233c;
+
+    --seq-100: #16233c; --seq-200: #002d76; --seq-300: #0050e6;
+    --seq-450: #277aff; --seq-550: #5495ff; --seq-700: #a9caff;
+
+    --warning:  #e8a06a;
+    --on-warn:  #161616;
+    --cell-strong-ink: #161616;
+    --critical: #ed1c24;
+    --track:    #2b2e34;
+
+    --retail:    #a9caff;
+    --wholesale: #5495ff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Open Sans", -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+    display: flex; flex-direction: column; gap: 3rem;
+  }
+
+  header.masthead {
+    display: flex; flex-direction: column; gap: 1rem;
+    border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem;
+  }
+  .kicker {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: 0.8125rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: clamp(30px, 5vw, 50px);
+    font-weight: 700; line-height: 1.06; margin: 0; letter-spacing: -0.022em;
+    text-wrap: balance; max-width: 19ch;
+  }
+  .standfirst {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: 1.1875rem; line-height: 1.55;
+    color: var(--ink-2); max-width: var(--measure); margin: 0;
+  }
+
+  section { display: flex; flex-direction: column; gap: 1.15rem; }
+  .eyebrow {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: 0.8125rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  h2 {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: 1.75rem; font-weight: 700;
+    line-height: 1.15; letter-spacing: -0.014em; margin: 0; text-wrap: balance;
+  }
+  h3 { font-family: Manrope, "Open Sans", sans-serif; font-size: 1.2rem; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  p { margin: 0; max-width: var(--measure); }
+  strong { font-weight: 600; }
+  code {
+    font-family: "Open Sans", sans-serif; font-weight: 600; font-size: 0.875em;
+    background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 3px;
+  }
+  a { color: var(--accent); }
+  a:focus-visible, summary:focus-visible, .bar-row:focus-visible, .cell:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px;
+  }
+
+  /* ---------- stat row ---------- */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 1px;
+           background: var(--rule); border: 1px solid var(--rule); border-radius: 2px; }
+  .stat { background: var(--surface); padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .stat .n {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: 2rem; font-weight: 600;
+    line-height: 1; font-variant-numeric: tabular-nums; color: var(--ink);
+  }
+  .stat .l { font-size: 0.875rem; color: var(--ink-2); line-height: 1.35; }
+
+  /* ---------- figure shell ---------- */
+  figure { margin: 0; background: var(--surface); border: 1px solid var(--rule);
+           border-radius: 2px; padding: 1.35rem 1.4rem 1.1rem; display: flex;
+           flex-direction: column; gap: 1rem; }
+  figcaption { font-size: 0.9375rem; color: var(--ink-2); max-width: var(--measure); }
+  .fig-title { font-family: Manrope, "Open Sans", sans-serif; font-size: 1.2rem; font-weight: 600; }
+  .fig-sub { font-size: 0.875rem; color: var(--ink-3); margin-top: 0.2rem; }
+
+  /* ---------- bar chart ---------- */
+  .bars { display: flex; flex-direction: column; gap: 2px; overflow-x: auto; }
+  .bar-row {
+    display: grid; grid-template-columns: 8.5rem 1fr 3.2rem; align-items: center;
+    gap: 0.7rem; min-width: 30rem; padding: 2px 0; position: relative; cursor: default;
+  }
+  .bar-row .cty {
+    font-size: 0.875rem; color: var(--ink); text-align: right; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .track { position: relative; height: 22px; background: var(--track); border-radius: 2px; }
+  .fill { position: absolute; inset: 0 auto 0 0; background: var(--accent);
+          border-radius: 2px 4px 4px 2px; }
+  .fill.host { background: var(--warning); }
+  .bar-lab {
+    position: absolute; top: 50%; transform: translateY(-50%); left: 8px;
+    font-size: 0.75rem; font-family: "Open Sans", sans-serif; color: #fff;
+    white-space: nowrap; pointer-events: none; font-weight: 500;
+  }
+  .bar-lab.outside { color: var(--ink-2); }
+  .bar-lab.on-host { color: var(--on-warn); }
+  .bar-val {
+    font-family: Manrope, "Open Sans", sans-serif; font-size: 0.8125rem; font-weight: 500;
+    text-align: right; font-variant-numeric: tabular-nums; color: var(--ink);
+  }
+  .flag {
+    display: inline-block; font-size: 0.6875rem; font-family: Manrope, "Open Sans", sans-serif;
+    color: var(--ink-2); border: 1px solid var(--rule); border-radius: 2px;
+    padding: 0 0.3rem; margin-left: 0.35rem; vertical-align: 1px;
+  }
+
+  .axis { display: grid; grid-template-columns: 8.5rem 1fr 3.2rem; gap: 0.7rem;
+          min-width: 30rem; font-family: Manrope, "Open Sans", sans-serif;
+          font-size: 0.75rem; color: var(--ink-3); }
+  .axis .ticks { display: flex; justify-content: space-between; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; font-size: 0.8125rem;
+            color: var(--ink-2); align-items: center; }
+  .swatch { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 2px;
+            margin-right: 0.4rem; vertical-align: -1px; }
+
+  /* ---------- matrix ---------- */
+  .matrix-wrap { overflow-x: auto; }
+  table.matrix { border-collapse: separate; border-spacing: 2px; font-size: 0.8125rem; }
+  table.matrix th {
+    font-family: Manrope, "Open Sans", sans-serif; font-weight: 500; color: var(--ink-2);
+    font-size: 0.75rem; text-align: center; padding: 0.2rem 0.1rem; white-space: nowrap;
+  }
+  table.matrix th.op { text-align: right; padding-right: 0.65rem; font-family: "Open Sans", sans-serif;
+                       font-size: 0.8125rem; color: var(--ink); min-width: 12rem; }
+  .cell { width: 3.1rem; height: 2.1rem; border-radius: 2px; text-align: center;
+          font-family: Manrope, "Open Sans", sans-serif; font-size: 0.75rem;
+          font-variant-numeric: tabular-nums; }
+  .cell.empty { background: var(--surface-2); color: var(--ink-3); }
+  .scale { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem;
+           font-family: Manrope, "Open Sans", sans-serif; color: var(--ink-3); }
+  .scale .ramp { display: flex; }
+  .scale .ramp span { width: 1.6rem; height: 0.7rem; }
+
+
+  /* ---------- dumbbell ---------- */
+  .dumb { display: flex; flex-direction: column; gap: 3px; overflow-x: auto; }
+  .dumb-row { display: grid; grid-template-columns: 8.5rem 1fr 5.4rem; align-items: center;
+              gap: 0.7rem; min-width: 32rem; cursor: default; }
+  .dumb-row .cty { font-size: 0.875rem; text-align: right; white-space: nowrap;
+                   overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+  .dplot { position: relative; height: 20px; }
+  .dplot::before { content: ""; position: absolute; left: 0; right: 0; top: 50%;
+                   height: 1px; background: var(--rule-soft); }
+  .dline { position: absolute; top: 50%; height: 2px; transform: translateY(-50%);
+           background: var(--ink-3); opacity: .45; }
+  .dot { position: absolute; top: 50%; width: 10px; height: 10px; border-radius: 50%;
+         transform: translate(-50%, -50%); box-shadow: 0 0 0 2px var(--surface); }
+  .dot.retail { background: var(--retail); }
+  .dot.whole  { background: var(--wholesale); }
+  .dot.whole.host { background: var(--warning); }
+  .hostmark { color: var(--warning); font-size: 0.8em; margin-left: 0.3rem;
+              text-shadow: 0 0 1px var(--ink-3); }
+  .dumb-val { font-family: Manrope, "Open Sans", sans-serif; font-size: 0.75rem;
+              font-variant-numeric: tabular-nums; color: var(--ink-2); text-align: right;
+              white-space: nowrap; }
+  .dumb-val b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- second-road bars ---------- */
+  .second { display: flex; flex-direction: column; gap: 2px; overflow-x: auto; }
+  .sec-row { display: grid; grid-template-columns: 8.5rem 1fr 3rem; align-items: center;
+             gap: 0.7rem; min-width: 28rem; cursor: default; }
+  .sec-row .cty { font-size: 0.875rem; text-align: right; white-space: nowrap; color: var(--ink); }
+  .sec-track { position: relative; height: 16px; background: var(--track); border-radius: 2px; }
+  .sec-fill { position: absolute; inset: 0 auto 0 0; background: var(--accent);
+              border-radius: 2px 4px 4px 2px; }
+  .sec-fill.thin { background: var(--critical); }
+  .sec-ref { position: absolute; top: -3px; bottom: -3px; width: 1px;
+             background: var(--ink-3); opacity: .55; }
+
+
+  /* ---------- chokepoint stack ---------- */
+  .ck { display: flex; flex-direction: column; gap: 2px; overflow-x: auto; }
+  .ck-row { display: grid; grid-template-columns: 8.5rem 1fr 3.2rem; align-items: center;
+            gap: 0.7rem; min-width: 30rem; padding: 2px 0; cursor: default; }
+  .ck-row .cty { font-size: 0.875rem; text-align: right; white-space: nowrap;
+                 overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+  .ck-track { position: relative; height: 22px; background: var(--track);
+              border: 1px solid var(--rule); border-radius: 2px; overflow: hidden;
+              display: flex; }
+  .ck-seg { height: 100%; }
+  .ck-top   { background: var(--accent); }
+  .ck-other { background: var(--seq-450); margin-left: 2px; }
+  .ck-lab { position: absolute; top: 50%; transform: translateY(-50%); left: 8px;
+            font-size: 0.75rem; color: #fff; font-weight: 500; white-space: nowrap;
+            pointer-events: none; }
+  .ck-lab.outside { color: var(--ink-2); }
+
+  /* ---------- tooltip ---------- */
+  #tip {
+    position: fixed; z-index: 50; pointer-events: none; opacity: 0;
+    transition: opacity .09s; background: var(--surface); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 3px; padding: 0.55rem 0.7rem;
+    font-size: 0.8125rem; line-height: 1.45; max-width: 20rem;
+    box-shadow: 0 3px 14px rgba(0,0,0,.14);
+  }
+  #tip .t { font-weight: 600; margin-bottom: 0.15rem; }
+  #tip .r { font-family: Manrope, "Open Sans", sans-serif; font-size: 0.75rem; color: var(--ink-2); }
+
+  /* ---------- callout / table ---------- */
+  .note { background: var(--surface); border: 1px solid var(--rule);
+          border-left: 3px solid var(--accent); border-radius: 2px;
+          padding: 1.1rem 1.3rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .note.warn { border-left-color: var(--warning); }
+
+  details { background: var(--surface); border: 1px solid var(--rule); border-radius: 2px; }
+  summary { cursor: pointer; padding: 0.8rem 1.1rem; font-size: 0.9375rem; color: var(--ink-2); }
+  .tbl-wrap { overflow-x: auto; border-top: 1px solid var(--rule); }
+  table.data { border-collapse: collapse; width: 100%; font-size: 0.875rem;
+               font-variant-numeric: tabular-nums; }
+  table.data th, table.data td { padding: 0.45rem 0.9rem; text-align: right;
+                                 border-bottom: 1px solid var(--rule-soft); white-space: nowrap; }
+  table.data th:first-child, table.data td:first-child,
+  table.data th:nth-child(2), table.data td:nth-child(2) { text-align: left; }
+  table.data thead th { font-family: Manrope, "Open Sans", sans-serif; font-size: 0.75rem;
+                        text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+
+  ul { margin: 0; padding-left: 1.15rem; max-width: var(--measure);
+       display: flex; flex-direction: column; gap: 0.55rem; }
+  li::marker { color: var(--ink-3); }
+
+  .method { border-top: 1px solid var(--rule); padding-top: 1.6rem; font-size: 0.9375rem;
+            color: var(--ink-2); display: flex; flex-direction: column; gap: 0.8rem; }
+  .method h2 { font-size: 1.4rem; color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="kicker">Giga Meter · 21 countries · traceroute + school join</div>
+    <h1>One Road Out</h1>
+    <p class="standfirst">
+      In seven of twenty-one countries, a single network carries more than four fifths of
+      the school traffic leaving the country; in Uzbekistan it carries all of it. These
+      figures are computed on the school-filtered subset — not on the raw national traffic
+      across all M-Lab tests in a country, school and non-school — a distinction that
+      changes the magnitudes, and in Malawi changes which company is named.
+    </p>
+  </header>
+
+  <div class="note">
+    <p>
+      This is a summary across the countries where enough school tests reveal a path out to
+      support the measure, not an exhaustive account of school routing. Every figure
+      describes traffic observed from M-Lab servers toward schools; routing is commonly
+      asymmetric, so none of it need hold for traffic leaving a school. Six countries are
+      excluded and named, and the limits of each measure are given alongside it.
+    </p>
+  </div>
+
+  <section>
+    <div class="eyebrow">The measure</div>
+    <div class="stats" id="stats"></div>
+    <p>
+      Each traceroute runs from an M-Lab server toward a school. Walking back from the
+      school, the first network beyond its own ISP is that test's <strong>egress
+      operator</strong> — the road out. Concentration is the share of a country's school
+      tests taking the same road, summarised by the Herfindahl-Hirschman Index over
+      egress operators, where 1.0 means one operator carries everything.
+    </p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Centrality</div>
+    <h2>Where one network carries almost everything</h2>
+    <figure>
+      <div>
+        <div class="fig-title">Share of school egress carried by the single largest operator</div>
+        <div class="fig-sub">Percent of attributed school tests with an observed egress, all published months</div>
+      </div>
+      <div class="bars" id="bars"></div>
+      <div class="axis"><div></div><div class="ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100%</span></div><div></div></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--accent)"></span>Commercial or state operator</span>
+        <span><span class="swatch" style="background:var(--warning)"></span>⚑ The network hosting the measurement server</span>
+      </div>
+      <figcaption>
+        Where the largest "egress operator" is the network the M-Lab server itself sits in
+        (flagged), the figure describes where the measurement lives, not a transit market
+        the country chose. Six countries are affected — South Africa, Kenya, Fiji, Botswana, Mongolia and Benin — and are marked ⚑ in every view here.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="eyebrow">Scope</div>
+    <h2>The same networks recur across borders</h2>
+    <figure>
+      <div>
+        <div class="fig-title">Operators carrying ≥10% of school egress in more than one country</div>
+        <div class="fig-sub">Cell value is that operator's share of the country's school egress</div>
+      </div>
+      <div class="matrix-wrap"><table class="matrix" id="matrix"></table></div>
+      <div class="scale">
+        <span>share</span>
+        <span class="ramp">
+          <span style="background:var(--seq-100)"></span><span style="background:var(--seq-200)"></span><span style="background:var(--seq-300)"></span><span style="background:var(--seq-450)"></span><span style="background:var(--seq-550)"></span><span style="background:var(--seq-700)"></span>
+        </span>
+        <span>10% → 100%</span>
+      </div>
+      <figcaption>
+        Cogent carries a tenth or more of school egress in four countries and 82% of
+        Albania's; Columbus Networks does the same across three in Central America and the
+        Caribbean. A resilience question about those countries is a question about one company.
+      </figcaption>
+    </figure>
+  </section>
+
+
+  <section>
+    <div class="eyebrow">Retail vs wholesale</div>
+    <h2>Many sellers, one road</h2>
+    <p>
+      Two different markets sit behind a school's connection. The <strong>retail</strong>
+      market is who sells it a line — measured here over distinct schools served, so a
+      school that tests often does not outweigh one that tests rarely. The
+      <strong>wholesale</strong> market is who carries that traffic out of the country.
+      Both are shown as the reciprocal of HHI: the number of equally-sized providers the
+      market behaves like.
+    </p>
+    <figure>
+      <div>
+        <div class="fig-title">Effective number of providers: retail vs wholesale</div>
+        <div class="fig-sub">1/HHI — retail over schools served, wholesale over school egress tests</div>
+      </div>
+      <div class="dumb" id="dumb"></div>
+      <div class="axis"><div></div><div class="ticks"><span>1</span><span>4</span><span>8</span><span>12</span></div><div></div></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--retail);border-radius:50%"></span>Retail — ISPs selling to schools</span>
+        <span><span class="swatch" style="background:var(--wholesale);border-radius:50%"></span>Wholesale — operators carrying traffic out</span>
+        <span><span class="swatch" style="background:var(--warning);border-radius:50%"></span>⚑ Wholesale figure describes the measurement host</span>
+      </div>
+      <figcaption>
+        Albania is the extreme: 46 ISPs sell to its schools, behaving like 11.3 equal
+        competitors, while its road out behaves like 1.45. Four of the five widest gaps —
+        South Africa, Kenya, Mongolia, Botswana — are countries whose top egress is the
+        measurement host, so their wholesale figure is partly where M-Lab put the server.
+        Albania and Malawi are the clean cases. Four countries run the other way — Dominica, Montenegro,
+        Moldova and Bosnia have more competition on the road out than in the shop.
+      </figcaption>
+    </figure>
+    <div class="note warn">
+      <h3>HHI measures concentration, not redundancy</h3>
+      <p>
+        HHI is a function of shares alone. A country with 82% on one operator and eighteen
+        others at 1% scores <strong>0.674</strong>; one with 82% and a single operator at 18%
+        scores <strong>0.705</strong>, though only the second has a fallback large enough to
+        absorb the load. The index was built to measure market power, where a fragmented tail
+        does reduce one firm's dominance. It is not a redundancy measure, which is why the
+        second operator's share is reported separately below.
+      </p>
+    </div>
+    <div class="note">
+      <h3>Weighted by traffic, Albania&rsquo;s 135 links resolve to 4.2</h3>
+      <p>
+        Albania's AS-level graph is genuinely complex: 60 networks joined by 135 observed
+        links, which renders as a dense, plural, many-roads picture. Weight those edges by
+        the traffic they actually carry and it collapses.
+      </p>
+      <div class="tbl-wrap" style="border:1px solid var(--rule);border-radius:2px">
+        <table class="data">
+          <thead><tr><th>Albania, school-filtered</th><th>Edges</th><th>Share of the 135 drawn</th></tr></thead>
+          <tbody>
+            <tr><td>Carry ≥ 50% of traces</td><td>2</td><td>1.5%</td></tr>
+            <tr><td>Carry ≥ 10%</td><td>4</td><td>3.0%</td></tr>
+            <tr><td>Carry ≥ 1%</td><td>12</td><td>8.9%</td></tr>
+            <tr><td>Appear in exactly one trace</td><td>11</td><td>8.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Ninety-one percent of the edges carry under 1% of the traffic. Weighting them gives an
+        edge HHI of 0.240 — <strong>4.2 effective links out of 135 drawn</strong>. The spine is
+        a single chain: Crnogorski Telekom → Hrvatski Telekom (91.6% of traces) → Cogent
+        (79.2%) → Abissnet (42.3%).
+      </p>
+      <p>
+        A topology graph draws an edge observed once exactly as it draws an edge observed
+        ninety thousand times. The picture encodes which links exist; the index encodes how
+        much they carry. Both are accurate, and they answer different questions.
+      </p>
+    </div>
+
+    <figure>
+      <div>
+        <div class="fig-title">How much does the second-largest egress operator carry?</div>
+        <div class="fig-sub">The complement HHI misses: is there a fallback already in live use?</div>
+      </div>
+      <div class="second" id="second"></div>
+      <div class="axis"><div></div><div class="ticks"><span>0</span><span>10</span><span>20</span><span>30%</span></div><div></div></div>
+      <figcaption>
+        The line marks 10%. Uzbekistan has no second operator at all — one egress network,
+        nothing else observed. Albania has nineteen egress operators and its second still
+        carries only 8.5%, so a long tail is not a fallback. Rwanda, Bosnia, Mongolia and
+        Montenegro carry a quarter or more on a second road.
+      </figcaption>
+    </figure>
+  </section>
+
+
+  <section>
+    <div class="eyebrow">Inside the border</div>
+    <h2>The network the most school paths cross at home</h2>
+    <p>
+      Egress names the operator a school hands to on the way out. It says nothing about a
+      network that every path crosses inside the country without being anyone&rsquo;s egress.
+      The published reports carry a chokepoint measure for this, taken over the whole path —
+      which, applied to Albania, names Hrvatski Telekom at 91.6%, a network on the route from
+      the measurement server in Podgorica rather than an Albanian dependency. Restricted to
+      hops geolocating inside the country, and excluding each test&rsquo;s own access network
+      and the measurement host, the measure answers a narrower question: which single network
+      inside our borders do the most school paths cross?
+    </p>
+    <figure>
+      <div>
+        <div class="fig-title">Share of school tests crossing the most-crossed in-country network</div>
+        <div class="fig-sub">Each bar is 100% of that country&rsquo;s school tests</div>
+      </div>
+      <div class="ck" id="ck"></div>
+      <div class="axis"><div></div><div class="ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100%</span></div><div></div></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--accent)"></span>Crosses the most-crossed in-country network</span>
+        <span><span class="swatch" style="background:var(--seq-450)"></span>Crosses some other in-country network</span>
+        <span><span class="swatch" style="background:var(--track);border:1px solid var(--rule)"></span>No in-country transit observed</span>
+      </div>
+      <figcaption>
+        In Uzbekistan, 99.9% of school tests cross Uzbektelekom before leaving; in Sri Lanka,
+        73.7% cross Sri Lanka Telecom, the only in-country transit network observed. Benin,
+        Fiji and Lesotho show no in-country transit at all — the school&rsquo;s own network
+        hands straight abroad, which is the same structure the hollow classification describes.
+        South Africa&rsquo;s figure names Vodacom rather than TENET, because the measurement
+        host is excluded here.
+      </figcaption>
+    </figure>
+    <div class="note">
+      <h3>The denominator moves this number by up to 37×</h3>
+      <p>
+        Namibia reads 2.7% of all school tests, and 100% of the tests that have any in-country
+        transit at all — 97.3% have none. Malawi reads 1.3% and 85.5% on the same split. Both
+        readings are correct and they support opposite sentences, which is why the share with
+        no in-country transit is shown as part of every bar rather than dropped from the
+        denominator.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Why the filter matters</div>
+    <h2>The raw exports are not schools</h2>
+    <p>
+      The published parquet is every NDT test in a country, not every school test. The
+      school share ranges from <strong>3% (Kenya)</strong> to <strong>90% (Fiji)</strong>,
+      so for roughly half the panel an unfiltered figure describes the national consumer
+      internet instead.
+    </p>
+    <div class="note">
+      <h3>Malawi changes operator, not just magnitude</h3>
+      <p>
+        Unfiltered, Malawi's top egress reads as TENET, the South African research network,
+        at HHI 0.428. On school traffic it is <strong>West Indian Ocean Cable Company at
+        85.8%</strong>, HHI 0.744. Same country, same months — a different company and
+        nearly double the concentration.
+      </p>
+    </div>
+    <div class="note">
+      <h3>Sri Lanka reconciles</h3>
+      <p>
+        The raw file gives HHI 0.237. School-filtered it is <strong>0.487</strong>. The
+        published country report gives 0.733, computed on the school subset <em>and</em>
+        excluding tests with no observed egress — and Sri Lanka's school egress coverage is
+        46%. Population and denominator together account for the gap.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Limits</div>
+    <h2>What these figures do not show</h2>
+    <ul>
+      <li>
+        <strong>Egress coverage varies from 21% to 100%.</strong> A test whose traceroute
+        stops before leaving the school's own network yields no egress at all. Where coverage
+        is low the HHI rests on a minority of tests, and that minority is not random — it
+        excludes operators whose paths truncate. Coverage is shown for every country in the
+        table below.
+      </li>
+      <li>
+        <strong>Six countries' top operator is the measurement host</strong> — marked ⚑
+        throughout. South Africa and Botswana show TENET, Kenya shows KENET, Fiji shows
+        REANNZ, Mongolia the Mongolian Technical University network, and Benin MTN Nigeria. Those are
+        where M-Lab put the server, reached backwards. Dropping those hops does not fix it —
+        it deletes precisely the operators that peer directly with the research network and
+        keeps the ones that don't.
+      </li>
+      <li>
+<strong>Six countries are excluded — for observability, not size.</strong> A country
+        needs enough tests that reveal an egress to estimate a share distribution at all.
+        Saint Vincent measures <strong>19.4%</strong> of its connected schools — better coverage
+        than Kazakhstan, Namibia or South Africa — but only 54 of its 1,896 traces reveal an
+        egress. Saint Lucia: 3 of 461. Zambia: 67 of 6,717. Also excluded: Grenada (89),
+        Kyrgyzstan (139) and Congo (0). Country size is never a reason to exclude; several
+        small states are among the best-covered panels in the set.
+      </li>
+    </ul>
+  </section>
+
+  <details>
+    <summary>Full table — all 21 countries, with coverage of connected schools</summary>
+    <div class="tbl-wrap"><table class="data" id="table"></table></div>
+  </details>
+
+  <div class="method">
+    <h2>Method</h2>
+    <p>
+      Traceroutes are the published M-Lab country-month exports. School identity comes from
+      joining the NDT test UUID (<code>id</code>) to Giga Meter
+      (<code>measurement_uuid</code>), which attributes a test to a school rather than to an
+      address — school IPs are dynamic, with a median of 18 addresses per school in Fiji and
+      single addresses carrying up to 14 schools.
+    </p>
+    <p>
+      Egress operator is the first AS beyond the school's own network on the collapsed AS
+      path, equivalent to the "first observed transit" view in the published reports. The
+      other two views those reports carry — first AS outside the country, and first
+      foreign-registered AS — need AS registration country, which the exports do not include.
+      HHI is computed over tests that yield an egress; tests without one are reported
+      separately as coverage rather than folded into the denominator.
+    </p>
+  </div>
+</div>
+
+<div id="tip" role="tooltip" aria-hidden="true"></div>
+
+<script>
+const DATA = {"countries":[{"iso":"UZ","name":"Uzbekistan","schools":6167,"traces":76025,"connected":10399,"coverage":59.3,"conn_unknown":0.4,"egress_obs":15793,"egress_cov":20.8,"hhi":1.0,"n_ops":1,"top_org":"\"Uzbektelekom\" Joint Stock Company","top_share":100.0,"top_is_server":false,"second_egress":null,"second_share":0.0,"retail_isps":11,"retail_hhi":0.549,"retail_eff":1.82,"wholesale_eff":1.0,"wholesale_ops":1,"top_isp":"\"Uzbektelekom\" Joint Stock Compa","top_isp_share":72.8,"top_egress":"\"Uzbektelekom\" Joint Stock Company","top_egress_share":100.0,"gap":0.82},{"iso":"BJ","name":"Benin","schools":12,"traces":269,"connected":34,"coverage":35.3,"conn_unknown":88.8,"egress_obs":265,"egress_cov":98.5,"hhi":0.978,"n_ops":3,"top_org":"MTN NIGERIA Communication limited","top_share":98.9,"top_is_server":true,"second_egress":"MTN SA","second_share":0.8,"retail_isps":2,"retail_hhi":0.847,"retail_eff":1.18,"wholesale_eff":1.02,"wholesale_ops":3,"top_isp":"SPACETEL BENIN SA","top_isp_share":91.7,"top_egress":"MTN NIGERIA Communication limited","top_egress_share":98.9,"gap":0.16},{"iso":"ZA","name":"South Africa","schools":178,"traces":10882,"connected":17122,"coverage":1.0,"conn_unknown":5.6,"egress_obs":4033,"egress_cov":37.1,"hhi":0.777,"n_ops":13,"top_org":"TENET (The UNINET Project)","top_share":88.0,"top_is_server":true,"second_egress":"West Indian Ocean Cable Company","second_share":3.3,"retail_isps":34,"retail_hhi":0.134,"retail_eff":7.44,"wholesale_eff":1.29,"wholesale_ops":13,"top_isp":"AS12091","top_isp_share":23.0,"top_egress":"TENET (The UNINET Project)","top_egress_share":88.0,"gap":6.15},{"iso":"MW","name":"Malawi","schools":142,"traces":15582,"connected":1367,"coverage":10.4,"conn_unknown":3.9,"egress_obs":5897,"egress_cov":37.8,"hhi":0.744,"n_ops":11,"top_org":"West Indian Ocean Cable Company","top_share":85.8,"top_is_server":false,"second_egress":"SEACOM Limited","second_share":6.2,"retail_isps":5,"retail_hhi":0.296,"retail_eff":3.38,"wholesale_eff":1.34,"wholesale_ops":11,"top_isp":"Space Exploration Technologies C","top_isp_share":39.1,"top_egress":"West Indian Ocean Cable Company","top_egress_share":85.8,"gap":2.04},{"iso":"KE","name":"Kenya","schools":50,"traces":1897,"connected":443,"coverage":11.3,"conn_unknown":98.5,"egress_obs":1366,"egress_cov":72.0,"hhi":0.724,"n_ops":10,"top_org":"Kenya Education Network","top_share":84.8,"top_is_server":true,"second_egress":"Unwired Communications Limited","second_share":6.3,"retail_isps":17,"retail_hhi":0.15,"retail_eff":6.66,"wholesale_eff":1.38,"wholesale_ops":10,"top_isp":"Safaricom Limited","top_isp_share":28.1,"top_egress":"Kenya Education Network","top_egress_share":84.8,"gap":5.28},{"iso":"BZ","name":"Belize","schools":61,"traces":11595,"connected":274,"coverage":22.3,"conn_unknown":8.6,"egress_obs":3907,"egress_cov":33.7,"hhi":0.737,"n_ops":7,"top_org":"Columbus Networks USA, Inc.","top_share":84.7,"top_is_server":false,"second_egress":"LIBERTY NETWORKS SOLUTIONS MEXICO","second_share":13.7,"retail_isps":6,"retail_hhi":0.694,"retail_eff":1.44,"wholesale_eff":1.36,"wholesale_ops":7,"top_isp":"Belize Telemedia Limited","top_isp_share":82.6,"top_egress":"Columbus Networks USA, Inc.","top_egress_share":84.7,"gap":0.08},{"iso":"AL","name":"Albania","schools":854,"traces":94315,"connected":1085,"coverage":78.7,"conn_unknown":0.0,"egress_obs":50104,"egress_cov":53.1,"hhi":0.688,"n_ops":19,"top_org":"Cogent Communications, LLC","top_share":82.4,"top_is_server":false,"second_egress":"Arelion Sweden AB","second_share":8.5,"retail_isps":46,"retail_hhi":0.088,"retail_eff":11.32,"wholesale_eff":1.45,"wholesale_ops":19,"top_isp":"Abissnet sh.a.","top_isp_share":17.0,"top_egress":"Cogent Communications, LLC","top_egress_share":82.4,"gap":9.87},{"iso":"FJ","name":"Fiji","schools":376,"traces":67692,"connected":902,"coverage":41.7,"conn_unknown":30.8,"egress_obs":26218,"egress_cov":38.7,"hhi":0.531,"n_ops":8,"top_org":"Research and Education Advanced Ne","top_share":70.4,"top_is_server":true,"second_egress":"GSL Networks Pty LTD","second_share":15.1,"retail_isps":5,"retail_hhi":0.286,"retail_eff":3.5,"wholesale_eff":1.88,"wholesale_ops":8,"top_isp":"Vodafone Fiji Limited","top_isp_share":36.5,"top_egress":"Research and Education Advanced Ne","top_egress_share":70.4,"gap":1.62},{"iso":"TT","name":"Trinidad and Tobago","schools":21,"traces":2473,"connected":649,"coverage":3.2,"conn_unknown":0.0,"egress_obs":2186,"egress_cov":88.4,"hhi":0.539,"n_ops":9,"top_org":"Columbus Networks USA, Inc.","top_share":70.0,"top_is_server":false,"second_egress":"Cogent Communications, LLC","second_share":21.6,"retail_isps":5,"retail_hhi":0.368,"retail_eff":2.72,"wholesale_eff":1.86,"wholesale_ops":9,"top_isp":"Telecommunication Services of Tr","top_isp_share":42.4,"top_egress":"Columbus Networks USA, Inc.","top_egress_share":70.0,"gap":0.86},{"iso":"NA","name":"Namibia","schools":80,"traces":11609,"connected":1317,"coverage":6.1,"conn_unknown":0.9,"egress_obs":11579,"egress_cov":99.7,"hhi":0.505,"n_ops":4,"top_org":"Telecom Namibia","top_share":68.6,"top_is_server":false,"second_egress":"Cogent Communications, LLC","second_share":12.5,"retail_isps":4,"retail_hhi":0.504,"retail_eff":1.99,"wholesale_eff":1.98,"wholesale_ops":4,"top_isp":"Telecom Namibia","top_isp_share":66.1,"top_egress":"Telecom Namibia","top_egress_share":68.6,"gap":0.01},{"iso":"LK","name":"Sri Lanka","schools":3252,"traces":149044,"connected":4004,"coverage":81.2,"conn_unknown":0.0,"egress_obs":68912,"egress_cov":46.2,"hhi":0.487,"n_ops":17,"top_org":"Sri Lanka Telecom Ltd","top_share":68.4,"top_is_server":false,"second_egress":"Kerala Vision Broad Band Private L","second_share":9.4,"retail_isps":5,"retail_hhi":0.365,"retail_eff":2.74,"wholesale_eff":2.05,"wholesale_ops":17,"top_isp":"Sri Lanka Telecom Ltd","top_isp_share":50.8,"top_egress":"Sri Lanka Telecom Ltd","top_egress_share":68.4,"gap":0.69},{"iso":"BW","name":"Botswana","schools":131,"traces":16321,"connected":611,"coverage":21.4,"conn_unknown":5.4,"egress_obs":6813,"egress_cov":41.7,"hhi":0.447,"n_ops":11,"top_org":"TENET (The UNINET Project)","top_share":64.5,"top_is_server":true,"second_egress":"BOTSWANA FIBRE NETWORKS (Proprieta","second_share":11.4,"retail_isps":9,"retail_hhi":0.217,"retail_eff":4.61,"wholesale_eff":2.24,"wholesale_ops":11,"top_isp":"Orange Botswana (PTY) Ltd","top_isp_share":28.1,"top_egress":"TENET (The UNINET Project)","top_egress_share":64.5,"gap":2.37},{"iso":"MN","name":"Mongolia","schools":651,"traces":97909,"connected":843,"coverage":77.2,"conn_unknown":0.1,"egress_obs":66352,"egress_cov":67.8,"hhi":0.392,"n_ops":14,"top_org":"Mongolian Technical University, Co","top_share":55.1,"top_is_server":true,"second_egress":"National Data Center","second_share":26.4,"retail_isps":14,"retail_hhi":0.184,"retail_eff":5.42,"wholesale_eff":2.55,"wholesale_ops":14,"top_isp":"MCS Com Co Ltd","top_isp_share":32.1,"top_egress":"Mongolian Technical University, Co","top_egress_share":55.1,"gap":2.87},{"iso":"LS","name":"Lesotho","schools":7,"traces":1077,"connected":249,"coverage":2.8,"conn_unknown":3.2,"egress_obs":796,"egress_cov":73.9,"hhi":0.431,"n_ops":5,"top_org":"West Indian Ocean Cable Company","top_share":51.8,"top_is_server":false,"second_egress":"Discovery Health","second_share":39.6,"retail_isps":3,"retail_hhi":0.34,"retail_eff":2.94,"wholesale_eff":2.32,"wholesale_ops":5,"top_isp":"Econet Telecom Lesotho (PTY) LTD","top_isp_share":40.0,"top_egress":"West Indian Ocean Cable Company","top_egress_share":51.8,"gap":0.62},{"iso":"HN","name":"Honduras","schools":45,"traces":3967,"connected":1522,"coverage":3.0,"conn_unknown":0.0,"egress_obs":1172,"egress_cov":29.5,"hhi":0.239,"n_ops":14,"top_org":"Columbus Networks USA, Inc.","top_share":43.0,"top_is_server":false,"second_egress":"Telecom Italia S.p.A.","second_share":12.7,"retail_isps":14,"retail_hhi":0.184,"retail_eff":5.42,"wholesale_eff":4.18,"wholesale_ops":14,"top_isp":"TELECOMUNICACIONES DE GUATEMALA,","top_isp_share":33.7,"top_egress":"Columbus Networks USA, Inc.","top_egress_share":43.0,"gap":1.24},{"iso":"RW","name":"Rwanda","schools":29,"traces":3249,"connected":2909,"coverage":1.0,"conn_unknown":0.1,"egress_obs":1416,"egress_cov":43.6,"hhi":0.303,"n_ops":8,"top_org":"MTN SA","top_share":41.7,"top_is_server":false,"second_egress":"Airtel Networks Kenya Limited","second_share":29.7,"retail_isps":6,"retail_hhi":0.233,"retail_eff":4.3,"wholesale_eff":3.3,"wholesale_ops":8,"top_isp":"MTN Rwandacell","top_isp_share":27.9,"top_egress":"MTN SA","top_egress_share":41.7,"gap":1.0},{"iso":"MD","name":"Republic of Moldova","schools":79,"traces":26550,"connected":1166,"coverage":6.8,"conn_unknown":0.0,"egress_obs":23128,"egress_cov":87.1,"hhi":0.211,"n_ops":23,"top_org":"Cogent Communications, LLC","top_share":40.2,"top_is_server":false,"second_egress":"Arelion Sweden AB","second_share":13.6,"retail_isps":13,"retail_hhi":0.252,"retail_eff":3.97,"wholesale_eff":4.74,"wholesale_ops":23,"top_isp":"Moldtelecom SA","top_isp_share":37.8,"top_egress":"Cogent Communications, LLC","top_egress_share":40.2,"gap":-0.77},{"iso":"DM","name":"Dominica","schools":11,"traces":1212,"connected":68,"coverage":16.2,"conn_unknown":0.0,"egress_obs":604,"egress_cov":49.8,"hhi":0.328,"n_ops":5,"top_org":"Digicel Jamaica","top_share":38.2,"top_is_server":false,"second_egress":"GTT Communications Inc.","second_share":30.5,"retail_isps":3,"retail_hhi":0.492,"retail_eff":2.03,"wholesale_eff":3.05,"wholesale_ops":5,"top_isp":"SAT TELECOMMUNICATIONS LTD","top_isp_share":62.5,"top_egress":"Digicel Jamaica","top_egress_share":38.2,"gap":-1.02},{"iso":"ME","name":"Montenegro","schools":344,"traces":78854,"connected":460,"coverage":74.8,"conn_unknown":17.1,"egress_obs":6331,"egress_cov":8.0,"hhi":0.276,"n_ops":7,"top_org":"Hrvatski Telekom d.d.","top_share":37.6,"top_is_server":false,"second_egress":"TELEKOM SRBIJA a.d.","second_share":26.3,"retail_isps":5,"retail_hhi":0.378,"retail_eff":2.65,"wholesale_eff":3.63,"wholesale_ops":7,"top_isp":"Crnogorski Telekom a.d.Podgorica","top_isp_share":45.1,"top_egress":"Hrvatski Telekom d.d.","top_egress_share":37.6,"gap":-0.98},{"iso":"BA","name":"Bosnia and Herzegovina","schools":721,"traces":114948,"connected":1522,"coverage":47.4,"conn_unknown":0.0,"egress_obs":71949,"egress_cov":62.6,"hhi":0.238,"n_ops":19,"top_org":"Hrvatski Telekom d.d.","top_share":36.4,"top_is_server":false,"second_egress":"TELEKOM SRBIJA a.d.","second_share":29.6,"retail_isps":15,"retail_hhi":0.287,"retail_eff":3.48,"wholesale_eff":4.19,"wholesale_ops":19,"top_isp":"\"Telekomunikacije Republike Srps","top_isp_share":37.0,"top_egress":"Hrvatski Telekom d.d.","top_egress_share":36.4,"gap":-0.71},{"iso":"KZ","name":"Kazakhstan","schools":509,"traces":49340,"connected":6902,"coverage":7.4,"conn_unknown":0.0,"egress_obs":30502,"egress_cov":61.8,"hhi":0.158,"n_ops":28,"top_org":"JSC Kazakhtelecom","top_share":24.7,"top_is_server":false,"second_egress":"Mezhdugorodnyaya Mezhdunarodnaya T","second_share":21.8,"retail_isps":30,"retail_hhi":0.131,"retail_eff":7.63,"wholesale_eff":6.35,"wholesale_ops":28,"top_isp":"Kar-Tel LLC","top_isp_share":21.0,"top_egress":"JSC Kazakhtelecom","top_egress_share":24.7,"gap":1.28}],"matrix":{"TENET (The UNINET Project)":{"ZA":88.0,"BW":64.5},"West Indian Ocean Cable Company":{"MW":85.8,"LS":51.8},"Columbus Networks USA, Inc.":{"BZ":84.7,"TT":70.0,"HN":43.0,"DM":29.8},"Cogent Communications, LLC":{"AL":82.4,"TT":21.6,"NA":12.5,"MD":40.2},"Arelion Sweden AB":{"HN":11.9,"MD":13.6},"Hrvatski Telekom d.d.":{"ME":37.6,"BA":36.4},"TELEKOM SRBIJA a.d.":{"ME":26.3,"BA":29.6}},"dropped":[{"iso":"CG","name":"Congo (Brazzaville)","schools":2,"traces":35,"connected":10,"coverage":20.0,"conn_unknown":0.0,"egress_obs":0,"egress_cov":0.0},{"iso":"GD","name":"Grenada","schools":9,"traces":119,"connected":154,"coverage":5.8,"conn_unknown":0.0,"egress_obs":89,"egress_cov":74.8},{"iso":"KG","name":"Kyrgyzstan","schools":2,"traces":146,"connected":6,"coverage":33.3,"conn_unknown":99.7,"egress_obs":139,"egress_cov":95.2},{"iso":"LC","name":"Saint Lucia","schools":6,"traces":461,"connected":91,"coverage":6.6,"conn_unknown":0.0,"egress_obs":3,"egress_cov":0.7},{"iso":"VC","name":"Saint Vincent and the Grenadines","schools":18,"traces":1896,"connected":93,"coverage":19.4,"conn_unknown":0.0,"egress_obs":54,"egress_cov":2.8},{"iso":"ZM","name":"Zambia","schools":57,"traces":6717,"connected":2728,"coverage":2.1,"conn_unknown":77.6,"egress_obs":67,"egress_cov":1.0}]};
+
+const COUNTRIES = DATA.countries, MATRIX = DATA.matrix;
+const tip = document.getElementById('tip');
+function showTip(e, html) {
+  tip.innerHTML = html; tip.style.opacity = '1';
+  const r = tip.getBoundingClientRect();
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14;
+  if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 14;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+function hideTip() { tip.style.opacity = '0'; }
+
+/* ---- stat row ---- */
+const over80 = COUNTRIES.filter(c => c.top_share >= 80).length;
+const hostFlag = COUNTRIES.filter(c => c.top_is_server).length;
+const totalSchools = COUNTRIES.reduce((a, c) => a + c.schools, 0);
+const covs = COUNTRIES.map(c => c.coverage).filter(v => v != null).sort((a, b) => a - b);
+const covRange = covs.length ? `${covs[0].toFixed(0)}–${covs[covs.length - 1].toFixed(0)}%` : '—';
+const wellCovered = covs.filter(v => v >= 40).length;
+document.getElementById('stats').innerHTML = [
+  [COUNTRIES.length, 'countries with enough observed egresses to report'],
+  [over80, 'where one operator carries 80% or more of school egress'],
+  [totalSchools.toLocaleString(), 'schools attributed by NDT&nbsp;UUID'],
+  [covRange, 'range of how much of a country&rsquo;s connected-school population is measured — ' + wellCovered + ' countries above 40%, five below 5%'],
+  [hostFlag, 'countries where that leading operator is simply the network the test server sits inside — not a road the country chose'],
+].map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+/* ---- bar chart ---- */
+document.getElementById('bars').innerHTML = COUNTRIES.map(c => {
+  const inside = c.top_share > 34;
+  const lab = c.top_org + (c.top_is_server ? ' ⚑' : '');
+  return `<div class="bar-row" tabindex="0" data-iso="${c.iso}">
+    <div class="cty">${c.name}</div>
+    <div class="track">
+      <div class="fill${c.top_is_server ? ' host' : ''}" style="width:${c.top_share}%"></div>
+      <span class="bar-lab${inside ? (c.top_is_server ? ' on-host' : '') : ' outside'}" style="${inside ? '' : `left:calc(${c.top_share}% + 8px)`}">${lab}</span>
+    </div>
+    <div class="bar-val">${c.top_share.toFixed(0)}%</div>
+  </div>`;
+}).join('');
+
+document.querySelectorAll('.bar-row').forEach(row => {
+  const c = COUNTRIES.find(x => x.iso === row.dataset.iso);
+  const html = `<div class="t">${c.name}</div>
+    <div class="r">${c.top_org} — ${c.top_share.toFixed(1)}% of school egress</div>
+    <div class="r">HHI ${c.hhi.toFixed(3)} across ${c.n_ops} egress operators</div>
+    <div class="r">${c.schools.toLocaleString()} schools · ${c.egress_obs.toLocaleString()} egress observations</div>
+    <div class="r">${c.schools.toLocaleString()} of ${c.connected != null ? c.connected.toLocaleString() : '?'} connected schools (${c.coverage != null ? c.coverage + '%' : '—'})</div>
+    <div class="r">egress coverage ${c.egress_cov}%</div>
+    ${c.top_is_server ? '<div class="r">⚑ this operator hosts the measurement server</div>' : ''}`;
+  row.addEventListener('mousemove', e => showTip(e, html));
+  row.addEventListener('mouseleave', hideTip);
+  row.addEventListener('focus', e => showTip({ clientX: row.getBoundingClientRect().right - 40, clientY: row.getBoundingClientRect().top }, html));
+  row.addEventListener('blur', hideTip);
+});
+
+/* ---- matrix ---- */
+const ops = Object.keys(MATRIX).sort((a, b) => Object.keys(MATRIX[b]).length - Object.keys(MATRIX[a]).length);
+const isos = [...new Set(ops.flatMap(o => Object.keys(MATRIX[o])))]
+  .sort((a, b) => COUNTRIES.findIndex(c => c.iso === a) - COUNTRIES.findIndex(c => c.iso === b));
+const STEPS = ['--seq-100', '--seq-200', '--seq-300', '--seq-450', '--seq-550', '--seq-700'];
+function step(v) { return STEPS[Math.min(STEPS.length - 1, Math.floor((v - 10) / 15))]; }
+const name = i => (COUNTRIES.find(c => c.iso === i) || {}).name || i;
+
+document.getElementById('matrix').innerHTML =
+  `<thead><tr><th class="op"></th>${isos.map(i => `<th>${i}</th>`).join('')}</tr></thead><tbody>` +
+  ops.map(o => `<tr><th class="op">${o}</th>` + isos.map(i => {
+    const v = MATRIX[o][i];
+    if (v === undefined) return `<td class="cell empty">·</td>`;
+    const dark = v >= 55;
+    return `<td class="cell" tabindex="0" data-op="${o}" data-iso="${i}" data-v="${v}"
+       style="background:var(${step(v)});color:${dark ? 'var(--cell-strong-ink)' : 'var(--ink)'}">${v.toFixed(0)}</td>`;
+  }).join('') + `</tr>`).join('') + '</tbody>';
+
+document.querySelectorAll('.cell[data-op]').forEach(cell => {
+  const html = `<div class="t">${cell.dataset.op}</div>
+    <div class="r">${name(cell.dataset.iso)} — ${(+cell.dataset.v).toFixed(1)}% of school egress</div>`;
+  cell.addEventListener('mousemove', e => showTip(e, html));
+  cell.addEventListener('mouseleave', hideTip);
+  cell.addEventListener('focus', () => { const r = cell.getBoundingClientRect(); showTip({ clientX: r.right, clientY: r.top }, html); });
+  cell.addEventListener('blur', hideTip);
+});
+
+
+const RW = [...DATA.countries].sort((a, b) => b.gap - a.gap);
+
+/* ---- dumbbell ---- */
+const XMAX = 12;
+const xp = v => Math.min(100, (v - 1) / (XMAX - 1) * 100);
+document.getElementById('dumb').innerHTML = RW.map(r => {
+  const a = xp(r.retail_eff), b = xp(r.wholesale_eff);
+  const lo = Math.min(a, b), hi = Math.max(a, b);
+  return `<div class="dumb-row" tabindex="0" data-iso="${r.iso}">
+    <div class="cty">${r.name}${r.top_is_server ? '<span class="hostmark" title="top egress operator is the measurement host">⚑</span>' : ''}</div>
+    <div class="dplot">
+      <div class="dline" style="left:${lo}%;width:${hi - lo}%"></div>
+      <div class="dot retail" style="left:${a}%"></div>
+      <div class="dot whole${r.top_is_server ? ' host' : ''}" style="left:${b}%"></div>
+    </div>
+    <div class="dumb-val"><b>${r.retail_eff.toFixed(1)}</b> → <b>${r.wholesale_eff.toFixed(1)}</b></div>
+  </div>`;
+}).join('');
+document.querySelectorAll('.dumb-row').forEach(row => {
+  const r = RW.find(x => x.iso === row.dataset.iso);
+  const html = `<div class="t">${r.name}</div>
+    <div class="r">retail: ${r.retail_isps} ISPs → ${r.retail_eff.toFixed(2)} effective</div>
+    <div class="r">largest: ${r.top_isp} (${r.top_isp_share}% of schools)</div>
+    <div class="r">wholesale: ${r.wholesale_ops} egress operators → ${r.wholesale_eff.toFixed(2)} effective</div>
+    <div class="r">largest: ${r.top_egress} (${r.top_egress_share}%)${r.top_is_server ? ' ⚑ measurement host' : ''}</div>`;
+  row.addEventListener('mousemove', e => showTip(e, html));
+  row.addEventListener('mouseleave', hideTip);
+  row.addEventListener('focus', () => { const b = row.getBoundingClientRect(); showTip({ clientX: b.right - 60, clientY: b.top }, html); });
+  row.addEventListener('blur', hideTip);
+});
+
+/* ---- second road ---- */
+const SEC = [...RW].sort((a, b) => a.second_share - b.second_share);
+document.getElementById('second').innerHTML = SEC.map(r => `
+  <div class="sec-row" tabindex="0" data-iso="${r.iso}">
+    <div class="cty">${r.name}${r.top_is_server ? '<span class="hostmark" title="top egress operator is the measurement host">⚑</span>' : ''}</div>
+    <div class="sec-track">
+      <div class="sec-fill${r.second_share < 10 ? ' thin' : ''}" style="width:${Math.min(100, r.second_share / 30 * 100)}%"></div>
+      <div class="sec-ref" style="left:${10 / 30 * 100}%"></div>
+    </div>
+    <div class="bar-val">${r.second_share.toFixed(1)}%</div>
+  </div>`).join('');
+document.querySelectorAll('.sec-row').forEach(row => {
+  const r = RW.find(x => x.iso === row.dataset.iso);
+  const html = `<div class="t">${r.name}</div>
+    <div class="r">second egress: ${r.second_egress || 'none observed'} — ${r.second_share.toFixed(1)}%</div>
+    <div class="r">largest: ${r.top_egress} — ${r.top_egress_share}%</div>
+    <div class="r">${r.wholesale_ops} egress operators observed</div>`;
+  row.addEventListener('mousemove', e => showTip(e, html));
+  row.addEventListener('mouseleave', hideTip);
+  row.addEventListener('focus', () => { const b = row.getBoundingClientRect(); showTip({ clientX: b.right - 60, clientY: b.top }, html); });
+  row.addEventListener('blur', hideTip);
+});
+
+
+/* ---- in-country chokepoint ---- */
+const CK = [{"iso":"UZ","tests":15000,"in_country_as":5,"choke_asn":28910,"choke_org":"\"Uzbektelekom\" Joint Stock Company","cov_all":99.9,"cov_transit":100.0,"second_org":"PJSC \"Vimpelcom\"","second_cov_all":23.1,"no_transit_pct":0.1,"name":"Uzbekistan","host":false},{"iso":"LK","tests":15000,"in_country_as":1,"choke_asn":45489,"choke_org":"Sri Lanka Telecom Ltd","cov_all":73.7,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":26.3,"name":"Sri Lanka","host":false},{"iso":"AL","tests":15000,"in_country_as":13,"choke_asn":174,"choke_org":"Cogent Communications, LLC","cov_all":66.2,"cov_transit":89.0,"second_org":"Arelion Sweden AB","second_cov_all":3.5,"no_transit_pct":25.7,"name":"Albania","host":false},{"iso":"KZ","tests":15000,"in_country_as":18,"choke_asn":50482,"choke_org":"JSC Kazakhtelecom","cov_all":42.9,"cov_transit":59.6,"second_org":"JSC Kazakhtelecom","second_cov_all":28.5,"no_transit_pct":28.0,"name":"Kazakhstan","host":false},{"iso":"MD","tests":15000,"in_country_as":8,"choke_asn":174,"choke_org":"Cogent Communications","cov_all":38.2,"cov_transit":81.3,"second_org":"RETN Limited","second_cov_all":5.9,"no_transit_pct":53.1,"name":"Republic of Moldova","host":false},{"iso":"ZA","tests":10882,"in_country_as":15,"choke_asn":36994,"choke_org":"Vodacom","cov_all":24.9,"cov_transit":67.6,"second_org":"MTN SA","second_cov_all":13.7,"no_transit_pct":63.1,"name":"South Africa","host":true},{"iso":"HN","tests":3967,"in_country_as":6,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":23.2,"cov_transit":83.6,"second_org":"MULTICABLE NETWORK LLC","second_cov_all":4.0,"no_transit_pct":72.2,"name":"Honduras","host":false},{"iso":"MN","tests":15000,"in_country_as":7,"choke_asn":56301,"choke_org":"National Data Center","cov_all":20.9,"cov_transit":53.9,"second_org":"Gemnet","second_cov_all":15.9,"no_transit_pct":61.3,"name":"Mongolia","host":true},{"iso":"BW","tests":15000,"in_country_as":3,"choke_asn":37678,"choke_org":"BOTSWANA FIBRE NETWORKS (Proprieta","cov_all":15.1,"cov_transit":83.9,"second_org":"Paratus Telecommunications Lim","second_cov_all":2.0,"no_transit_pct":82.1,"name":"Botswana","host":true},{"iso":"RW","tests":3249,"in_country_as":4,"choke_asn":37006,"choke_org":"Liquid Telecommunication Rwanda Li","cov_all":12.6,"cov_transit":57.5,"second_org":"Airtel Rwanda Ltd","second_cov_all":9.2,"no_transit_pct":78.2,"name":"Rwanda","host":false},{"iso":"TT","tests":2473,"in_country_as":4,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":7.6,"cov_transit":77.6,"second_org":"Telecommunication Services of ","second_cov_all":1.3,"no_transit_pct":90.3,"name":"Trinidad and Tobago","host":false},{"iso":"BA","tests":15000,"in_country_as":9,"choke_asn":1299,"choke_org":"Arelion Sweden AB","cov_all":4.6,"cov_transit":58.1,"second_org":"UNITED GROUP NETWORK INFRASTRU","second_cov_all":1.6,"no_transit_pct":92.0,"name":"Bosnia and Herzegovina","host":false},{"iso":"KE","tests":1897,"in_country_as":10,"choke_asn":328490,"choke_org":"Unwired Communications Limited","cov_all":4.5,"cov_transit":34.7,"second_org":"Safaricom Limited","second_cov_all":2.5,"no_transit_pct":86.9,"name":"Kenya","host":true},{"iso":"DM","tests":1212,"in_country_as":1,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":3.3,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":96.7,"name":"Dominica","host":false},{"iso":"NA","tests":11609,"in_country_as":1,"choke_asn":174,"choke_org":"Cogent Communications, LLC","cov_all":2.7,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":97.3,"name":"Namibia","host":false},{"iso":"ME","tests":15000,"in_country_as":3,"choke_asn":8400,"choke_org":"TELEKOM SRBIJA a.d.","cov_all":1.5,"cov_transit":61.4,"second_org":"Serbia BroadBand-Srpske Kablov","second_cov_all":1.0,"no_transit_pct":97.5,"name":"Montenegro","host":false},{"iso":"MW","tests":15000,"in_country_as":5,"choke_asn":37662,"choke_org":"West Indian Ocean Cable Company","cov_all":1.3,"cov_transit":85.5,"second_org":"Discovery Health","second_cov_all":0.1,"no_transit_pct":98.4,"name":"Malawi","host":false},{"iso":"BZ","tests":11595,"in_country_as":3,"choke_asn":263824,"choke_org":"Central TV and Internet Limited","cov_all":0.2,"cov_transit":50.0,"second_org":"LIBERTY NETWORKS SOLUTIONS MEX","second_cov_all":0.2,"no_transit_pct":99.6,"name":"Belize","host":false},{"iso":"BJ","tests":269,"no_transit_pct":100.0,"name":"Benin","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0},{"iso":"FJ","tests":15000,"no_transit_pct":100.0,"name":"Fiji","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0},{"iso":"LS","tests":1077,"no_transit_pct":100.0,"name":"Lesotho","host":false,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0}];
+document.getElementById('ck').innerHTML = CK.map(r => {
+  const top = r.cov_all ?? 0;
+  const none = r.no_transit_pct ?? 100;
+  const other = Math.max(0, 100 - top - none);
+  const inside = top > 30;
+  const lab = r.choke_org ? r.choke_org + (r.host ? ' ⚑' : '') : 'no in-country transit observed';
+  return `<div class="ck-row" tabindex="0" data-iso="${r.iso}">
+    <div class="cty">${r.name}</div>
+    <div class="ck-track" style="position:relative">
+      <div class="ck-seg ck-top" style="width:${top}%"></div>
+      <div class="ck-seg ck-other" style="width:${other}%"></div>
+      <span class="ck-lab${inside ? '' : ' outside'}" style="${inside ? '' : `left:calc(${Math.max(top + other, 2)}% + 8px)`}">${lab}</span>
+    </div>
+    <div class="bar-val">${r.cov_all != null ? r.cov_all.toFixed(0) + '%' : '—'}</div>
+  </div>`;
+}).join('');
+document.querySelectorAll('.ck-row').forEach(row => {
+  const r = CK.find(x => x.iso === row.dataset.iso);
+  const html = `<div class="t">${r.name}</div>` + (r.choke_org
+    ? `<div class="r">${r.choke_org} — crossed by ${r.cov_all.toFixed(1)}% of school tests</div>
+       <div class="r">${r.cov_transit.toFixed(1)}% of tests that have any in-country transit</div>
+       <div class="r">${r.in_country_as} in-country transit network${r.in_country_as === 1 ? '' : 's'} observed</div>`
+    : `<div class="r">no in-country transit network observed on any path</div>`) +
+    `<div class="r">${r.no_transit_pct.toFixed(1)}% of tests cross none</div>`;
+  row.addEventListener('mousemove', e => showTip(e, html));
+  row.addEventListener('mouseleave', hideTip);
+  row.addEventListener('focus', () => { const b = row.getBoundingClientRect(); showTip({ clientX: b.right - 60, clientY: b.top }, html); });
+  row.addEventListener('blur', hideTip);
+});
+
+/* ---- table ---- */
+document.getElementById('table').innerHTML =
+  `<thead><tr><th>Country</th><th>Top egress operator</th><th>Share</th><th>HHI</th>
+   <th>Operators</th><th>Schools</th><th>Coverage of connected</th><th>Egress obs.</th><th>Egress cov.</th></tr></thead><tbody>` +
+  COUNTRIES.map(c => `<tr>
+    <td>${c.name}</td>
+    <td>${c.top_org}${c.top_is_server ? '<span class="flag">⚑ host</span>' : ''}</td>
+    <td>${c.top_share.toFixed(1)}%</td><td>${c.hhi.toFixed(3)}</td><td>${c.n_ops}</td>
+    <td>${c.schools.toLocaleString()}</td>
+    <td>${c.coverage != null ? c.coverage + '%' + (c.conn_unknown > 25 ? '*' : '') : '—'}</td>
+    <td>${c.egress_obs.toLocaleString()}</td><td>${c.egress_cov}%</td></tr>`).join('') + '</tbody>';
+</script>

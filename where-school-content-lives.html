@@ -42,7 +42,16 @@ h1{font-size:clamp(32px,5.2vw,60px);line-height:1.08;letter-spacing:-.02em;margi
 h2{font-size:clamp(24px,3vw,30px);line-height:1.2;letter-spacing:-.01em;margin:0 0 .55em;text-wrap:balance}
 h3{font-size:18px;line-height:1.3;margin:0 0 .45em}
 p{margin:0 0 1em;max-width:74ch}
-.eyebrow{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.draft{background:var(--bad-soft);color:var(--bad);border-radius:4px;padding:3px 8px;letter-spacing:.06em}
+.status{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--bad);
+  border-radius:6px;padding:18px 22px;margin:26px 0 0}
+.status h3{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--bad);
+  font-family:"Open Sans",sans-serif;margin:0 0 10px}
+.status p{font-size:14.5px;line-height:1.55;color:var(--ink-2);margin:0 0 .7em;max-width:80ch}
+.status p:last-child{margin-bottom:0}
+.status ul{font-size:14.5px;color:var(--ink-2);margin:.2em 0 .7em;max-width:80ch}
 .lede{font-size:19px;line-height:1.55;color:var(--ink-2);max-width:70ch}
 header.top{padding:64px 0 36px}
 section{padding:44px 0}
@@ -114,9 +123,17 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 <div class="wrap">
 
 <header class="top">
-  <div class="eyebrow">Giga · M-Lab traceroute studies</div>
+  <div class="eyebrow"><span>Giga · M-Lab traceroute studies</span><span class="draft">Draft v0</span></div>
   <h1>Where school content actually lives</h1>
   <p class="lede">Across 22 countries, the M-Lab test server used to measure school connectivity sits outside the range of latencies schools actually experience in 9 of them. Content is not at one distance: national learning platforms answer in 1&nbsp;ms or 320&nbsp;ms depending on where a ministry hosts them, AI services answer in under 25&nbsp;ms almost everywhere, and Wikipedia answers from Europe in nearly every country measured. We measured all of it from RIPE Atlas probes inside the networks that carry school traffic.</p>
+
+  <div class="status">
+    <h3>Draft v0 — read the sampling before the findings</h3>
+    <p><strong>Every active measurement on this page is a single one-off traceroute per probe per destination, taken on 30–31 August 2026.</strong> Internet paths change over hours and days, under load, and with routing policy. One sample can capture a transient route as easily as a stable one, and nothing here distinguishes the two.</p>
+    <p>The two sides of every comparison are also not sampled to the same depth. The M-Lab figures aggregate six months and, in the larger countries, tens of thousands of measurements. The Atlas figures beside them come from one to three probes taking one measurement each. Where they disagree, that gap is a candidate explanation before routing is.</p>
+    <p>This affects the forward-path and asymmetry section most directly: the claim that seven of eighteen school networks route identically in both directions rests on one outbound trace per network. It should be read as an indication that asymmetry is common, not as a measurement of how common.</p>
+    <p>What would make this robust: repeated measurements at intervals over several days per probe, more probes per network where they exist, and periodic re-runs so a path can be seen to hold or change. Directional findings are likely to survive that; specific percentages are not expected to.</p>
+  </div>
 </header>
 
 <hr class="rule">
