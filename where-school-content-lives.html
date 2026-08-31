@@ -1,0 +1,450 @@
+<title>Where School Content Actually Lives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&family=Open+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#fafafa; --card:#ffffff; --card-2:#f4f4f4;
+  --ink:#161616; --ink-2:#393939; --ink-3:#6f6f6f; --ink-4:#989898;
+  --rule:#e9e9e9; --rule-2:#f4f4f4;
+  --p300:#a9caff; --p400:#7eb0ff; --p500:#5495ff; --p600:#277aff; --p700:#0050e6; --p900:#002d76;
+  --accent:#277aff; --accent-soft:#eaf2ff;
+  --good:#008f40; --moderate:#277aff; --bad:#ed1c24;
+  --good-soft:#d6ffe9; --bad-soft:#fdeaeb;
+  --sh-sm:0 1px 2px rgba(22,22,22,.06); --sh-md:0 2px 8px rgba(22,22,22,.08);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#161616; --card:#1f1f1f; --card-2:#262626;
+  --ink:#fafafa; --ink-2:#dfdfdf; --ink-3:#cacaca; --ink-4:#989898;
+  --rule:#393939; --rule-2:#2a2a2a;
+  --accent:#7eb0ff; --accent-soft:#16233c;
+  --good:#00a34b; --moderate:#3d86ff; --bad:#f0353d;
+  --good-soft:#0d2418; --bad-soft:#2c1416;
+  --sh-sm:0 1px 2px rgba(0,0,0,.5); --sh-md:0 2px 10px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{
+  --ground:#161616; --card:#1f1f1f; --card-2:#262626;
+  --ink:#fafafa; --ink-2:#dfdfdf; --ink-3:#cacaca; --ink-4:#989898;
+  --rule:#393939; --rule-2:#2a2a2a;
+  --accent:#7eb0ff; --accent-soft:#16233c;
+  --good:#00a34b; --moderate:#3d86ff; --bad:#f0353d;
+  --good-soft:#0d2418; --bad-soft:#2c1416;
+  --sh-sm:0 1px 2px rgba(0,0,0,.5); --sh-md:0 2px 10px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);margin:0;
+  font-family:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 88px}
+.col{max-width:none}
+h1,h2,h3,.stat-n,.fig-t{font-family:Manrope,"Open Sans",sans-serif;font-weight:500}
+h1{font-size:clamp(32px,5.2vw,60px);line-height:1.08;letter-spacing:-.02em;margin:.2em 0 .35em;text-wrap:balance;max-width:19ch}
+h2{font-size:clamp(24px,3vw,30px);line-height:1.2;letter-spacing:-.01em;margin:0 0 .55em;text-wrap:balance}
+h3{font-size:18px;line-height:1.3;margin:0 0 .45em}
+p{margin:0 0 1em;max-width:74ch}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.lede{font-size:19px;line-height:1.55;color:var(--ink-2);max-width:70ch}
+header.top{padding:64px 0 36px}
+section{padding:44px 0}
+hr.rule{height:1px;background:var(--rule);border:0;margin:0}
+a{color:var(--accent)}
+.defs{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:22px 24px;margin:28px 0;
+  box-shadow:var(--sh-sm)}
+.defs h3{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  font-family:"Open Sans",sans-serif;margin-bottom:14px}
+.defs dl{display:grid;grid-template-columns:1fr;gap:16px;margin:0}
+.defs dl>div{min-width:0}
+@media(min-width:760px){.defs dl{grid-template-columns:1fr 1fr;gap:18px 40px}}
+.defs dt{font-weight:600;font-size:14px;margin-bottom:2px}
+.defs dd{margin:0;font-size:14px;line-height:1.5;color:var(--ink-3)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:28px 0 6px}
+@media(min-width:820px){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:20px;box-shadow:var(--sh-sm)}
+.stat-n{font-size:32px;line-height:1;letter-spacing:-.02em;display:block;margin-bottom:8px;color:var(--accent)}
+.stat-n small{font-size:.5em;letter-spacing:0}
+.stat-l{font-size:14px;line-height:1.45;color:var(--ink-3)}
+.figure{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:22px 22px 16px;
+  box-shadow:var(--sh-sm);margin:24px 0}
+.fig-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.fig-t{font-size:17px;letter-spacing:-.005em}
+.fig-s{font-size:14px;color:var(--ink-3);margin:.3em 0 14px;max-width:78ch}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);align-items:center}
+.lg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.scroll{overflow-x:auto}
+svg{display:block}
+.axis text{font-size:11px;fill:var(--ink-4)}
+.axis line{stroke:var(--rule-2)}
+.rowline{stroke:var(--rule-2);stroke-width:1}
+.cty{font-size:12.5px;fill:var(--ink-2)}
+.sub{font-size:10.5px;fill:var(--ink-4)}
+.val{font-size:11.5px;font-weight:600}
+.hit{fill:transparent;cursor:pointer}
+.rowg:hover .rowbg{fill:var(--card-2)}
+.mk{stroke:var(--card);stroke-width:1.5}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 12px 9px;border-bottom:1px solid var(--rule);white-space:nowrap}
+th.r,td.n{text-align:right}
+td{padding:9px 12px;border-bottom:1px solid var(--rule-2);vertical-align:baseline}
+td.n{font-variant-numeric:tabular-nums}
+tr:hover td{background:var(--card-2)}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 8px;border-radius:4px;white-space:nowrap}
+.b-good{background:var(--good-soft);color:var(--good)}
+.b-bad{background:var(--bad-soft);color:var(--bad)}
+.b-mod{background:var(--accent-soft);color:var(--accent)}
+.b-none{background:var(--card-2);color:var(--ink-4)}
+.callout{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:6px;padding:16px 20px;margin:22px 0;color:var(--ink-2);font-size:15px}
+.callout p{margin:0;max-width:none}
+.note{font-size:14px;color:var(--ink-3);line-height:1.55}
+ul{padding-left:1.15em;margin:0 0 1em;max-width:74ch}
+li{margin-bottom:.4em}
+.tt{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--card);
+  border:1px solid var(--rule);border-radius:6px;padding:10px 12px;font-size:12px;box-shadow:var(--sh-md);
+  z-index:20;max-width:270px;color:var(--ink)}
+.tt b{font-weight:600}
+.tt .r{display:flex;justify-content:space-between;gap:16px;font-size:11.5px;color:var(--ink-3);margin-top:3px;
+  font-variant-numeric:tabular-nums}
+.tt .r span:last-child{color:var(--ink);font-weight:500}
+footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:var(--ink-3)}
+@media(max-width:720px){.wrap{padding:0 16px 56px}header.top{padding:44px 0 26px}body{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Giga · M-Lab traceroute studies</div>
+  <h1>Where school content actually lives</h1>
+  <p class="lede">Across 22 countries, the M-Lab test server used to measure school connectivity sits outside the range of latencies schools actually experience in 9 of them. Content is not at one distance: national learning platforms answer in 1&nbsp;ms or 320&nbsp;ms depending on where a ministry hosts them, AI services answer in under 25&nbsp;ms almost everywhere, and Wikipedia answers from Europe in nearly every country measured. We measured all of it from RIPE Atlas probes inside the networks that carry school traffic.</p>
+</header>
+
+<hr class="rule">
+
+<section>
+  <div class="defs">
+    <h3>Terms used here</h3>
+    <dl>
+      <div><dt>M-Lab test server</dt>
+      <dd>The measurement endpoint a school's speed test connects to. Giga's traceroute studies describe the path to it. It is not content — no school opens it.</dd></div>
+      <div><dt>In range</dt>
+      <dd>The test server's round trip falls between the fastest and slowest thing a school actually reaches, within 20%. Outside that, the measurement samples a distance nothing a school does resembles.</dd></div>
+      <div><dt>National learning platform</dt>
+      <dd>The LMS or resource hub a ministry of education runs for its own schools — one per country, from Giga's platform inventory.</dd></div>
+      <div><dt>Round trip (RTT)</dt>
+      <dd>Time for a packet to reach a destination and return, in milliseconds. Median across that country's probes. Where a host does not answer ICMP, the last responding hop is used and marked a lower bound.</dd></div>
+    </dl>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-n">9 <small>of 22</small></span><span class="stat-l">countries where the test server is faster or slower than <em>everything</em> schools reach — so the reported latency describes no real destination</span></div>
+    <div class="stat"><span class="stat-n">6 <small>of 17</small></span><span class="stat-l">national <em>learning platforms</em> hosted on foreign clouds, answering in 62–320&nbsp;ms</span></div>
+    <div class="stat"><span class="stat-n">320<small>ms</small></span><span class="stat-l">Zambia's learning platform, hosted on AWS in Oregon — the slowest destination measured anywhere</span></div>
+    <div class="stat"><span class="stat-n">7 <small>of 18</small></span><span class="stat-l">school networks whose route to the test server is the same in both directions. The rest are asymmetric</span></div>
+    <div class="stat"><span class="stat-n">21 <small>of 22</small></span><span class="stat-l">countries reaching Wikipedia from Europe or North America, at 37–193&nbsp;ms</span></div>
+    <div class="stat"><span class="stat-n">&lt;25<small>ms</small></span><span class="stat-l">typical AI service latency — Claude, ChatGPT and Gemini are closer than most school content</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Content sits at three distances, not one</h2>
+  <p>Giga's traceroute studies measure the path from a school to an M-Lab server. What a school opens is somewhere else, and not in one place. We grouped destinations into three layers and measured each from the same probes: the <strong>national learning platform</strong>, <strong>global services</strong> (Google Classroom, Google Search, YouTube, Khan Academy, Wikipedia) and <strong>AI services</strong> (Claude, ChatGPT, Gemini).</p>
+  <p>The spread within a single country is often larger than the spread between countries. Botswana reaches global services in 8&nbsp;ms and Wikipedia in 174. Sri Lanka reaches AI services in 4&nbsp;ms and its M-Lab server in 175.</p>
+
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Every layer, and where the test server falls</div>
+      <div class="fig-s">The band spans the closest and furthest destination measured. The vertical bar is the M-Lab test server. Where the bar sits outside the band, the measurement is not sampling any distance a school experiences.</div>
+    </div>
+    <div class="legend">
+      <span class="lg"><svg width="12" height="12"><path d="M6 1.5 L10.5 9.5 L1.5 9.5 Z" fill="var(--ink-3)"/></svg> Learning platform</span>
+      <span class="lg"><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--p600)"/></svg> Global services</span>
+      <span class="lg"><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--p900)"/></svg> AI services</span>
+      <span class="lg"><svg width="12" height="12"><rect x="2" y="2" width="8" height="8" fill="none" stroke="var(--ink-4)" stroke-width="2"/></svg> Wikipedia</span>
+      <span class="lg"><svg width="6" height="13"><rect x="2" width="2" height="13" fill="currentColor"/></svg> M-Lab server</span>
+    </div></div>
+    <div class="scroll"><svg id="range" role="img" aria-label="Latency range per country with the M-Lab server marked"></svg></div>
+  </div>
+</section>
+
+<section>
+  <h2>A ministry's own platform is often the furthest thing away</h2>
+  <p>Of the 17 national learning platforms measured, eight are hosted domestically — on the incumbent carrier or the national research network — and answer in 1 to 24&nbsp;ms. Three sit behind Cloudflare or Google Cloud at 12 to 38&nbsp;ms. Six are hosted on foreign clouds, and for those countries the ministry's own platform is the slowest destination its schools reach.</p>
+  <p>South Africa's Department of Basic Education cloud answers in 255&nbsp;ms from South African school networks. From the same probes, Claude answers in 5&nbsp;ms and global services in 27. Zambia's platform is on AWS in Oregon at 320&nbsp;ms; Malawi's on a German host at 196; Kenya's on Microsoft at 139; Benin's on a German host at 135.</p>
+
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Where each national learning platform is hosted</div>
+      <div class="fig-s">Median round trip from that country's own school networks, with the hosting network named.</div>
+    </div>
+    <div class="legend">
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--good)"/></svg> Hosted domestically</span>
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--moderate)"/></svg> On a CDN</span>
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--bad)"/></svg> Foreign cloud</span>
+    </div></div>
+    <div class="scroll"><svg id="host" role="img" aria-label="National learning platform latency by hosting location"></svg></div>
+  </div>
+  <div class="callout"><p>A domestic test server measures the access link accurately and reports nothing about the path beyond it. In every country above with a foreign-hosted platform, the M-Lab server is domestic or regional — so the reported connectivity figure is good while the platform the ministry built is five to twenty times further away.</p></div>
+</section>
+
+<section>
+  <h2>Wikipedia is the outlier everywhere</h2>
+  <p>Google, Anthropic, OpenAI and Fastly have edge capacity close to these schools. Wikimedia does not. In 21 of 22 countries Wikipedia resolves to Amsterdam, Marseille, Singapore or Ashburn, and it is the slowest of the global services in almost every country measured — frequently by an order of magnitude over what the same school reaches Google in.</p>
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Wikipedia against everything else a school opens</div>
+      <div class="fig-s">Each row compares Wikipedia with the median of the other destinations measured in that country. Bars extend from the other-content median to Wikipedia.</div>
+    </div></div>
+    <div class="scroll"><svg id="wiki" role="img" aria-label="Wikipedia latency compared with other content per country"></svg></div>
+  </div>
+</section>
+
+<section>
+  <h2>Which networks carry the schools, and which can be measured</h2>
+  <p>School traffic is not spread evenly across a country's operators. In Namibia one network carries 93% of school traceroutes; in Sri Lanka two carry 85%. Whether a finding about a country is verifiable depends on whether RIPE Atlas has a probe inside those specific networks — and often it does not.</p>
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Networks serving schools, and Atlas probe coverage</div>
+      <div class="fig-s">Bar length is the share of that country's school traceroutes the network carries. The dot marks the share of attributed schools seen on it — a school can appear on more than one network, so these do not sum to 100%. Networks with no live Atlas probe cannot be independently measured.</div>
+    </div>
+    <div class="legend">
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--p600)"/></svg> Has a live probe</span>
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--ink-4)"/></svg> No probe — unverifiable</span>
+    </div></div>
+    <div class="scroll"><svg id="asnet" role="img" aria-label="School-serving networks per country with Atlas probe coverage"></svg></div>
+  </div>
+</section>
+
+<section>
+  <h2>The route out is not the route back</h2>
+  <p>Giga's traceroute exports record the path from the M-Lab server towards the school. We measured the opposite direction — school network to server — from probes inside 18 of the same networks, and compared the transit path excluding the origin.</p>
+  <p>Seven of the 18 traverse an identical sequence of networks both ways. Eleven do not. Sri Lanka's two largest operators both differ: Sri Lanka Telecom shares 40% of its transit between directions and Dialog 25%, meaning findings drawn from the inbound path there describe a route outbound traffic does not take.</p>
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Forward and reverse transit, by school network</div>
+      <div class="fig-s">Only networks where an Atlas probe sits in the same autonomous system as measured school traffic. Overlap is the share of transit networks common to both directions.</div>
+    </div></div>
+    <div class="scroll"><table id="asymtbl">
+      <thead><tr><th>Country</th><th>School network</th><th class="r">M-Lab traces</th><th class="r">Transit overlap</th><th>Same route both ways</th></tr></thead>
+      <tbody></tbody></table></div>
+  </div>
+</section>
+
+<section>
+  <div class="figure">
+    <div class="fig-head"><div>
+      <div class="fig-t">Every country, every layer</div>
+      <div class="fig-s">Median round trip in milliseconds. Global services is the median of Google Classroom, Google Search, YouTube, Khan Academy and Wikipedia; AI services the median of Claude, ChatGPT and Gemini.</div>
+    </div></div>
+    <div class="scroll"><table id="tbl">
+      <thead><tr>
+        <th>Country</th><th>Test server</th><th class="r">M-Lab</th><th class="r">Platform</th><th>Platform host</th>
+        <th class="r">Global</th><th class="r">AI</th><th class="r">Wikipedia</th><th>Server in range</th>
+      </tr></thead><tbody></tbody>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <h2>What this bears on</h2>
+  <ul>
+    <li><strong>A traceroute finding travels only as far as its server.</strong> Before a routing result is presented as something schools experience, establish where the content in question is hosted.</li>
+    <li><strong>Adding a test server moves the reported numbers.</strong> When M-Lab brought a Kochi server into service in July 2026, 1,123 Sri Lankan schools improved 9.8% on latency and 23.1% on throughput with no change at the schools.</li>
+    <li><strong>Server placement is not neutral between operators.</strong> A server hosted inside one ISP measures that ISP's customers on-net and everyone else across whatever interconnection exists.</li>
+    <li><strong>Where footprint would change what is measured:</strong> Uzbekistan, Kazakhstan and Kyrgyzstan are measured through Pakistan at 226–235&nbsp;ms while their content sits at 70–95. Those three countries account for roughly 10,300 measuring schools.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Method and limits</h2>
+  <p class="note">Measurements ran 30–31 August 2026 from 46 RIPE Atlas probes across 22 countries, selected inside the autonomous systems carrying school traceroutes where such a probe exists. M-Lab figures are median completed-path RTT from the Giga traceroute exports, February–July 2026.</p>
+  <p class="note">Probes sit in school networks, not in schools; a school's own last mile is not measured. Six countries — Botswana, Lesotho, Rwanda, Benin, Malawi and Fiji — had no probe inside a school-serving network, so any connected probe was used and those rows describe the country's networks rather than its schools. Namibia's largest operator carries 93% of school traceroutes and has no live probe at all. Five national platforms could not be measured for want of a probe, and two did not resolve. Hosts that do not answer ICMP are reported at the last responding hop and are lower bounds. One Uzbek probe returned approximately 3,000&nbsp;ms on every destination and was excluded.</p>
+</section>
+
+<footer>
+  RIPE Atlas measurements 205924290–206083964. Data, analysis and the code that produced this page are in <span style="font-weight:600">gigameter-explorer</span>.
+</footer>
+
+</div>
+<div class="tt" id="tt"></div>
+<script>
+const B={"countries":[{"cc":"KG","country":"Kyrgyzstan","server":"lhe152605","server_cc":"PK","domestic_server":false,"mlab":235.0,"plat":12.4,"plat_class":"cdn","plat_dom":"ibilim.kg","plat_host":"Cloudflare","glob":95.5,"ai":17.3,"wiki":112.2,"targets":{"googleclassroom":94.8,"youtube":97.6,"claude":17.3,"khanacademy":86.6,"wikipedia":112.2,"chatgpt":11.3,"googlesearch":95.5,"gemini":91.4},"lo":12.4,"hi":112.2,"in_range":false},{"cc":"KZ","country":"Kazakhstan","server":"lhe152605","server_cc":"PK","domestic_server":false,"mlab":233.7,"plat":2.3,"plat_class":"domestic","plat_dom":"moocs.kz","plat_host":"Kazakhtelecom","glob":71.8,"ai":24.5,"wiki":98.4,"targets":{"googleclassroom":70.0,"youtube":71.8,"claude":24.3,"khanacademy":98.6,"wikipedia":98.4,"chatgpt":24.5,"googlesearch":67.2,"gemini":70.2},"lo":2.3,"hi":98.4,"in_range":false},{"cc":"LK","country":"Sri Lanka","server":"maa01","server_cc":"IN","domestic_server":false,"mlab":174.9,"plat":5.6,"plat_class":"domestic","plat_dom":"e-thaksalawa.moe.gov.lk","plat_host":"Dialog Axiata","glob":40.4,"ai":3.8,"wiki":59.2,"targets":{"googleclassroom":40.4,"youtube":35.0,"claude":3.3,"khanacademy":32.6,"wikipedia":59.2,"chatgpt":3.8,"googlesearch":44.5,"gemini":40.4},"lo":3.8,"hi":59.2,"in_range":false},{"cc":"KN","country":"Saint Kitts and Nevis","server":"bog05","server_cc":"CO","domestic_server":false,"mlab":170.7,"plat":null,"plat_class":null,"plat_dom":null,"plat_host":null,"glob":47.0,"ai":46.7,"wiki":74.2,"targets":{"googleclassroom":71.6,"youtube":43.8,"claude":45.9,"khanacademy":43.9,"wikipedia":74.2,"chatgpt":48.8,"googlesearch":47.0,"gemini":46.7},"lo":46.7,"hi":74.2,"in_range":false},{"cc":"RW","country":"Rwanda","server":"nbo01","server_cc":"KE","domestic_server":false,"mlab":160.7,"plat":2.5,"plat_class":"domestic","plat_dom":"elearning.reb.rw","plat_host":"KT Rwanda","glob":22.7,"ai":20.6,"wiki":160.1,"targets":{"googleclassroom":20.5,"youtube":21.5,"claude":74.5,"khanacademy":81.2,"wikipedia":160.1,"chatgpt":16.4,"googlesearch":22.7,"gemini":20.6},"lo":2.5,"hi":160.1,"in_range":true},{"cc":"LC","country":"Saint Lucia","server":"bog05","server_cc":"CO","domestic_server":false,"mlab":121.9,"plat":null,"plat_class":null,"plat_dom":null,"plat_host":null,"glob":63.9,"ai":59.9,"wiki":88.9,"targets":{"googleclassroom":63.9,"youtube":64.5,"claude":59.2,"khanacademy":59.2,"wikipedia":88.9,"chatgpt":61.1,"googlesearch":56.2,"gemini":59.9},"lo":59.9,"hi":88.9,"in_range":false},{"cc":"TT","country":"Trinidad and Tobago","server":"bog05","server_cc":"CO","domestic_server":false,"mlab":114.4,"plat":62.2,"plat_class":"foreign","plat_dom":"learn.moe.gov.tt","plat_host":"Microsoft Azure","glob":63.6,"ai":2.9,"wiki":74.3,"targets":{"googleclassroom":108.7,"youtube":63.6,"claude":2.9,"khanacademy":61.7,"wikipedia":74.3,"chatgpt":2.8,"googlesearch":62.9,"gemini":63.5},"lo":2.9,"hi":74.3,"in_range":false},{"cc":"FJ","country":"Fiji","server":"akl01","server_cc":"NZ","domestic_server":false,"mlab":89.7,"plat":null,"plat_class":null,"plat_dom":null,"plat_host":null,"glob":39.0,"ai":45.2,"wiki":186.7,"targets":{"googleclassroom":39.0,"youtube":38.9,"claude":38.6,"khanacademy":38.6,"wikipedia":186.7,"chatgpt":47.8,"googlesearch":47.5,"gemini":45.2},"lo":39.0,"hi":186.7,"in_range":true},{"cc":"HN","country":"Honduras","server":"mex01","server_cc":"MX","domestic_server":false,"mlab":80.5,"plat":18.5,"plat_class":"domestic","plat_dom":"educatrachos.hn","plat_host":"Hondutel","glob":46.1,"ai":56.9,"wiki":83.1,"targets":{"googleclassroom":40.6,"youtube":41.5,"claude":57.3,"khanacademy":52.3,"wikipedia":83.1,"chatgpt":56.9,"googlesearch":46.1,"gemini":39.8},"lo":18.5,"hi":83.1,"in_range":true},{"cc":"MW","country":"Malawi","server":"mpm02","server_cc":"MZ","domestic_server":false,"mlab":43.5,"plat":195.8,"plat_class":"foreign","plat_dom":"tikwere.org","plat_host":"Hetzner (DE)","glob":90.6,"ai":74.7,"wiki":167.7,"targets":{"googleclassroom":118.2,"youtube":51.4,"claude":41.6,"khanacademy":77.8,"wikipedia":167.7,"chatgpt":160.3,"googlesearch":90.6,"gemini":74.7},"lo":74.7,"hi":195.8,"in_range":false},{"cc":"MD","country":"Republic of Moldova","server":"sof02","server_cc":"BG","domestic_server":false,"mlab":42.1,"plat":3.2,"plat_class":"domestic","plat_dom":"educatieonline.md","plat_host":"Moldtelecom","glob":38.9,"ai":0.8,"wiki":39.2,"targets":{"googleclassroom":39.0,"youtube":37.4,"claude":0.8,"khanacademy":34.2,"wikipedia":39.2,"chatgpt":0.5,"googlesearch":38.9,"gemini":38.8},"lo":0.8,"hi":39.2,"in_range":true},{"cc":"NA","country":"Namibia","server":"cpt01","server_cc":"ZA","domestic_server":false,"mlab":42.0,"plat":37.9,"plat_class":"cdn","plat_dom":"learnonone.org","plat_host":"Cloudflare","glob":56.5,"ai":37.9,"wiki":180.7,"targets":{"googleclassroom":40.3,"youtube":56.5,"claude":86.2,"khanacademy":108.3,"wikipedia":180.7,"chatgpt":33.8,"googlesearch":35.3,"gemini":37.9},"lo":37.9,"hi":180.7,"in_range":true},{"cc":"AL","country":"Albania","server":"tgd01","server_cc":"ME","domestic_server":false,"mlab":32.3,"plat":13.7,"plat_class":"cdn","plat_dom":"akademi.al","plat_host":"Google Cloud","glob":13.8,"ai":25.0,"wiki":37.4,"targets":{"googleclassroom":13.8,"youtube":13.7,"claude":27.3,"khanacademy":33.5,"wikipedia":37.4,"chatgpt":25.0,"googlesearch":13.6,"gemini":13.6},"lo":13.7,"hi":37.4,"in_range":true},{"cc":"ZA","country":"South Africa","server":"cpt01","server_cc":"ZA","domestic_server":true,"mlab":26.0,"plat":255.1,"plat_class":"foreign","plat_dom":"dbecloud.org.za","plat_host":"Trellian (AU)","glob":26.9,"ai":5.3,"wiki":181.8,"targets":{"googleclassroom":23.5,"youtube":26.9,"claude":5.3,"khanacademy":5.1,"wikipedia":181.8,"chatgpt":5.2,"googlesearch":28.8,"gemini":30.9},"lo":5.3,"hi":255.1,"in_range":true},{"cc":"ZM","country":"Zambia","server":"jnb01","server_cc":"ZA","domestic_server":false,"mlab":25.7,"plat":320.4,"plat_class":"foreign","plat_dom":"notesmaster.com","plat_host":"AWS Oregon","glob":53.8,"ai":33.9,"wiki":193.3,"targets":{"googleclassroom":62.5,"youtube":53.8,"claude":46.2,"khanacademy":49.5,"wikipedia":193.3,"chatgpt":33.9,"googlesearch":32.7,"gemini":32.6},"lo":33.9,"hi":320.4,"in_range":false},{"cc":"BA","country":"Bosnia and Herzegovina","server":"beg01","server_cc":"RS","domestic_server":false,"mlab":25.5,"plat":23.5,"plat_class":"domestic","plat_dom":"enastava.skolers.org","plat_host":"Lanaco","glob":27.3,"ai":15.3,"wiki":41.3,"targets":{"googleclassroom":39.5,"youtube":25.7,"claude":12.3,"khanacademy":20.2,"wikipedia":41.3,"chatgpt":15.3,"googlesearch":27.3,"gemini":26.1},"lo":15.3,"hi":41.3,"in_range":true},{"cc":"BW","country":"Botswana","server":"jnb01","server_cc":"ZA","domestic_server":false,"mlab":22.3,"plat":null,"plat_class":null,"plat_dom":null,"plat_host":null,"glob":8.3,"ai":7.8,"wiki":173.5,"targets":{"googleclassroom":7.8,"youtube":8.3,"claude":7.8,"khanacademy":7.7,"wikipedia":173.5,"chatgpt":7.7,"googlesearch":8.4,"gemini":8.4},"lo":7.8,"hi":173.5,"in_range":true},{"cc":"KE","country":"Kenya","server":"nbo01","server_cc":"KE","domestic_server":true,"mlab":19.5,"plat":139.2,"plat_class":"foreign","plat_dom":"elimika.kec.ac.ke","plat_host":"Microsoft Azure","glob":58.1,"ai":15.4,"wiki":144.3,"targets":{"googleclassroom":58.1,"youtube":18.6,"claude":15.4,"khanacademy":75.2,"wikipedia":144.3,"chatgpt":14.4,"googlesearch":17.5,"gemini":16.1},"lo":15.4,"hi":144.3,"in_range":true},{"cc":"LS","country":"Lesotho","server":"jnb01","server_cc":"ZA","domestic_server":false,"mlab":13.5,"plat":null,"plat_class":null,"plat_dom":null,"plat_host":null,"glob":12.6,"ai":12.2,"wiki":184.2,"targets":{"googleclassroom":9.3,"youtube":12.6,"claude":12.2,"khanacademy":12.0,"wikipedia":184.2,"chatgpt":12.2,"googlesearch":13.2,"gemini":12.7},"lo":12.2,"hi":184.2,"in_range":true},{"cc":"BJ","country":"Benin","server":"los02","server_cc":"NG","domestic_server":false,"mlab":12.7,"plat":135.4,"plat_class":"foreign","plat_dom":"infre-benin.org","plat_host":"Neue Medien (DE)","glob":101.3,"ai":97.2,"wiki":119.5,"targets":{"googleclassroom":101.3,"youtube":101.5,"claude":97.2,"khanacademy":89.3,"wikipedia":119.5,"chatgpt":97.1,"googlesearch":100.4,"gemini":99.9},"lo":97.2,"hi":135.4,"in_range":false},{"cc":"MN","country":"Mongolia","server":"uln10076","server_cc":"MN","domestic_server":true,"mlab":10.5,"plat":1.0,"plat_class":"domestic","plat_dom":"medle.mn","plat_host":"ERDEMNET","glob":54.3,"ai":1.6,"wiki":86.5,"targets":{"googleclassroom":54.3,"youtube":54.0,"claude":1.6,"khanacademy":62.0,"wikipedia":86.5,"chatgpt":1.4,"googlesearch":53.0,"gemini":53.7},"lo":1.0,"hi":86.5,"in_range":true},{"cc":"ME","country":"Montenegro","server":"tgd01","server_cc":"ME","domestic_server":true,"mlab":6.1,"plat":2.3,"plat_class":"domestic","plat_dom":"skolskiportal.edu.me","plat_host":"Univ. of Montenegro","glob":21.3,"ai":12.8,"wiki":39.5,"targets":{"googleclassroom":43.3,"youtube":17.3,"claude":12.4,"khanacademy":21.3,"wikipedia":39.5,"chatgpt":12.8,"googlesearch":17.8,"gemini":17.7},"lo":2.3,"hi":39.5,"in_range":true}],"asym":[{"cc":"AL","site":"tgd01","probe":16235,"asn":21183,"asn_name":"VODAFONE-FIX-AS - Vodafo","mlab_traces":598,"fwd":"CW - IDDQD-AS, EU -> COGENT-174 - Cogent Comm -> T-HT - Hrvatski Telekom  -> INTERNET-CG - Crnogorski","rev":"VODAFONE-FIX-AS - Vodafo -> CW - IDDQD-AS, EU -> COGENT-174 - Cogent Comm -> T-HT - Hrvatski Telekom  -> INTERNET-CG - Crnogorski","same_transit":false,"first_same":false,"jac":0.75},{"cc":"AL","site":"tgd01","probe":21663,"asn":198890,"asn_name":"MADCom-ASN - Albanian Fi","mlab_traces":586,"fwd":"HURRICANE - Hurricane El -> T-HT - Hrvatski Telekom  -> INTERNET-CG - Crnogorski","rev":"MADCom-ASN - Albanian Fi -> COGENT-174 - Cogent Comm -> T-HT - Hrvatski Telekom  -> INTERNET-CG - Crnogorski","same_transit":false,"first_same":false,"jac":0.67},{"cc":"BA","site":"beg01","probe":14628,"asn":42560,"asn_name":"BA-TELEMACH-AS - Telemac","mlab_traces":2107,"fwd":"BA-TELEMACH-AS - Telemac -> TELEMACH - Telemach Slov -> SOX - Serbian Open Excha","rev":"BA-TELEMACH-AS - Telemac -> UGNI - UNITED GROUP NETW -> SOX - Serbian Open Excha","same_transit":false,"first_same":false,"jac":0.33},{"cc":"BA","site":"beg01","probe":33681,"asn":35567,"asn_name":"DASTO-Bosnia-AS - DASTO ","mlab_traces":56,"fwd":"DASTO-Bosnia-AS - DASTO  -> SOX - Serbian Open Excha","rev":"DASTO-Bosnia-AS - DASTO  -> BIHNET - BH Telecom d.d. -> MYNET-AS - myNet GmbH, A -> SOX - Serbian Open Excha","same_transit":false,"first_same":false,"jac":0.33},{"cc":"HN","site":"mex01","probe":23023,"asn":14754,"asn_name":"AS14754 - TELECOMUNICACI","mlab_traces":203,"fwd":"AS6453 - TATA COMMUNICAT -> TRANSTELCO-INC - Transte","rev":"AS14754 - TELECOMUNICACI -> UUNET - Verizon Business -> HURRICANE - Hurricane El -> TRANSTELCO-INC - Transte","same_transit":false,"first_same":false,"jac":0.33},{"cc":"KE","site":"nbo01","probe":22218,"asn":15399,"asn_name":"Wananchi Group (Kenya) L","mlab_traces":4972,"fwd":"Wananchi Group (Kenya) L -> Kenya Education Network ","rev":"Wananchi Group (Kenya) L -> Kenya Education Network ","same_transit":true,"first_same":true,"jac":1.0},{"cc":"KE","site":"nbo01","probe":50022,"asn":30844,"asn_name":"LIQUID-AS - Liquid Telec","mlab_traces":1209,"fwd":"LIQUID-AS - Liquid Telec -> Liquid Telecommunication -> Kenya Education Network ","rev":"LIQUID-AS - Liquid Telec -> Kenya Education Network ","same_transit":false,"first_same":false,"jac":0.5},{"cc":"LK","site":"maa01","probe":35547,"asn":9329,"asn_name":"SLTINT-AS-AP - Sri Lanka","mlab_traces":18630,"fwd":"SLT-GLOBAL - Sri Lanka T -> NTT-DATA-2914 - NTT Amer -> AS6453 - TATA COMMUNICAT -> TATACOMM-AS - TATA Commu","rev":"SLTINT-AS-AP - Sri Lanka -> SLT-GLOBAL - Sri Lanka T -> ASN-TELSTRA-GLOBAL - Tel -> AS6453 - TATA COMMUNICAT -> TATACOMM-AS - TATA Commu","same_transit":false,"first_same":false,"jac":0.4},{"cc":"LK","site":"maa01","probe":64185,"asn":18001,"asn_name":"DIALOG-AS - Dialog Axiat","mlab_traces":45029,"fwd":"DIALOG-AS - Dialog Axiat -> Etisalat-AS - EMIRATES T -> TATACOMM-AS - TATA Commu","rev":"DIALOG-AS - Dialog Axiat -> COGENT-174 - Cogent Comm -> AS6453 - TATA COMMUNICAT -> TATACOMM-AS - TATA Commu","same_transit":false,"first_same":false,"jac":0.25},{"cc":"MD","site":"sof02","probe":35796,"asn":8926,"asn_name":"MOLDTELECOM-AS - Moldtel","mlab_traces":6924,"fwd":"MOLDTELECOM-AS - Moldtel -> TWELVE99 - Arelion Swede","rev":"MOLDTELECOM-AS - Moldtel -> COGENT-174 - Cogent Comm -> TWELVE99 - Arelion Swede","same_transit":false,"first_same":false,"jac":0.5},{"cc":"MD","site":"sof02","probe":64063,"asn":31252,"asn_name":"STARNET-AS - StarNet Sol","mlab_traces":4127,"fwd":"STARNET-AS - StarNet Sol -> INTERDOTLINK - Inter.lin -> TWELVE99 - Arelion Swede","rev":"STARNET-AS - StarNet Sol -> TWELVE99 - Arelion Swede","same_transit":false,"first_same":false,"jac":0.5},{"cc":"ME","site":"tgd01","probe":33300,"asn":42560,"asn_name":"BA-TELEMACH-AS - Telemac","mlab_traces":1928,"fwd":"BA-TELEMACH-AS - Telemac -> UGNI - UNITED GROUP NETW -> T-HT - Hrvatski Telekom  -> INTERNET-CG - Crnogorski","rev":"BA-TELEMACH-AS - Telemac -> UGNI - UNITED GROUP NETW -> T-HT - Hrvatski Telekom  -> INTERNET-CG - Crnogorski","same_transit":true,"first_same":true,"jac":1.0},{"cc":"ME","site":"tgd01","probe":65986,"asn":15397,"asn_name":"OneCrnaGoraDoo - One Crn","mlab_traces":1790,"fwd":"OneCrnaGoraDoo - One Crn -> INTERNET-CG - Crnogorski","rev":"OneCrnaGoraDoo - One Crn -> INTERNET-CG - Crnogorski","same_transit":true,"first_same":true,"jac":1.0},{"cc":"NA","site":"cpt01","probe":12385,"asn":33763,"asn_name":"Paratus Telecommunicatio","mlab_traces":94,"fwd":"Paratus Telecommunicatio -> Tertiary Education and R","rev":"Paratus Telecommunicatio -> Tertiary Education and R","same_transit":true,"first_same":true,"jac":1.0},{"cc":"NA","site":"cpt01","probe":12803,"asn":37009,"asn_name":"MTC - Mobile Telecommuni","mlab_traces":28,"fwd":"MTC - Mobile Telecommuni -> Tertiary Education and R","rev":"MTC - Mobile Telecommuni -> Tertiary Education and R","same_transit":true,"first_same":true,"jac":1.0},{"cc":"TT","site":"bog05","probe":18923,"asn":27800,"asn_name":"AS27800 - Digicel Trinid","mlab_traces":213,"fwd":"AS27800 - Digicel Trinid -> SEABONE-NET - TELECOM IT","rev":"AS27800 - Digicel Trinid -> DIG001 - Digicel Jamaica -> ZAYO-6461 - Zayo Bandwid -> SEABONE-NET - TELECOM IT","same_transit":false,"first_same":false,"jac":0.33},{"cc":"ZA","site":"cpt01","probe":242,"asn":37105,"asn_name":"RAIN GROUP HOLDINGS (PTY","mlab_traces":822,"fwd":"RAIN GROUP HOLDINGS (PTY -> Tertiary Education and R","rev":"RAIN GROUP HOLDINGS (PTY -> Tertiary Education and R","same_transit":true,"first_same":true,"jac":1.0},{"cc":"ZA","site":"cpt01","probe":4153,"asn":36874,"asn_name":"Cybersmart - Cybersmart,","mlab_traces":20,"fwd":"Cybersmart - Cybersmart, -> Tertiary Education and R","rev":"Cybersmart - Cybersmart, -> Tertiary Education and R","same_transit":true,"first_same":true,"jac":1.0}],"asnet":[{"cc":"AL","country":"Albania","asn":35047,"name":"Abissnet sh.a.","trace_pct":41.2,"school_pct":29.3,"has_probe":true},{"cc":"AL","country":"Albania","asn":42313,"name":"Albtelecom Sh.a.","trace_pct":12.1,"school_pct":24.0,"has_probe":true},{"cc":"AL","country":"Albania","asn":21183,"name":"ABCOM Shpk","trace_pct":5.6,"school_pct":10.2,"has_probe":true},{"cc":"AL","country":"Albania","asn":29238,"name":"Nisatel LTD","trace_pct":5.2,"school_pct":6.6,"has_probe":true},{"cc":"AL","country":"Albania","asn":50616,"name":"Telekom Albania SH.A","trace_pct":5.0,"school_pct":19.9,"has_probe":false},{"cc":"AL","country":"Albania","asn":198279,"name":"Albanian Telecommunications Union ","trace_pct":4.2,"school_pct":9.8,"has_probe":false},{"cc":"BA","country":"Bosnia and Herzegovina","asn":9146,"name":"BH Telecom d.d. Sarajevo","trace_pct":43.2,"school_pct":39.1,"has_probe":true},{"cc":"BA","country":"Bosnia and Herzegovina","asn":25144,"name":"\"Telekomunikacije Republike Srpske","trace_pct":30.6,"school_pct":40.8,"has_probe":false},{"cc":"BA","country":"Bosnia and Herzegovina","asn":42560,"name":"Telemach d.o.o. Sarajevo","trace_pct":12.9,"school_pct":10.0,"has_probe":true},{"cc":"BA","country":"Bosnia and Herzegovina","asn":20875,"name":"HT d.o.o. Mostar","trace_pct":9.6,"school_pct":13.3,"has_probe":false},{"cc":"BA","country":"Bosnia and Herzegovina","asn":21107,"name":"Blicnet d.o.o.","trace_pct":1.5,"school_pct":2.8,"has_probe":false},{"cc":"BA","country":"Bosnia and Herzegovina","asn":57888,"name":"Telesat d.o.o.","trace_pct":0.8,"school_pct":1.2,"has_probe":false},{"cc":"BJ","country":"Benin","asn":37424,"name":"SPACETEL BENIN SA","trace_pct":99.5,"school_pct":91.7,"has_probe":false},{"cc":"BJ","country":"Benin","asn":37136,"name":"ETISALAT BENIN","trace_pct":0.5,"school_pct":8.3,"has_probe":false},{"cc":"BW","country":"Botswana","asn":37014,"name":"Mascom Wireless Ltd","trace_pct":33.5,"school_pct":38.2,"has_probe":false},{"cc":"BW","country":"Botswana","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":20.1,"school_pct":20.6,"has_probe":false},{"cc":"BW","country":"Botswana","asn":36963,"name":"Orange Botswana (PTY) Ltd","trace_pct":17.4,"school_pct":38.2,"has_probe":false},{"cc":"BW","country":"Botswana","asn":14988,"name":"Botswana Telecommunications Corpor","trace_pct":15.1,"school_pct":21.4,"has_probe":false},{"cc":"BW","country":"Botswana","asn":37678,"name":"BOTSWANA FIBRE NETWORKS (Proprieta","trace_pct":12.5,"school_pct":14.5,"has_probe":false},{"cc":"BW","country":"Botswana","asn":328459,"name":"AS328459","trace_pct":0.9,"school_pct":0.8,"has_probe":false},{"cc":"CG","country":"Congo (Brazzaville)","asn":37463,"name":"MTN CONGO","trace_pct":60.0,"school_pct":50.0,"has_probe":false},{"cc":"CG","country":"Congo (Brazzaville)","asn":37550,"name":"Airtel Congo S.A","trace_pct":40.0,"school_pct":50.0,"has_probe":false},{"cc":"FJ","country":"Fiji","asn":45355,"name":"Digicel Pacific Ltd","trace_pct":32.2,"school_pct":46.4,"has_probe":false},{"cc":"FJ","country":"Fiji","asn":4638,"name":"Telecom Fiji Limited","trace_pct":29.7,"school_pct":30.7,"has_probe":false},{"cc":"FJ","country":"Fiji","asn":38442,"name":"Vodafone Fiji Limited","trace_pct":26.8,"school_pct":54.9,"has_probe":false},{"cc":"FJ","country":"Fiji","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":11.3,"school_pct":17.3,"has_probe":false},{"cc":"FJ","country":"Fiji","asn":136921,"name":"Fiji National University","trace_pct":0.0,"school_pct":0.3,"has_probe":false},{"cc":"HN","country":"Honduras","asn":14754,"name":"Telgua","trace_pct":36.5,"school_pct":62.2,"has_probe":true},{"cc":"HN","country":"Honduras","asn":263725,"name":"MULTICABLE DE HONDURAS","trace_pct":21.3,"school_pct":13.3,"has_probe":true},{"cc":"HN","country":"Honduras","asn":52262,"name":"Telef\u00f3nica Celular S.A","trace_pct":11.4,"school_pct":40.0,"has_probe":false},{"cc":"HN","country":"Honduras","asn":264847,"name":"ENRED S.DE.R.L","trace_pct":10.5,"school_pct":15.6,"has_probe":false},{"cc":"HN","country":"Honduras","asn":271781,"name":"AS271781","trace_pct":7.6,"school_pct":8.9,"has_probe":false},{"cc":"HN","country":"Honduras","asn":27923,"name":"TEVISAT, S.A.","trace_pct":5.9,"school_pct":8.9,"has_probe":false},{"cc":"KE","country":"Kenya","asn":36926,"name":"Airtel Networks Kenya Limited","trace_pct":61.6,"school_pct":34.0,"has_probe":false},{"cc":"KE","country":"Kenya","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":10.6,"school_pct":10.0,"has_probe":false},{"cc":"KE","country":"Kenya","asn":15399,"name":"Wananchi Group (Kenya) Limited","trace_pct":7.9,"school_pct":4.0,"has_probe":true},{"cc":"KE","country":"Kenya","asn":37061,"name":"Safaricom Limited","trace_pct":4.1,"school_pct":10.0,"has_probe":true},{"cc":"KE","country":"Kenya","asn":33771,"name":"Safaricom Limited","trace_pct":3.1,"school_pct":50.0,"has_probe":true},{"cc":"KE","country":"Kenya","asn":328331,"name":"POA INTERNET KENYA LIMITED","trace_pct":2.5,"school_pct":8.0,"has_probe":false},{"cc":"KG","country":"Kyrgyzstan","asn":12997,"name":"OJSC Kyrgyztelecom","trace_pct":48.6,"school_pct":100.0,"has_probe":true},{"cc":"KG","country":"Kyrgyzstan","asn":50223,"name":"Alfa Telecom CJSC","trace_pct":25.1,"school_pct":NaN,"has_probe":true},{"cc":"KG","country":"Kyrgyzstan","asn":41329,"name":"SkyMobile LTD","trace_pct":22.3,"school_pct":50.0,"has_probe":false},{"cc":"KG","country":"Kyrgyzstan","asn":47237,"name":"NUR Telecom LLC","trace_pct":4.0,"school_pct":50.0,"has_probe":false},{"cc":"KN","country":"Saint Kitts and Nevis","asn":14813,"name":"Columbus Telecommunications (Barba","trace_pct":100.0,"school_pct":NaN,"has_probe":false},{"cc":"KZ","country":"Kazakhstan","asn":9198,"name":"JSC Kazakhtelecom","trace_pct":32.1,"school_pct":38.1,"has_probe":true},{"cc":"KZ","country":"Kazakhstan","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":15.7,"school_pct":24.8,"has_probe":false},{"cc":"KZ","country":"Kazakhstan","asn":41798,"name":"JSC Transtelecom","trace_pct":13.5,"school_pct":18.9,"has_probe":true},{"cc":"KZ","country":"Kazakhstan","asn":206026,"name":"Kar-Tel LLC","trace_pct":11.1,"school_pct":42.6,"has_probe":false},{"cc":"KZ","country":"Kazakhstan","asn":29355,"name":"Kcell JSC","trace_pct":8.7,"school_pct":25.1,"has_probe":true},{"cc":"KZ","country":"Kazakhstan","asn":200590,"name":"NLS Kazakhstan LLC","trace_pct":6.0,"school_pct":3.7,"has_probe":true},{"cc":"LC","country":"Saint Lucia","asn":33582,"name":"Digicel St.Lucia Ltd","trace_pct":99.0,"school_pct":100.0,"has_probe":false},{"cc":"LC","country":"Saint Lucia","asn":15344,"name":"Karib Cable","trace_pct":0.8,"school_pct":33.3,"has_probe":true},{"cc":"LC","country":"Saint Lucia","asn":14813,"name":"Columbus Telecommunications (Barba","trace_pct":0.2,"school_pct":NaN,"has_probe":false},{"cc":"LK","country":"Sri Lanka","asn":9329,"name":"Sri Lanka Telecom Internet","trace_pct":55.6,"school_pct":74.7,"has_probe":true},{"cc":"LK","country":"Sri Lanka","asn":18001,"name":"Dialog Telekom Ltd","trace_pct":29.6,"school_pct":41.4,"has_probe":true},{"cc":"LK","country":"Sri Lanka","asn":45356,"name":"IS Group, No:108, W A D Ramanayake","trace_pct":10.7,"school_pct":23.7,"has_probe":false},{"cc":"LK","country":"Sri Lanka","asn":17470,"name":"Etisalat Lanka (Pvt) Ltd.","trace_pct":2.2,"school_pct":2.6,"has_probe":false},{"cc":"LK","country":"Sri Lanka","asn":132447,"name":"Hutchison Telecommunications Lanka","trace_pct":1.9,"school_pct":4.6,"has_probe":false},{"cc":"LS","country":"Lesotho","asn":33567,"name":"Econet Telecom Lesotho (PTY) LTD","trace_pct":75.3,"school_pct":57.1,"has_probe":false},{"cc":"LS","country":"Lesotho","asn":37057,"name":"Vodacom Lesotho (Pty) Ltd","trace_pct":19.8,"school_pct":42.9,"has_probe":false},{"cc":"LS","country":"Lesotho","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":4.9,"school_pct":42.9,"has_probe":false},{"cc":"MD","country":"Republic of Moldova","asn":8926,"name":"Moldtelecom SA","trace_pct":49.1,"school_pct":57.0,"has_probe":true},{"cc":"MD","country":"Republic of Moldova","asn":31252,"name":"StarNet Solutii SRL","trace_pct":37.2,"school_pct":39.2,"has_probe":true},{"cc":"MD","country":"Republic of Moldova","asn":25454,"name":"ORANGE MOLDOVA S.A.","trace_pct":4.0,"school_pct":29.1,"has_probe":true},{"cc":"MD","country":"Republic of Moldova","asn":62013,"name":"Societatea Comerciala Click-COM SR","trace_pct":2.1,"school_pct":3.8,"has_probe":false},{"cc":"MD","country":"Republic of Moldova","asn":15836,"name":"Arax-Impex s.r.l.","trace_pct":2.0,"school_pct":1.3,"has_probe":true},{"cc":"MD","country":"Republic of Moldova","asn":51056,"name":"Inet Tehno SRL","trace_pct":1.6,"school_pct":2.5,"has_probe":false},{"cc":"ME","country":"Montenegro","asn":8585,"name":"Crnogorski Telekom a.d.Podgorica","trace_pct":57.1,"school_pct":69.5,"has_probe":true},{"cc":"ME","country":"Montenegro","asn":43940,"name":"Drustvo za telekomunikacije \"MTEL\"","trace_pct":37.8,"school_pct":61.3,"has_probe":false},{"cc":"ME","country":"Montenegro","asn":42560,"name":"Telemach d.o.o. Sarajevo","trace_pct":3.1,"school_pct":3.8,"has_probe":true},{"cc":"ME","country":"Montenegro","asn":15397,"name":"Telenor d.o.o. Podgorica","trace_pct":1.9,"school_pct":19.2,"has_probe":true},{"cc":"ME","country":"Montenegro","asn":198961,"name":"Orion Telekom Tim d.o.o.Beograd","trace_pct":0.1,"school_pct":0.3,"has_probe":false},{"cc":"MN","country":"Mongolia","asn":17882,"name":"The first E-commerce and TriplePla","trace_pct":55.6,"school_pct":74.3,"has_probe":false},{"cc":"MN","country":"Mongolia","asn":55805,"name":"MobiCom Corporation, Mongolia","trace_pct":8.5,"school_pct":46.2,"has_probe":true},{"cc":"MN","country":"Mongolia","asn":9484,"name":"Mobinet ISP, MobiCom Corporation","trace_pct":7.8,"school_pct":12.6,"has_probe":false},{"cc":"MN","country":"Mongolia","asn":9934,"name":"Mongolia Telecom","trace_pct":7.7,"school_pct":14.0,"has_probe":false},{"cc":"MN","country":"Mongolia","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":7.2,"school_pct":9.1,"has_probe":false},{"cc":"MN","country":"Mongolia","asn":10076,"name":"ERDEMNET Mongolian National Resear","trace_pct":4.2,"school_pct":34.7,"has_probe":false},{"cc":"MW","country":"Malawi","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":71.2,"school_pct":56.0,"has_probe":false},{"cc":"MW","country":"Malawi","asn":37440,"name":"Airtel Malawi Ltd","trace_pct":13.9,"school_pct":37.6,"has_probe":false},{"cc":"MW","country":"Malawi","asn":37294,"name":"TELEKOM NETWORKS MALAWI LTD","trace_pct":12.3,"school_pct":36.9,"has_probe":false},{"cc":"MW","country":"Malawi","asn":37187,"name":"Skyband Corporation Ltd","trace_pct":2.5,"school_pct":9.2,"has_probe":false},{"cc":"MW","country":"Malawi","asn":66001,"name":"AS66001","trace_pct":0.0,"school_pct":2.1,"has_probe":false},{"cc":NaN,"country":"Namibia","asn":36996,"name":"Telecom Namibia","trace_pct":93.2,"school_pct":92.5,"has_probe":false},{"cc":NaN,"country":"Namibia","asn":33763,"name":"Internet Technologies Namibia","trace_pct":3.6,"school_pct":8.8,"has_probe":true},{"cc":NaN,"country":"Namibia","asn":37009,"name":"MTC - Mobile Telecommunications, L","trace_pct":3.2,"school_pct":35.0,"has_probe":true},{"cc":NaN,"country":"Namibia","asn":36999,"name":"Telecom Namibia","trace_pct":0.0,"school_pct":3.8,"has_probe":false},{"cc":"RW","country":"Rwanda","asn":327707,"name":"Airtel Rwanda Ltd.","trace_pct":34.8,"school_pct":72.4,"has_probe":false},{"cc":"RW","country":"Rwanda","asn":37228,"name":"KT RWANDA NETWORK Ltd","trace_pct":28.5,"school_pct":72.4,"has_probe":false},{"cc":"RW","country":"Rwanda","asn":36890,"name":"MTN Rwandacell","trace_pct":23.8,"school_pct":82.8,"has_probe":false},{"cc":"RW","country":"Rwanda","asn":37124,"name":"TIGO RWANDA S.A","trace_pct":10.1,"school_pct":55.2,"has_probe":false},{"cc":"RW","country":"Rwanda","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":2.5,"school_pct":6.9,"has_probe":false},{"cc":"RW","country":"Rwanda","asn":37654,"name":"Rwanda Ministry of Education","trace_pct":0.2,"school_pct":6.9,"has_probe":false},{"cc":"TT","country":"Trinidad and Tobago","asn":27665,"name":"Columbus Communications Trinidad L","trace_pct":43.1,"school_pct":66.7,"has_probe":false},{"cc":"TT","country":"Trinidad and Tobago","asn":5639,"name":"Telecommunication Services of Trin","trace_pct":37.5,"school_pct":66.7,"has_probe":false},{"cc":"TT","country":"Trinidad and Tobago","asn":27924,"name":"Massy Communications Ltd","trace_pct":11.0,"school_pct":9.5,"has_probe":false},{"cc":"TT","country":"Trinidad and Tobago","asn":27800,"name":"Digicel Trinidad and Tobago Ltd.","trace_pct":7.7,"school_pct":9.5,"has_probe":true},{"cc":"TT","country":"Trinidad and Tobago","asn":61478,"name":"AIR LINK COMMUNICATIONS","trace_pct":0.7,"school_pct":4.8,"has_probe":false},{"cc":"UZ","country":"Uzbekistan","asn":8193,"name":"Uzbektelekom Joint Stock Company","trace_pct":81.8,"school_pct":92.6,"has_probe":true},{"cc":"UZ","country":"Uzbekistan","asn":201767,"name":"\"Uzbektelecom\" Joint-Stock Company","trace_pct":6.3,"school_pct":11.1,"has_probe":false},{"cc":"UZ","country":"Uzbekistan","asn":49273,"name":"Foreign Enterprise COSCOM Liabilit","trace_pct":4.9,"school_pct":9.6,"has_probe":false},{"cc":"UZ","country":"Uzbekistan","asn":64466,"name":"UNIVERSAL MOBILE SYSTEMS LCC","trace_pct":3.9,"school_pct":7.8,"has_probe":false},{"cc":"UZ","country":"Uzbekistan","asn":41202,"name":"UNITEL LLC","trace_pct":2.8,"school_pct":5.9,"has_probe":false},{"cc":"UZ","country":"Uzbekistan","asn":43060,"name":"IPLUS LLC","trace_pct":0.1,"school_pct":0.0,"has_probe":false},{"cc":"ZA","country":"South Africa","asn":37457,"name":"Telkom SA Ltd.","trace_pct":27.6,"school_pct":34.8,"has_probe":true},{"cc":"ZA","country":"South Africa","asn":29975,"name":"Vodacom","trace_pct":22.4,"school_pct":51.7,"has_probe":false},{"cc":"ZA","country":"South Africa","asn":12091,"name":"MTN SA","trace_pct":14.2,"school_pct":56.2,"has_probe":false},{"cc":"ZA","country":"South Africa","asn":36994,"name":"Vodacom","trace_pct":11.1,"school_pct":12.9,"has_probe":false},{"cc":"ZA","country":"South Africa","asn":328471,"name":"AS328471","trace_pct":5.8,"school_pct":11.2,"has_probe":true},{"cc":"ZA","country":"South Africa","asn":37611,"name":"Afrihost (Pty) Ltd","trace_pct":3.5,"school_pct":11.2,"has_probe":true},{"cc":"ZM","country":"Zambia","asn":37287,"name":"Zain Zambia PLC","trace_pct":70.2,"school_pct":98.2,"has_probe":false},{"cc":"ZM","country":"Zambia","asn":36962,"name":"MTN Zambia","trace_pct":22.1,"school_pct":33.3,"has_probe":false},{"cc":"ZM","country":"Zambia","asn":37154,"name":"Zambia Telecommunications Company ","trace_pct":7.2,"school_pct":24.6,"has_probe":false},{"cc":"ZM","country":"Zambia","asn":328570,"name":"AS328570","trace_pct":0.3,"school_pct":1.8,"has_probe":false},{"cc":"ZM","country":"Zambia","asn":14593,"name":"Space Exploration Technologies Cor","trace_pct":0.1,"school_pct":3.5,"has_probe":true},{"cc":"ZM","country":"Zambia","asn":329444,"name":"AS329444","trace_pct":0.1,"school_pct":1.8,"has_probe":false}]};
+const D=B.countries, ASYM=B.asym, ASNET=B.asnet;
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a={})=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n};
+const HOST={domestic:"var(--good)",cdn:"var(--moderate)",foreign:"var(--bad)"};
+const HLBL={domestic:"hosted domestically",cdn:"on a CDN",foreign:"foreign cloud"};
+const tt=document.getElementById("tt");
+const show=(e,h)=>{tt.innerHTML=h;tt.style.opacity=1;
+  tt.style.left=Math.min(e.clientX+14,innerWidth-290)+"px";
+  tt.style.top=Math.min(e.clientY+14,innerHeight-160)+"px";};
+const hide=()=>tt.style.opacity=0;
+const ms=v=>v==null?"—":Math.round(v)+" ms";
+function axis(g,x,ticks,T,bottom){
+  ticks.forEach(v=>{g.appendChild(el("line",{x1:x(v),x2:x(v),y1:T-8,y2:bottom}));
+    const t=el("text",{x:x(v),y:T-14,"text-anchor":"middle"});t.textContent=v;g.appendChild(t);});
+}
+function rowShell(g,W,y,rowH){
+  g.appendChild(el("rect",{class:"rowbg",x:0,y:y-rowH/2,width:W,height:rowH,fill:"transparent"}));
+  g.appendChild(el("line",{class:"rowline",x1:0,x2:W,y1:y+rowH/2,y2:y+rowH/2}));
+}
+function bind(g,W,y,rowH,html){
+  const h=el("rect",{class:"hit",x:0,y:y-rowH/2,width:W,height:rowH});
+  h.addEventListener("mousemove",e=>show(e,html));h.addEventListener("mouseenter",e=>show(e,html));
+  h.addEventListener("mouseleave",hide);g.appendChild(h);
+}
+
+function ranges(){
+  const host=document.getElementById("range");host.textContent="";
+  const W=Math.max(780,host.parentElement.clientWidth||900),L=186,R=52,T=32,rowH=25;
+  const H=T+D.length*rowH+26;
+  host.setAttribute("viewBox",`0 0 ${W} ${H}`);host.setAttribute("width",W);host.setAttribute("height",H);
+  const max=340,x=v=>L+(v/max)*(W-L-R);
+  const ax=el("g",{class:"axis"});axis(ax,x,[0,60,120,180,240,300],T,H-20);host.appendChild(ax);
+  D.forEach((d,i)=>{
+    const y=T+i*rowH+rowH/2,g=el("g",{class:"rowg"});rowShell(g,W,y,rowH);
+    const nm=el("text",{x:L-12,y:y+4,"text-anchor":"end",class:"cty"});
+    nm.textContent=d.country.length>19?d.country.slice(0,18)+"…":d.country;g.appendChild(nm);
+    if(d.lo!=null)g.appendChild(el("line",{x1:x(d.lo),x2:x(d.hi),y1:y,y2:y,
+      stroke:"var(--rule)","stroke-width":6,"stroke-linecap":"round"}));
+    if(d.wiki!=null)g.appendChild(el("rect",{x:x(d.wiki)-4,y:y-4,width:8,height:8,fill:"none",
+      stroke:"var(--ink-4)","stroke-width":2}));
+    if(d.glob!=null)g.appendChild(el("circle",{cx:x(d.glob),cy:y,r:4.5,fill:"var(--p600)",class:"mk"}));
+    if(d.ai!=null)g.appendChild(el("circle",{cx:x(d.ai),cy:y,r:4,fill:"var(--p900)",class:"mk"}));
+    if(d.plat!=null){const px=x(d.plat);
+      g.appendChild(el("path",{d:`M${px} ${y-5.2} L${px+4.8} ${y+3.8} L${px-4.8} ${y+3.8} Z`,
+        fill:HOST[d.plat_class]||"var(--ink-3)",class:"mk"}));}
+    g.appendChild(el("line",{x1:x(d.mlab),x2:x(d.mlab),y1:y-9,y2:y+9,
+      stroke:d.in_range?"var(--ink)":"var(--bad)","stroke-width":2.5}));
+    bind(g,W,y,rowH,`<b>${d.country}</b>`
+      +`<div class="r"><span>M-Lab · ${d.server}</span><span>${ms(d.mlab)}</span></div>`
+      +`<div class="r"><span>Learning platform</span><span>${ms(d.plat)}</span></div>`
+      +`<div class="r"><span>Global services</span><span>${ms(d.glob)}</span></div>`
+      +`<div class="r"><span>AI services</span><span>${ms(d.ai)}</span></div>`
+      +`<div class="r"><span>Wikipedia</span><span>${ms(d.wiki)}</span></div>`
+      +`<div class="r"><span>Server in range</span><span>${d.in_range?"yes":"no"}</span></div>`);
+    host.appendChild(g);
+  });
+}
+
+function hosting(){
+  const host=document.getElementById("host");host.textContent="";
+  const rows=D.filter(d=>d.plat!=null).sort((a,b)=>a.plat-b.plat);
+  const W=Math.max(740,host.parentElement.clientWidth||880),L=170,R=158,T=28,rowH=25;
+  const H=T+rows.length*rowH+22;
+  host.setAttribute("viewBox",`0 0 ${W} ${H}`);host.setAttribute("width",W);host.setAttribute("height",H);
+  const max=340,x=v=>L+(v/max)*(W-L-R);
+  const ax=el("g",{class:"axis"});axis(ax,x,[0,60,120,180,240,300],T,H-18);host.appendChild(ax);
+  rows.forEach((d,i)=>{
+    const y=T+i*rowH+rowH/2,c=HOST[d.plat_class],g=el("g",{class:"rowg"});rowShell(g,W,y,rowH);
+    const nm=el("text",{x:L-12,y:y+4,"text-anchor":"end",class:"cty"});
+    nm.textContent=d.country.length>19?d.country.slice(0,18)+"…":d.country;g.appendChild(nm);
+    g.appendChild(el("line",{x1:x(0),x2:x(d.plat),y1:y,y2:y,stroke:c,"stroke-width":3,
+      "stroke-linecap":"round",opacity:.3}));
+    g.appendChild(el("circle",{cx:x(d.plat),cy:y,r:5,fill:c,class:"mk"}));
+    const near=x(d.plat)>W-R-46;
+    const v=el("text",{x:near?x(d.plat)-10:x(d.plat)+11,y:y+4,class:"val",fill:c,"text-anchor":near?"end":"start"});
+    v.textContent=Math.round(d.plat)+" ms";g.appendChild(v);
+    const hh=el("text",{x:W-8,y:y+4,"text-anchor":"end",class:"sub"});
+    hh.textContent=d.plat_host||"";g.appendChild(hh);
+    bind(g,W,y,rowH,`<b>${d.country}</b><div class="r"><span>${d.plat_dom||""}</span><span>${ms(d.plat)}</span></div>`
+      +`<div class="r"><span>Hosting</span><span>${HLBL[d.plat_class]}</span></div>`
+      +`<div class="r"><span>Network</span><span>${d.plat_host||"—"}</span></div>`);
+    host.appendChild(g);
+  });
+}
+
+function wiki(){
+  const host=document.getElementById("wiki");host.textContent="";
+  const rows=D.filter(d=>d.wiki!=null).map(d=>{
+    const other=Object.entries(d.targets).filter(([k])=>k!=="wikipedia").map(([,v])=>v).sort((a,b)=>a-b);
+    const med=other.length?other[Math.floor(other.length/2)]:null;
+    return {...d,other:med,gap:med?d.wiki-med:null};
+  }).filter(d=>d.other!=null).sort((a,b)=>b.gap-a.gap);
+  const W=Math.max(740,host.parentElement.clientWidth||880),L=170,R=64,T=28,rowH=25;
+  const H=T+rows.length*rowH+22;
+  host.setAttribute("viewBox",`0 0 ${W} ${H}`);host.setAttribute("width",W);host.setAttribute("height",H);
+  const max=220,x=v=>L+(Math.min(v,max)/max)*(W-L-R);
+  const ax=el("g",{class:"axis"});axis(ax,x,[0,50,100,150,200],T,H-18);host.appendChild(ax);
+  rows.forEach((d,i)=>{
+    const y=T+i*rowH+rowH/2,g=el("g",{class:"rowg"});rowShell(g,W,y,rowH);
+    const nm=el("text",{x:L-12,y:y+4,"text-anchor":"end",class:"cty"});
+    nm.textContent=d.country.length>19?d.country.slice(0,18)+"…":d.country;g.appendChild(nm);
+    g.appendChild(el("line",{x1:x(d.other),x2:x(d.wiki),y1:y,y2:y,stroke:"var(--p300)","stroke-width":5,
+      "stroke-linecap":"round"}));
+    g.appendChild(el("circle",{cx:x(d.other),cy:y,r:4,fill:"var(--p600)",class:"mk"}));
+    g.appendChild(el("circle",{cx:x(d.wiki),cy:y,r:5,fill:"var(--ink-2)",class:"mk"}));
+    const v=el("text",{x:W-R+10,y:y+4,class:"val",fill:"var(--ink-3)"});
+    v.textContent="+"+Math.round(d.gap);g.appendChild(v);
+    bind(g,W,y,rowH,`<b>${d.country}</b>`
+      +`<div class="r"><span>Wikipedia</span><span>${ms(d.wiki)}</span></div>`
+      +`<div class="r"><span>Everything else (median)</span><span>${ms(d.other)}</span></div>`
+      +`<div class="r"><span>Wikipedia is slower by</span><span>${Math.round(d.gap)} ms</span></div>`);
+    host.appendChild(g);
+  });
+  const cap=el("text",{x:L,y:H-6,class:"sub"});
+  cap.textContent="light dot: median of all other destinations · dark dot: Wikipedia";
+  host.appendChild(cap);
+}
+
+function asnet(){
+  const host=document.getElementById("asnet");host.textContent="";
+  const by={};ASNET.forEach(r=>{(by[r.country]=by[r.country]||[]).push(r)});
+  const order=D.map(d=>d.country).filter(c=>by[c]);
+  const rows=[];order.forEach(c=>{by[c].slice(0,4).forEach((r,i)=>rows.push({...r,first:i===0}))});
+  const W=Math.max(780,host.parentElement.clientWidth||900),L=246,R=58,T=28,rowH=21;
+  const H=T+rows.length*rowH+22;
+  host.setAttribute("viewBox",`0 0 ${W} ${H}`);host.setAttribute("width",W);host.setAttribute("height",H);
+  const x=v=>L+(v/100)*(W-L-R);
+  const ax=el("g",{class:"axis"});axis(ax,x,[0,25,50,75,100],T,H-18);host.appendChild(ax);
+  rows.forEach((r,i)=>{
+    const y=T+i*rowH+rowH/2,g=el("g",{class:"rowg"});
+    g.appendChild(el("rect",{class:"rowbg",x:0,y:y-rowH/2,width:W,height:rowH,fill:"transparent"}));
+    if(r.first)g.appendChild(el("line",{class:"rowline",x1:0,x2:W,y1:y-rowH/2,y2:y-rowH/2}));
+    if(r.first){const cn=el("text",{x:8,y:y+4,class:"cty"});cn.textContent=r.country.slice(0,17);g.appendChild(cn);}
+    const nm=el("text",{x:L-10,y:y+4,"text-anchor":"end",class:"sub"});
+    nm.textContent=(r.name||"").slice(0,30);g.appendChild(nm);
+    const c=r.has_probe?"var(--p600)":"var(--ink-4)";
+    g.appendChild(el("rect",{x:x(0),y:y-4,width:Math.max(1,x(r.trace_pct)-x(0)),height:8,rx:2,fill:c,opacity:.85}));
+    if(r.school_pct!=null&&r.school_pct===r.school_pct)
+      g.appendChild(el("circle",{cx:x(r.school_pct),cy:y,r:3.4,fill:"var(--card)",stroke:c,"stroke-width":2}));
+    const v=el("text",{x:W-R+10,y:y+4,class:"val",fill:"var(--ink-3)"});
+    v.textContent=Math.round(r.trace_pct)+"%";g.appendChild(v);
+    bind(g,W,y,rowH,`<b>${r.name}</b><div class="r"><span>${r.country} · AS${r.asn}</span><span></span></div>`
+      +`<div class="r"><span>Share of school traces</span><span>${r.trace_pct}%</span></div>`
+      +`<div class="r"><span>Share of schools seen</span><span>${r.school_pct!=null&&r.school_pct===r.school_pct?r.school_pct+"%":"—"}</span></div>`
+      +`<div class="r"><span>Atlas probe</span><span>${r.has_probe?"yes":"none"}</span></div>`);
+    host.appendChild(g);
+  });
+}
+
+function tables(){
+  const tb=document.querySelector("#tbl tbody");
+  D.forEach(d=>{
+    const cl=d.plat_class?({domestic:"b-good",cdn:"b-mod",foreign:"b-bad"})[d.plat_class]:null;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${d.country}</td>`
+      +`<td style="color:var(--ink-3);font-size:13px">${d.server} · ${d.server_cc}</td>`
+      +`<td class="n">${Math.round(d.mlab)}</td>`
+      +`<td class="n">${d.plat==null?"—":Math.round(d.plat)}</td>`
+      +`<td>${cl?`<span class="badge ${cl}">${HLBL[d.plat_class]}</span>`:'<span class="badge b-none">not measured</span>'}</td>`
+      +`<td class="n">${Math.round(d.glob)}</td>`
+      +`<td class="n">${d.ai==null?"—":Math.round(d.ai)}</td>`
+      +`<td class="n">${d.wiki==null?"—":Math.round(d.wiki)}</td>`
+      +`<td><span class="badge ${d.in_range?"b-mod":"b-bad"}">${d.in_range?"in range":"outside"}</span></td>`;
+    tb.appendChild(tr);
+  });
+  const ab=document.querySelector("#asymtbl tbody");
+  const name={};D.forEach(d=>name[d.cc]=d.country);
+  ASYM.sort((a,b)=>b.jac-a.jac).forEach(r=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${name[r.cc]||r.cc}</td><td style="color:var(--ink-3)">${(r.asn_name||"").slice(0,30)}</td>`
+      +`<td class="n">${r.mlab_traces.toLocaleString()}</td><td class="n">${Math.round(r.jac*100)}%</td>`
+      +`<td><span class="badge ${r.same_transit?"b-good":"b-bad"}">${r.same_transit?"same":"asymmetric"}</span></td>`;
+    ab.appendChild(tr);
+  });
+}
+function all(){ranges();hosting();wiki();asnet();}
+all();tables();
+let t;addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(all,150)});
+</script>
