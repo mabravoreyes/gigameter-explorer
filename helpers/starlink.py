@@ -333,3 +333,66 @@ def within_school_verdict(comparison: pd.DataFrame) -> dict:
         "wilcoxon_p_mbps": (float(stats.wilcoxon(comparison["mbps_gain"]).pvalue)
                             if len(comparison) > 5 else None),
     }
+
+
+def domestic_transit(tr: pd.DataFrame, country_iso2: str) -> dict:
+    """
+    Whether traffic ever crosses a network inside its own country.
+
+    Two measures, and they answer different questions. `touches_domestic_pct`
+    is whether any hop that is not Starlink's own network geolocates to the
+    home country — traffic can satisfy this on the way *back* into the country
+    after leaving it. `handoff_domestic_pct` is whether the first hop after
+    Starlink is domestic, which is where the ground station is and therefore
+    whether the traffic enters the national internet at all.
+
+    Mongolia separates them: 89% of its Starlink traces touch a Mongolian
+    network, but 0% hand off inside Mongolia. The traffic goes to Tokyo first
+    and comes back for a domestic server.
+
+    Both rest on hop geolocation, which is imperfect — a domestic operator's
+    routers sometimes geolocate abroad, which understates the domestic share.
+    Read the Starlink figure against the terrestrial figure for the same
+    country rather than against 100%.
+    """
+    def _is_starlink_hop(hop) -> bool:
+        asn = hop.get("associated_asn")
+        org = (hop.get("associated_org") or "").lower()
+        return asn == 14593 or "space explor" in org or "starlink" in org
+
+    home = country_iso2.upper()
+    traces = touched = handoff_total = handoff_domestic = 0
+    networks: dict[tuple, int] = {}
+
+    for hops in tr["forward_updated_node_details"]:
+        sequence = list(hops if hops is not None else [])
+        if not sequence:
+            continue
+        traces += 1
+
+        domestic = [h for h in sequence
+                    if not _is_starlink_hop(h) and (h.get("cc") or "").upper() == home]
+        if domestic:
+            touched += 1
+            for hop in domestic[:3]:
+                key = (hop.get("associated_org") or "unknown", hop.get("place"))
+                networks[key] = networks.get(key, 0) + 1
+
+        seen_starlink = False
+        for hop in sequence[::-1]:
+            if _is_starlink_hop(hop):
+                seen_starlink = True
+            elif seen_starlink:
+                handoff_total += 1
+                handoff_domestic += (hop.get("cc") or "").upper() == home
+                break
+
+    top = sorted(networks.items(), key=lambda kv: -kv[1])[:5]
+    return {
+        "traces": traces,
+        "touches_domestic_pct": round(100 * touched / traces, 1) if traces else None,
+        "handoff_domestic_pct": (round(100 * handoff_domestic / handoff_total, 1)
+                                 if handoff_total else None),
+        "handoff_traces": handoff_total,
+        "domestic_networks": [{"org": o, "place": p, "hops": n} for (o, p), n in top],
+    }
