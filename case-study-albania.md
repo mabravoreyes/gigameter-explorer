@@ -21,12 +21,26 @@ ones school-weighted moves them little: Abissnet's median goes 27.4 to 26.9 ms,
 Telekom Albania's 62.1 to 61.3, I.B.C's 3.0 to 3.1, and the domestic/
 international split 1.15/30.4 to 0.94/29.9.
 
-One figure does move. Abissnet's European share reads 7.6% of its traces but
-**0% of its schools by dominant route** — no Abissnet school mostly uses that
-path; it is spread thinly across many. That is consistent with the paired
-result below, and it is why the operator chart stays trace-weighted: collapsing
-each school to a single route would erase the minority path that the whole
-argument is about. Nothing a national
+The operator table needs a middle option. Counting each school once by its
+*dominant* route erases minority paths — Abissnet's European share is 7.6% of
+traces but no Abissnet school uses that path most of the time, so it would read
+0%. The fix is to take each school's own route split and average those across
+the operator's schools: one vote per school, and a school using two routes
+still shows both.
+
+That leaves the two large operators unchanged and moves two small ones:
+
+| operator | schools | via Europe, by trace | by school |
+|---|---:|---:|---:|
+| Abissnet | 208 | 7.6% | 7.4% |
+| Telekom Albania | 51 | 96.6% | 97.7% |
+| I.B.C (direct) | 10 | 95.1% | 95.0% |
+| **Albtelecom** | 24 | 16.6% | **26.9%** |
+| **Tele.Co.Albania** | 9 | 8.1% | 8.6% (via Serbia 64.4% → 39.1%) |
+
+Albtelecom and Tele.Co.Albania are the two where the heaviest-testing schools
+are not typical of the estate. Both are small enough that their rows should be
+read as indicative. Nothing a national
 operator does to its own network can touch the other 97%.
 
 The destination is Podgorica, about 130 km from Tirana.
