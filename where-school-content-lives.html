@@ -1,4 +1,4 @@
-<title>Where School Content Actually Lives</title>
+<title>Where School Content Is Hosted</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&family=Open+Sans:wght@400;500;600&display=swap">
@@ -49,9 +49,9 @@ p{margin:0 0 1em;max-width:74ch}
   border-radius:6px;padding:18px 22px;margin:26px 0 0}
 .status h3{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--bad);
   font-family:"Open Sans",sans-serif;margin:0 0 10px}
-.status p{font-size:14.5px;line-height:1.55;color:var(--ink-2);margin:0 0 .7em;max-width:80ch}
+.status p{font-size:14.5px;line-height:1.55;color:var(--ink-2);margin:0 0 .7em;max-width:none}
 .status p:last-child{margin-bottom:0}
-.status ul{font-size:14.5px;color:var(--ink-2);margin:.2em 0 .7em;max-width:80ch}
+.status ul{font-size:14.5px;color:var(--ink-2);margin:.2em 0 .7em;max-width:none}
 .lede{font-size:19px;line-height:1.55;color:var(--ink-2);max-width:70ch}
 header.top{padding:64px 0 36px}
 section{padding:44px 0}
@@ -65,7 +65,7 @@ a{color:var(--accent)}
 .defs dl>div{min-width:0}
 @media(min-width:760px){.defs dl{grid-template-columns:1fr 1fr;gap:18px 40px}}
 .defs dt{font-weight:600;font-size:14px;margin-bottom:2px}
-.defs dd{margin:0;font-size:14px;line-height:1.5;color:var(--ink-3)}
+.defs dd{margin:0;font-size:14px;line-height:1.5;color:var(--ink-3);max-width:none}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:28px 0 6px}
 @media(min-width:820px){.stats{grid-template-columns:repeat(3,1fr)}}
 .stat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:20px;box-shadow:var(--sh-sm)}
@@ -124,15 +124,15 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 
 <header class="top">
   <div class="eyebrow"><span>Giga · M-Lab traceroute studies</span><span class="draft">Draft v0</span></div>
-  <h1>Where school content actually lives</h1>
-  <p class="lede">Across 22 countries, the M-Lab test server used to measure school connectivity sits outside the range of latencies schools actually experience in 9 of them. Content is not at one distance: national learning platforms answer in 1&nbsp;ms or 320&nbsp;ms depending on where a ministry hosts them, AI services answer in under 25&nbsp;ms almost everywhere, and Wikipedia answers from Europe in nearly every country measured. We measured all of it from RIPE Atlas probes inside the networks that carry school traffic.</p>
+  <h1>Where school content is hosted</h1>
+  <p class="lede">In 9 of 22 countries, the M-Lab test server used to measure school connectivity has a round trip outside the range of every destination schools actually reach. Destination latency varies by content type: national learning platforms answer in 1&nbsp;ms or 320&nbsp;ms depending on where a ministry hosts them, AI services answer in under 25&nbsp;ms in almost every country, and Wikipedia answers from Europe or North America in 21 of 22. All destination measurements were taken from RIPE Atlas probes inside the networks carrying school traffic.</p>
 
   <div class="status">
-    <h3>Draft v0 — read the sampling before the findings</h3>
-    <p><strong>Every active measurement on this page is a single one-off traceroute per probe per destination, taken on 30–31 August 2026.</strong> Internet paths change over hours and days, under load, and with routing policy. One sample can capture a transient route as easily as a stable one, and nothing here distinguishes the two.</p>
-    <p>The two sides of every comparison are also not sampled to the same depth. The M-Lab figures aggregate six months and, in the larger countries, tens of thousands of measurements. The Atlas figures beside them come from one to three probes taking one measurement each. Where they disagree, that gap is a candidate explanation before routing is.</p>
+    <h3>Draft v0 — Methodology Note</h3>
+    <p><strong>Every active measurement on this page is a single one-off traceroute per probe per destination, taken on 30–31 August 2026.</strong> Internet paths change over hours and days, under load, and with routing policy. One sample can capture a transient route as easily as a stable one. <strong>This artifact is to demonstrate the potential of this research rather than to draw conclusions</strong> </p>
+    <p>The two sides of every comparison are not sampled to the same depth. The M-Lab figures aggregate six months and, in the larger countries, tens of thousands of measurements. The Atlas figures beside them come from one to three probes taking one measurement each..</p>
     <p>This affects the forward-path and asymmetry section most directly: the claim that seven of eighteen school networks route identically in both directions rests on one outbound trace per network. It should be read as an indication that asymmetry is common, not as a measurement of how common.</p>
-    <p>What would make this robust: repeated measurements at intervals over several days per probe, more probes per network where they exist, and periodic re-runs so a path can be seen to hold or change. Directional findings are likely to survive that; specific percentages are not expected to.</p>
+    <p>What would make this robust: repeated measurements at intervals over several days per probe, more probes per network where they exist, and periodic re-runs so a path can be seen to hold or change. Directional findings are likely to survive that.</p>
   </div>
 </header>
 
@@ -143,35 +143,36 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
     <h3>Terms used here</h3>
     <dl>
       <div><dt>M-Lab test server</dt>
-      <dd>The measurement endpoint a school's speed test connects to. Giga's traceroute studies describe the path to it. It is not content — no school opens it.</dd></div>
+      <dd>The measurement endpoint a school's speed test connects to. The M-Lab traceroutes look at the server-school path.</dd></div>
       <div><dt>In range</dt>
-      <dd>The test server's round trip falls between the fastest and slowest thing a school actually reaches, within 20%. Outside that, the measurement samples a distance nothing a school does resembles.</dd></div>
+      <dd>The test server's round trip falls between the fastest and slowest destination in the set that a school actually reaches (within 20%).</dd></div>
       <div><dt>National learning platform</dt>
-      <dd>The LMS or resource hub a ministry of education runs for its own schools — one per country, from Giga's platform inventory.</dd></div>
+      <dd>The LMS or resource hub a ministry of education runs for its own schools from <a href="https://docs.google.com/spreadsheets/d/1Xt2wgbl6uILkAqOKrvXRVdHOU37NXI1I5La893AlQ5c/edit?gid=1944703112#gid=1944703112">UNICEF's landscape mapping,</a>
+         </dd></div>
       <div><dt>Round trip (RTT)</dt>
       <dd>Time for a packet to reach a destination and return, in milliseconds. Median across that country's probes. Where a host does not answer ICMP, the last responding hop is used and marked a lower bound.</dd></div>
     </dl>
   </div>
 
   <div class="stats">
-    <div class="stat"><span class="stat-n">9 <small>of 22</small></span><span class="stat-l">countries where the test server is faster or slower than <em>everything</em> schools reach — so the reported latency describes no real destination</span></div>
+    <div class="stat"><span class="stat-n">9 <small>of 22</small></span><span class="stat-l">countries where the test server's round trip falls outside the range of every destination measured</span></div>
     <div class="stat"><span class="stat-n">6 <small>of 17</small></span><span class="stat-l">national <em>learning platforms</em> hosted on foreign clouds, answering in 62–320&nbsp;ms</span></div>
-    <div class="stat"><span class="stat-n">320<small>ms</small></span><span class="stat-l">Zambia's learning platform, hosted on AWS in Oregon — the slowest destination measured anywhere</span></div>
-    <div class="stat"><span class="stat-n">7 <small>of 18</small></span><span class="stat-l">school networks whose route to the test server is the same in both directions. The rest are asymmetric</span></div>
+    <div class="stat"><span class="stat-n">320<small>ms</small></span><span class="stat-l">Zambia's learning platform, hosted on AWS in Oregon. The slowest destination measured</span></div>
+    <div class="stat"><span class="stat-n">7 <small>of 18</small></span><span class="stat-l">school networks whose transit path to the test server is identical in both directions</span></div>
     <div class="stat"><span class="stat-n">21 <small>of 22</small></span><span class="stat-l">countries reaching Wikipedia from Europe or North America, at 37–193&nbsp;ms</span></div>
-    <div class="stat"><span class="stat-n">&lt;25<small>ms</small></span><span class="stat-l">typical AI service latency — Claude, ChatGPT and Gemini are closer than most school content</span></div>
+    <div class="stat"><span class="stat-n">&lt;25<small>ms</small></span><span class="stat-l">median AI service round trip. Claude, ChatGPT and Gemini answer closer than most other destinations measured</span></div>
   </div>
 </section>
 
 <section>
-  <h2>Content sits at three distances, not one</h2>
-  <p>Giga's traceroute studies measure the path from a school to an M-Lab server. What a school opens is somewhere else, and not in one place. We grouped destinations into three layers and measured each from the same probes: the <strong>national learning platform</strong>, <strong>global services</strong> (Google Classroom, Google Search, YouTube, Khan Academy, Wikipedia) and <strong>AI services</strong> (Claude, ChatGPT, Gemini).</p>
+  <h2>Destination latency by content tier</h2>
+  <p>Giga's traceroute studies measure the path between a school and an M-Lab server. The destinations schools open are hosted elsewhere, and at a range of distances. Destinations were grouped into three tiers and each measured from the same probes: the <strong>national learning platform</strong>, <strong>global services</strong> (Google Classroom, Google Search, YouTube, Khan Academy, Wikipedia) and <strong>AI services</strong> (Claude, ChatGPT, Gemini).</p>
   <p>The spread within a single country is often larger than the spread between countries. Botswana reaches global services in 8&nbsp;ms and Wikipedia in 174. Sri Lanka reaches AI services in 4&nbsp;ms and its M-Lab server in 175.</p>
 
   <div class="figure">
     <div class="fig-head"><div>
-      <div class="fig-t">Every layer, and where the test server falls</div>
-      <div class="fig-s">The band spans the closest and furthest destination measured. The vertical bar is the M-Lab test server. Where the bar sits outside the band, the measurement is not sampling any distance a school experiences.</div>
+      <div class="fig-t">Destination latency range, with the test server marked</div>
+      <div class="fig-s">The band spans the closest and furthest destination measured. The vertical bar is the M-Lab test server. Where the bar sits outside the band, the test server's round trip is outside the range of every destination measured in that country.</div>
     </div>
     <div class="legend">
       <span class="lg"><svg width="12" height="12"><path d="M6 1.5 L10.5 9.5 L1.5 9.5 Z" fill="var(--ink-3)"/></svg> Learning platform</span>
@@ -185,8 +186,8 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 </section>
 
 <section>
-  <h2>A ministry's own platform is often the furthest thing away</h2>
-  <p>Of the 17 national learning platforms measured, eight are hosted domestically — on the incumbent carrier or the national research network — and answer in 1 to 24&nbsp;ms. Three sit behind Cloudflare or Google Cloud at 12 to 38&nbsp;ms. Six are hosted on foreign clouds, and for those countries the ministry's own platform is the slowest destination its schools reach.</p>
+  <h2>Where national learning platforms are hosted</h2>
+  <p>Of the 17 national learning platforms measured, eight are hosted domestically — on the incumbent carrier or the national research network — and answer in 1 to 24&nbsp;ms. Three sit behind Cloudflare or Google Cloud at 12 to 38&nbsp;ms. Six are hosted on foreign clouds. In those countries the ministry's own platform is the slowest destination measured.</p>
   <p>South Africa's Department of Basic Education cloud answers in 255&nbsp;ms from South African school networks. From the same probes, Claude answers in 5&nbsp;ms and global services in 27. Zambia's platform is on AWS in Oregon at 320&nbsp;ms; Malawi's on a German host at 196; Kenya's on Microsoft at 139; Benin's on a German host at 135.</p>
 
   <div class="figure">
@@ -201,15 +202,15 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
     </div></div>
     <div class="scroll"><svg id="host" role="img" aria-label="National learning platform latency by hosting location"></svg></div>
   </div>
-  <div class="callout"><p>A domestic test server measures the access link accurately and reports nothing about the path beyond it. In every country above with a foreign-hosted platform, the M-Lab server is domestic or regional — so the reported connectivity figure is good while the platform the ministry built is five to twenty times further away.</p></div>
+  <div class="callout"><p>A domestically hosted test server measures the access link and the path to that server. It does not describe the path to content hosted elsewhere. In every country above with a foreign-hosted platform, the M-Lab server is domestic or regional, and the national platform's round trip is five to twenty times higher.</p></div>
 </section>
 
 <section>
-  <h2>Wikipedia is the outlier everywhere</h2>
-  <p>Google, Anthropic, OpenAI and Fastly have edge capacity close to these schools. Wikimedia does not. In 21 of 22 countries Wikipedia resolves to Amsterdam, Marseille, Singapore or Ashburn, and it is the slowest of the global services in almost every country measured — frequently by an order of magnitude over what the same school reaches Google in.</p>
+  <h2>Wikipedia against the other global services</h2>
+  <p>Google, Anthropic, OpenAI and Fastly serve these countries from edge capacity close to the school networks measured. Wikimedia does not. In 21 of 22 countries Wikipedia resolved to Amsterdam, Marseille, Singapore or Ashburn, and it is the slowest global service measured in almost every country — in several cases by an order of magnitude relative to Google from the same probe.</p>
   <div class="figure">
     <div class="fig-head"><div>
-      <div class="fig-t">Wikipedia against everything else a school opens</div>
+      <div class="fig-t">Wikipedia compared with other destinations</div>
       <div class="fig-s">Each row compares Wikipedia with the median of the other destinations measured in that country. Bars extend from the other-content median to Wikipedia.</div>
     </div></div>
     <div class="scroll"><svg id="wiki" role="img" aria-label="Wikipedia latency compared with other content per country"></svg></div>
@@ -217,8 +218,8 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 </section>
 
 <section>
-  <h2>Which networks carry the schools, and which can be measured</h2>
-  <p>School traffic is not spread evenly across a country's operators. In Namibia one network carries 93% of school traceroutes; in Sri Lanka two carry 85%. Whether a finding about a country is verifiable depends on whether RIPE Atlas has a probe inside those specific networks — and often it does not.</p>
+  <h2>School-serving networks and probe coverage</h2>
+  <p>School traffic is not spread evenly across a country's operators. In Namibia one network carries 93% of school traceroutes; in Sri Lanka two carry 85%. Independent verification of a country-level finding depends on RIPE Atlas holding a probe inside those specific networks. In many cases it does not.</p>
   <div class="figure">
     <div class="fig-head"><div>
       <div class="fig-t">Networks serving schools, and Atlas probe coverage</div>
@@ -233,9 +234,9 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 </section>
 
 <section>
-  <h2>The route out is not the route back</h2>
-  <p>Giga's traceroute exports record the path from the M-Lab server towards the school. We measured the opposite direction — school network to server — from probes inside 18 of the same networks, and compared the transit path excluding the origin.</p>
-  <p>Seven of the 18 traverse an identical sequence of networks both ways. Eleven do not. Sri Lanka's two largest operators both differ: Sri Lanka Telecom shares 40% of its transit between directions and Dialog 25%, meaning findings drawn from the inbound path there describe a route outbound traffic does not take.</p>
+  <h2>Forward and reverse paths</h2>
+  <p>Giga's traceroute exports record the path from the M-Lab server towards the school. We measured the opposite direction, school network to server, from probes inside 18 of the same networks, and compared the transit path excluding the origin.</p>
+  <p>Seven of the 18 traverse an identical sequence of networks both ways. Eleven do not. Sri Lanka's two largest operators both differ: Sri Lanka Telecom shares 40% of its transit networks between directions and Dialog 25%. Findings drawn from the inbound path in those networks do not necessarily describe the outbound path.</p>
   <div class="figure">
     <div class="fig-head"><div>
       <div class="fig-t">Forward and reverse transit, by school network</div>
@@ -263,11 +264,11 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 </section>
 
 <section>
-  <h2>What this bears on</h2>
+  <h2>Implications for traceroute studies</h2>
   <ul>
-    <li><strong>A traceroute finding travels only as far as its server.</strong> Before a routing result is presented as something schools experience, establish where the content in question is hosted.</li>
-    <li><strong>Adding a test server moves the reported numbers.</strong> When M-Lab brought a Kochi server into service in July 2026, 1,123 Sri Lankan schools improved 9.8% on latency and 23.1% on throughput with no change at the schools.</li>
-    <li><strong>Server placement is not neutral between operators.</strong> A server hosted inside one ISP measures that ISP's customers on-net and everyone else across whatever interconnection exists.</li>
+    <li><strong>A traceroute result describes the path to the server it measured.</strong> Where such a result is presented as representative of what schools experience, the hosting location of the relevant content should be established first.</li>
+    <li><strong>Adding a test server moves the reported numbers.</strong> When M-Lab brought a Kochi server into service in July 2026, 1,123 Sri Lankan schools improved 9.8% on latency and 23.1% on throughput with no corresponding change at the schools.</li>
+    <li><strong>Server placement is not neutral between operators.</strong> A server hosted inside one ISP measures that ISP's own customers on-net, and every other operator's customers across whatever interconnection exists between them.</li>
     <li><strong>Where footprint would change what is measured:</strong> Uzbekistan, Kazakhstan and Kyrgyzstan are measured through Pakistan at 226–235&nbsp;ms while their content sits at 70–95. Those three countries account for roughly 10,300 measuring schools.</li>
   </ul>
 </section>
@@ -281,16 +282,16 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 <hr class="rule">
 
 <section>
-  <h2>Annex — whose infrastructure school traffic crosses</h2>
-  <p>Two operators come up repeatedly when school routing is discussed: Arelion (AS1299, formerly Telia Carrier) as a transit carrier, and Equinix as an interconnection venue. They appear in this data in very different ways.</p>
+  <h2>Annex — transit and exchange point exposure</h2>
+  <p>Two operators come up repeatedly when school routing is discussed: Arelion (AS1299, formerly Telia Carrier) as a transit carrier, and Equinix as an interconnection venue. They appear in this dataset in different roles.</p>
 
-  <h3>Arelion carries a third of school networks</h3>
+  <h3>Arelion appears on a third of school networks</h3>
   <p>Of 222 school-serving networks with at least 50 measured paths, <strong>72 — 32% — cross Arelion at some point</strong> between the school and the M-Lab server. It appears in 12 of 25 countries. Moldova is the most exposed, with Arelion on 45.9% of all school paths; Honduras follows at 21.7%, Belize at 14.5% and Albania at 13.5%.</p>
   <p>Exposure is not evenly spread inside a country. In Albania, Telekom Albania routes 95.2% of its school traffic through Arelion while Abissnet, the largest network, routes almost none. Three smaller Albanian networks and one South African satellite operator cross Arelion on 100% of measured paths.</p>
 
   <h3>Equinix appears as an exchange, not as a carrier</h3>
-  <p>Equinix is almost absent as a transit network: only two school networks cross an Equinix autonomous system, across 91 hops in the entire dataset. As an interconnection point it matters considerably more — school traffic in seven countries crosses an Equinix exchange.</p>
-  <p><strong>Fiji is the extreme case: 88.6% of its school paths traverse Equinix Sydney</strong>, making it the single most-crossed exchange in this dataset. Sri Lanka crosses an Equinix exchange on 7.3% of paths, Kazakhstan 6.8% via Equinix Singapore, Belize 5.7% and Honduras 2.0% via Equinix Los Angeles.</p>
+  <p>Equinix is almost absent as a transit network: only two school networks cross an Equinix autonomous system, across 91 hops in the entire dataset. As an interconnection point it appears more often: school traffic in seven countries crosses an Equinix exchange.</p>
+  <p><strong>Fiji has the highest exchange exposure measured: 88.6% of its school paths traverse Equinix Sydney</strong>, the most-crossed exchange in this dataset. Sri Lanka crosses an Equinix exchange on 7.3% of paths, Kazakhstan 6.8% via Equinix Singapore, Belize 5.7% and Honduras 2.0% via Equinix Los Angeles.</p>
 
   <div class="figure">
     <div class="fig-head"><div>
@@ -304,9 +305,9 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
     <div class="scroll"><svg id="infra" role="img" aria-label="Exchange point and Arelion exposure by country"></svg></div>
   </div>
 
-  <h3>The regional exchanges matter more than either</h3>
-  <p>The wider picture is that school traffic in most of these countries does cross an exchange, and usually a regional one. Rwanda routes 95.3% of school paths through KIXP in Nairobi and Kenya 84.5%; Namibia crosses NAPAfrica Cape Town on 71.4% and Lesotho NAPAfrica Johannesburg on 66.6%; Uzbekistan reaches DE-CIX Frankfurt on 64.4%.</p>
-  <p>Albania is the outlier in the other direction. Its most-used exchange, SOX in Serbia, appears on 0.1% of paths — effectively none. An earlier reading of the Albanian and Belizean data alone concluded that school traffic rarely crosses exchange points at all; across all 25 countries that is not the case, and Albania is unusual rather than typical.</p>
+  <h3>Regional exchanges carry more school traffic than either</h3>
+  <p>School traffic in most of these countries does cross an exchange, and usually a regional one. Rwanda routes 95.3% of school paths through KIXP in Nairobi and Kenya 84.5%; Namibia crosses NAPAfrica Cape Town on 71.4% and Lesotho NAPAfrica Johannesburg on 66.6%; Uzbekistan reaches DE-CIX Frankfurt on 64.4%.</p>
+  <p>Albania is the exception. Its most-used exchange, SOX in Serbia, appears on 0.1% of paths. An earlier reading of the Albanian and Belizean data alone indicated that school traffic rarely crosses exchange points; across all 25 countries that does not hold, and Albania is unusual rather than typical.</p>
   <p class="note">Method: an autonomous system is counted as Arelion where the hop's ASN is 1299 or its organisation name matches Arelion or Telia. Exchange crossings use the IXP prefix annotation carried in the traceroute exports, so an exchange whose prefixes are not in that dataset will not appear. Counts are per path — a path crossing an exchange twice counts once.</p>
 </section>
 

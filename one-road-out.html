@@ -30,7 +30,7 @@
 
     --retail:    #5495ff;
     --wholesale: #002d76;
-    --measure: 68ch;
+    --measure: none;   /* body copy spans its container; was a 68ch reading measure */
   }
 
   @media (prefers-color-scheme: dark) {
@@ -294,6 +294,8 @@
   .note { background: var(--surface); border: 1px solid var(--rule);
           border-left: 3px solid var(--accent); border-radius: 2px;
           padding: 1.1rem 1.3rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  /* callouts are boxed already — the paragraph should fill the box, not re-measure inside it */
+  .note p { max-width: none; }
   .note.warn { border-left-color: var(--warning); }
 
   details { background: var(--surface); border: 1px solid var(--rule); border-radius: 2px; }
@@ -326,20 +328,26 @@
     <h1>One Road Out</h1>
     <p class="standfirst">
       In seven of twenty-one countries, a single network carries more than four fifths of
-      the school traffic leaving the country; in Uzbekistan it carries all of it. These
-      figures are computed on the school-filtered subset — not on the raw national traffic
-      across all M-Lab tests in a country, school and non-school — a distinction that
-      changes the magnitudes, and in Malawi changes which company is named.
+      the traffic leaving school networks; in Uzbekistan it carries all of it. These
+      figures are computed on the school-filtered subset of M-Lab's traceroute data — not on the raw traffic
+      across all M-Lab tests in a country, school and non-school.
     </p>
   </header>
 
   <div class="note">
     <p>
-      This is a summary across the countries where enough school tests reveal a path out to
-      support the measure, not an exhaustive account of school routing. Every figure
+      This is a summary across the 21 countries where at least 200<sup>*</sup> school tests
+      show the first network beyond the school&rsquo;s own — an arbitrary threshold, chosen
+      from a gap in the distribution of traces per country. Every figure
       describes traffic observed from M-Lab servers toward schools; routing is commonly
-      asymmetric, so none of it need hold for traffic leaving a school. Six countries are
-      excluded and named, and the limits of each measure are given alongside it.
+      asymmetric, so none of it need hold for traffic leaving a school. 
+      <br>
+      <br>
+      Six countries fall below the threshold and are excluded: Kyrgyzstan (139 tests showing a next network),
+      Grenada (89), Zambia (67), Saint Vincent and the Grenadines (54), Saint Lucia (3) and
+      Congo (0).
+      <br>
+      <sup>*</sup>choosing the right threshold in future versions requires iteration. 
     </p>
   </div>
 
@@ -349,7 +357,12 @@
     <p>
       Each traceroute runs from an M-Lab server toward a school. Walking back from the
       school, the first network beyond its own ISP is that test's <strong>egress
-      operator</strong> — the road out. Concentration is the share of a country's school
+      operator</strong> — the network its provider hands to. 
+      <br> 
+      That handoff is frequently inside the country: Cogent takes Albanian school traffic from Abissnet in Tirana and
+      carries it out via Belgrade, so egress marks a change of operator. 
+      <br>
+      Concentration is the share of a country's school
       tests taking the same road, summarised by the Herfindahl-Hirschman Index over
       egress operators, where 1.0 means one operator carries everything.
     </p>
@@ -371,8 +384,13 @@
       </div>
       <figcaption>
         Where the largest "egress operator" is the network the M-Lab server itself sits in
-        (flagged), the figure describes where the measurement lives, not a transit market
-        the country chose. Six countries are affected — South Africa, Kenya, Fiji, Botswana, Mongolia and Benin — and are marked ⚑ in every view here.
+        (flagged), the figure describes where the measurement route lives, not a transit market.
+        Six countries — South Africa, Kenya, Fiji, Botswana, Mongolia and Benin — see this behaviour and are marked ⚑ in every view here.
+        <br>
+        <br>
+        In these countries, the M-Lab servers are hosted in a network the school ISP reachers in a single hop - for example, 
+        Vodafone Fiji hands straight to REANNZ at Equinix Sydney, where the server is hosted. For these networks, we don't have a measured of 
+        who carries international traffic, as the server is just one hop away.
       </figcaption>
     </figure>
   </section>
@@ -407,11 +425,16 @@
     <h2>Many sellers, one road</h2>
     <p>
       Two different markets sit behind a school's connection. The <strong>retail</strong>
-      market is who sells it a line — measured here over distinct schools served, so a
-      school that tests often does not outweigh one that tests rarely. The
-      <strong>wholesale</strong> market is who carries that traffic out of the country.
+      market is who sells to a school — measured here over distinct schools served. The
+      <strong>wholesale</strong> market is who the school&rsquo;s provider hands that traffic to.
       Both are shown as the reciprocal of HHI: the number of equally-sized providers the
       market behaves like.
+      <br>
+      <br>
+      The <i>effective</i> number of providers is a size-weighted count. It discounts each provider
+      by how small its share is - in Albania for example, there are 19 operators carring traffic, 
+      but it is weighted to 1.45 because Cogent carries 82% of it. 1/HHI gives a size-weighted count
+       - how many equal-sized providers would produce the concentration actually observerd. 
     </p>
     <figure>
       <div>
@@ -423,15 +446,24 @@
       <div class="legend">
         <span><span class="swatch" style="background:var(--retail);border-radius:50%"></span>Retail — ISPs selling to schools</span>
         <span><span class="swatch" style="background:var(--wholesale);border-radius:50%"></span>Wholesale — operators carrying traffic out</span>
-        <span><span class="swatch" style="background:var(--warning);border-radius:50%"></span>⚑ Wholesale figure describes the measurement host</span>
       </div>
       <figcaption>
+        Fifteen countries are shown. The six whose largest egress operator is the network
+        hosting the M-Lab server — South Africa, Kenya, Mongolia, Botswana, Fiji and Benin —
+        are left out here: their wholesale figure describes where the server sits.
+        <br>
+        <br>
         Albania is the extreme: 46 ISPs sell to its schools, behaving like 11.3 equal
-        competitors, while its road out behaves like 1.45. Four of the five widest gaps —
-        South Africa, Kenya, Mongolia, Botswana — are countries whose top egress is the
-        measurement host, so their wholesale figure is partly where M-Lab put the server.
-        Albania and Malawi are the clean cases. Four countries run the other way — Dominica, Montenegro,
-        Moldova and Bosnia have more competition on the road out than in the shop.
+        competitors, while its egress appears to be concentrated, weighted to 1.45. 
+        <br> 
+        Malawi also sees a large gap between retail and wholesale concentration. Practically one network (WIOCC, a submarine  
+        <br>
+        <br>
+        Four run the other way, with more competition carrying the traffic onward than
+        selling to schools: Moldova (3.97 retail against 4.74 wholesale) and Bosnia
+        (3.48 against 4.19) most clearly. Montenegro and Dominica show the same direction
+        on much thinner evidence — 8% and 50% of their school tests respectively reveal an
+        egress at all.
       </figcaption>
     </figure>
     <div class="note warn">
@@ -593,8 +625,12 @@
         Saint Vincent measures <strong>19.4%</strong> of its connected schools — better coverage
         than Kazakhstan, Namibia or South Africa — but only 54 of its 1,896 traces reveal an
         egress. Saint Lucia: 3 of 461. Zambia: 67 of 6,717. Also excluded: Grenada (89),
-        Kyrgyzstan (139) and Congo (0). Country size is never a reason to exclude; several
-        small states are among the best-covered panels in the set.
+        Kyrgyzstan (139) and Congo (0). The cut is 200 observed egresses, and nothing in the
+        panel falls between 139 and 265 — any threshold in that range yields the same 21
+        countries. At 200 observations a share carries a 95% interval of roughly ±7 points
+        at 50% and ±5 at 85%: adequate for whether one operator carries four fifths, not for
+        separating two countries a few points apart. Country size is never a reason to
+        exclude; several small states are among the best-covered panels in the set.
       </li>
     </ul>
   </section>
@@ -713,7 +749,9 @@ document.querySelectorAll('.cell[data-op]').forEach(cell => {
 });
 
 
-const RW = [...DATA.countries].sort((a, b) => b.gap - a.gap);
+// The six measurement-host countries are excluded here: their wholesale figure
+// describes where the server sits, so it cannot be compared against a retail market.
+const RW = DATA.countries.filter(c => !c.top_is_server).sort((a, b) => b.gap - a.gap);
 
 /* ---- dumbbell ---- */
 const XMAX = 12;

@@ -1,8 +1,15 @@
 # Albania — three routes out of one country
 
+**Scope.** The published export is every NDT client in Albania, not a school
+set: 140,915 traces, of which **94,315 (66.9%) are attributable to a
+Giga-registered school** by test ID. Every figure below uses that school subset
+only. The excluded third sits on the same networks — Albtelecom, Abissnet,
+ABCOM and Telekom Albania lead it — so including it shifts the country
+aggregates slightly (median RTT 28.7 ms on schools against 32.3 on everything).
+
 Albania has no domestic M-Lab server. Every school measurement crosses the
-border, and **96.7% of a school's round-trip time accrues outside the country**:
-a median 1.05 ms domestic against 34.38 ms international. Nothing a national
+border, and **96% of a school's round-trip time accrues outside the country**:
+a median 1.15 ms domestic against 30.4 ms international. Nothing a national
 operator does to its own network can touch the other 97%.
 
 The destination is Podgorica, about 130 km from Tirana.
@@ -229,8 +236,8 @@ routing as its own policy object.
 
 ## Why the routes are long in the first place
 
-Across 1.16 million observed hops, **83 cross a known internet exchange point —
-0.007%**. There is effectively no exchange-point interconnection on these
+Across 1.04 million observed school hops, **59 cross a known internet exchange
+point — 0.006%**. There is effectively no exchange-point interconnection on these
 paths. With nowhere regional to hand traffic off, it goes to a Tier-1 and
 travels. Two countries gate the common route: Montenegro is entered from
 Croatia on 93.4% of paths, and Croatia from Serbia on 81.9%.
