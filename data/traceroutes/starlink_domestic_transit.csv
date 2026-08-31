@@ -1,37 +1,10 @@
-cc,country,kind,traces,touches_domestic_pct,handoff_domestic_pct,handoff_n
-AL,Albania,starlink,94,0.0,0.0,94
-AL,Albania,terrestrial,140821,73.6,,0
-BA,Bosnia and Herzegovi,terrestrial,137635,62.7,,0
-BJ,Benin,terrestrial,810,99.5,,0
-BW,Botswana,starlink,4346,0.0,0.0,4321
-BW,Botswana,terrestrial,17304,29.8,,0
-BZ,Belize,terrestrial,13993,37.6,,0
-CG,Congo (Brazzaville),terrestrial,105,5.7,,0
-DM,Dominica,terrestrial,1529,49.5,,0
-FJ,Fiji,starlink,8512,0.0,0.0,8204
-FJ,Fiji,terrestrial,66634,63.7,,0
-GD,Grenada,terrestrial,136,72.8,,0
-HN,Honduras,terrestrial,10384,28.9,,0
-KE,Kenya,starlink,6750,100.0,99.8,6710
-KE,Kenya,terrestrial,56895,99.9,,0
-KG,Kyrgyzstan,terrestrial,502,84.1,,0
-KZ,Kazakhstan,starlink,10717,99.8,82.4,3132
-KZ,Kazakhstan,terrestrial,57567,94.3,,0
-LC,Saint Lucia,terrestrial,612,1.1,,0
-LK,Sri Lanka,terrestrial,318551,80.8,,0
-LS,Lesotho,starlink,82,0.0,0.0,75
-LS,Lesotho,terrestrial,1596,58.1,,0
-MD,Republic of Moldova,terrestrial,32766,86.1,,0
-ME,Montenegro,terrestrial,94555,97.8,,0
-MN,Mongolia,starlink,7831,89.3,0.0,7825
-MN,Mongolia,terrestrial,101567,100.0,,0
-MW,Malawi,starlink,20092,0.0,0.0,14422
-MW,Malawi,terrestrial,8119,6.3,,0
-NA,Namibia,terrestrial,40678,96.7,,0
-RW,Rwanda,starlink,133,0.0,0.0,126
-RW,Rwanda,terrestrial,5135,69.3,0.0,21
-TT,Trinidad and Tobago,terrestrial,5206,84.1,,0
-UZ,Uzbekistan,terrestrial,86166,99.9,,0
-VC,Saint Vincent and th,terrestrial,2435,12.7,,0
-ZA,South Africa,terrestrial,85167,99.9,,0
-ZM,Zambia,terrestrial,12967,9.1,,0
+cc,country,traces,server_domestic_pct,unreadable_pct,readable,domestic_handoff_pct
+AL,Albania,94,0.0,0.0,94,0.0
+BW,Botswana,4346,0.0,78.5,908,0.0
+FJ,Fiji,8512,0.0,0.1,8194,0.0
+KE,Kenya,6750,96.4,85.2,961,100.0
+KZ,Kazakhstan,10717,0.0,0.0,3132,82.4
+LS,Lesotho,82,0.0,86.6,4,0.0
+MN,Mongolia,7831,89.3,2.1,7662,0.0
+MW,Malawi,20092,0.0,40.2,6355,0.0
+RW,Rwanda,133,0.0,88.7,8,0.0

@@ -337,23 +337,28 @@ def within_school_verdict(comparison: pd.DataFrame) -> dict:
 
 def domestic_transit(tr: pd.DataFrame, country_iso2: str) -> dict:
     """
-    Whether traffic ever crosses a network inside its own country.
+    Does school traffic enter its own country's internet, or leave without
+    touching it?
 
-    Two measures, and they answer different questions. `touches_domestic_pct`
-    is whether any hop that is not Starlink's own network geolocates to the
-    home country — traffic can satisfy this on the way *back* into the country
-    after leaving it. `handoff_domestic_pct` is whether the first hop after
-    Starlink is domestic, which is where the ground station is and therefore
-    whether the traffic enters the national internet at all.
+    Only the hop where Starlink hands traffic over answers this, and only when
+    something is observable there. Two cases make it unreadable and are
+    excluded rather than counted:
 
-    Mongolia separates them: 89% of its Starlink traces touch a Mongolian
-    network, but 0% hand off inside Mongolia. The traffic goes to Tokyo first
-    and comes back for a domestic server.
+    * the hand-off hop *is* the destination's own network, so nothing sits
+      between the ground station and the server to see;
+    * the AS path is two networks long, which is the same situation.
 
-    Both rest on hop geolocation, which is imperfect — a domestic operator's
-    routers sometimes geolocate abroad, which understates the domestic share.
-    Read the Starlink figure against the terrestrial figure for the same
-    country rather than against 100%.
+    Counting any domestic hop anywhere in the path — an earlier version of this
+    function did — measures the wrong thing. Where the M-Lab server is itself
+    domestic, the hops near it are the destination's own network and have
+    nothing to do with the school's uplink. Mongolia reads 89% on that measure
+    and 0% here: its domestic hops sit at position 0.20 of the path, the server
+    end, while the school's traffic leaves for Tokyo without touching a
+    Mongolian network. Kazakhstan is the reverse, with its domestic hops at
+    position 0.85, the school end, and a server in Pakistan.
+
+    `unreadable_pct` is part of the answer, not a footnote: Kenya is 85%
+    unreadable because its server sits one hop from the ground station.
     """
     def _is_starlink_hop(hop) -> bool:
         asn = hop.get("associated_asn")
@@ -361,38 +366,46 @@ def domestic_transit(tr: pd.DataFrame, country_iso2: str) -> dict:
         return asn == 14593 or "space explor" in org or "starlink" in org
 
     home = country_iso2.upper()
-    traces = touched = handoff_total = handoff_domestic = 0
+    traces = readable = domestic = unreadable = 0
     networks: dict[tuple, int] = {}
 
-    for hops in tr["forward_updated_node_details"]:
+    for hops, destination_asn in zip(tr["forward_updated_node_details"], tr["dst_asn"]):
         sequence = list(hops if hops is not None else [])
         if not sequence:
             continue
         traces += 1
 
-        domestic = [h for h in sequence
-                    if not _is_starlink_hop(h) and (h.get("cc") or "").upper() == home]
-        if domestic:
-            touched += 1
-            for hop in domestic[:3]:
-                key = (hop.get("associated_org") or "unknown", hop.get("place"))
-                networks[key] = networks.get(key, 0) + 1
+        as_path = []
+        for hop in sequence:
+            asn = hop.get("associated_asn")
+            if asn and (not as_path or as_path[-1] != asn):
+                as_path.append(asn)
 
-        seen_starlink = False
-        for hop in sequence[::-1]:
+        handoff, seen_starlink = None, False
+        for hop in sequence[::-1]:          # stored server-to-client; walk outward
             if _is_starlink_hop(hop):
                 seen_starlink = True
             elif seen_starlink:
-                handoff_total += 1
-                handoff_domestic += (hop.get("cc") or "").upper() == home
+                handoff = hop
                 break
+        if handoff is None:
+            continue
+
+        if handoff.get("associated_asn") == destination_asn or len(as_path) <= 2:
+            unreadable += 1
+            continue
+
+        readable += 1
+        if (handoff.get("cc") or "").upper() == home:
+            domestic += 1
+            key = (handoff.get("associated_org") or "unknown", handoff.get("place"))
+            networks[key] = networks.get(key, 0) + 1
 
     top = sorted(networks.items(), key=lambda kv: -kv[1])[:5]
     return {
         "traces": traces,
-        "touches_domestic_pct": round(100 * touched / traces, 1) if traces else None,
-        "handoff_domestic_pct": (round(100 * handoff_domestic / handoff_total, 1)
-                                 if handoff_total else None),
-        "handoff_traces": handoff_total,
-        "domestic_networks": [{"org": o, "place": p, "hops": n} for (o, p), n in top],
+        "unreadable_pct": round(100 * unreadable / traces, 1) if traces else None,
+        "readable_traces": readable,
+        "domestic_handoff_pct": round(100 * domestic / readable, 1) if readable else None,
+        "domestic_networks": [{"org": o, "place": p, "traces": n} for (o, p), n in top],
     }
