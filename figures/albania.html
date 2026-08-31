@@ -169,6 +169,29 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
 </section>
 
 <section>
+  <p class="eyebrow">Egress</p>
+  <h2>Which company carries schools out of the country</h2>
+  <p>Walking back from each school, the first network beyond its own provider is that test's
+  egress operator. Counting schools rather than tests changes the picture substantially, because
+  Albania averages 105 tests per school and the heaviest measurers are not evenly spread.</p>
+  <div class="fig">
+    <p class="fig-t">Share of Albanian schools' egress, by operator</p>
+    <p class="fig-s">Each school carries the same weight however often it tested, and that
+    weight is split across the operators its own tests used. The lighter marks show the same
+    shares counting tests instead. 476 schools, 50,104 tests.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--r2)"></i>by school</span>
+      <span><i class="sw" style="background:var(--r2);opacity:.32"></i>by test</span>
+    </div>
+    <div id="c-egress"></div>
+    <p class="note">Cogent is the way out for 53.2% of schools and 82.4% of tests. The
+    school-weighted Herfindahl-Hirschman index across egress operators is 0.33. Grouping
+    operators by company rather than ASN — which matters elsewhere, where one company holds
+    several — moves Albania by 0.001, since its only split company, Vodafone, carries 2.5%.</p>
+  </div>
+</section>
+
+<section>
   <p class="eyebrow">Within one network</p>
   <h2>Abissnet across two upstreams</h2>
   <p>Abissnet carries 43,101 school traces across two upstreams to the same server, and 183
@@ -183,8 +206,9 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
     Arelion. The ribbon carries the countries each path crosses.</p>
     <div id="c-flow"></div>
     <p class="note">Ribbon width follows trace volume, with the thinner path widened to stay
-    legible — Arelion carries 7.7% of school traces but reaches 184 of Abissnet's 226 schools,
-    so most of the network's schools are seen on the long path at some point.</p>
+    legible. Ribbon shares are school-weighted like the rest of the page; counting tests gives
+    92.3 / 7.7 rather than 92.4 / 7.6, so the two agree here. Arelion reaches 184 of Abissnet's
+    226 schools despite carrying under a tenth of the traffic.</p>
   </div>
   <div class="fig">
     <p class="fig-t">What the longer route costs the same school</p>
@@ -310,11 +334,18 @@ const D={
  direct:[{m:'Mar',v:0.0,n:68},{m:'Apr',v:2.5,n:159},{m:'May',v:4.0,n:299},
          {m:'Jun',v:4.4,n:293},{m:'Jul',v:6.3,n:174}],
  area:[{n:'Urban',s:178,dl:84.3,ul:72.3,lat:28},{n:'Rural',s:212,dl:35.7,ul:19.1,lat:33}],
+ egress:[{op:'Cogent Communications',sc:53.2,te:82.4,n:291},
+         {op:'Arelion Sweden',sc:19.2,te:8.5,n:294},
+         {op:'Albanian Telecom. Union',sc:6.9,te:3.1,n:38},
+         {op:'Crnogorski Telekom',sc:5.3,te:1.5,n:32},
+         {op:'ONE Albania',sc:3.2,te:1.5,n:27},
+         {op:'Vodafone',sc:2.5,te:0.5,n:17},
+         {op:'Telecom Italia',sc:2.2,te:0.4,n:35}],
  flow:{total:49191,
    lanes:[{up:'Cogent',asn:'AS174',n:39715,sch:225,rtt:26.5,km:1250,
-           via:['RS','HR'],pct:92.3,c:'--r2'},
+           via:['RS','HR'],pct:92.4,c:'--r2'},
           {up:'Arelion',asn:'AS1299',n:3295,sch:184,rtt:64.1,km:3030,
-           via:['IT','DE','AT','HR'],pct:7.7,c:'--r3'}]},
+           via:['IT','DE','AT','HR'],pct:7.6,c:'--r3'}]},
  ndt:[{k:'Latency',a:26.0,b:64.0,u:'ms',d:'+37.0 ms',pen:142,w:99,p:'6e-23'},
       {k:'Retransmission',a:4.55,b:6.87,u:'%',d:'+1.53 pts',pen:34,w:75,p:'6e-11'},
       {k:'Upload',a:81.6,b:60.0,u:'Mb/s',d:'−2.08 Mb/s',pen:3,w:80,p:'3e-11'},
@@ -429,6 +460,32 @@ const W=()=>Math.min(1000,document.querySelector('.wrap').clientWidth-52);
   lgx.innerHTML='<span><i class="sw" style="background:var(--r1)"></i>Urban (178 schools)</span>'+
                 '<span><i class="sw" style="background:var(--r3)"></i>Rural (212 schools)</span>';
   document.getElementById('c-area').parentNode.insertBefore(lgx,document.getElementById('c-area'));
+})();
+
+/* 3b — egress operators, school vs test weighted */
+(function(){
+  const E=D.egress,w=W(),pad=176,rp=118,bw=w-pad-rp,rh=34,h=E.length*rh+30;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`});
+  const max=90, X=v=>pad+bw*v/max;
+  [0,25,50,75].forEach(v=>{
+    s.appendChild(el('line',{x1:X(v),x2:X(v),y1:0,y2:h-26,class:'gl'}));
+    const t=el('text',{x:X(v),y:h-8,class:'tick','text-anchor':'middle'});
+    t.textContent=v+'%';s.appendChild(t);
+  });
+  E.forEach((d,i)=>{
+    const y=i*rh;
+    const t=el('text',{x:0,y:y+18,class:'lbl'});t.textContent=d.op;s.appendChild(t);
+    const rt=el('rect',{x:pad,y:y+4,width:Math.max(1.5,X(d.te)-pad),height:20,rx:3,
+      fill:'var(--r2)','fill-opacity':.32});
+    hov(rt,`<b>${d.op}</b><br>${d.te}% counting tests`);s.appendChild(rt);
+    const rs=el('rect',{x:pad,y:y+8,width:Math.max(1.5,X(d.sc)-pad),height:12,rx:3,
+      fill:'var(--r2)'});
+    hov(rs,`<b>${d.op}</b><br>${d.sc}% counting schools · ${d.n} schools<br>`+
+           `${d.te}% counting tests`);s.appendChild(rs);
+    const v=el('text',{x:X(Math.max(d.sc,d.te))+10,y:y+18,class:'val'});
+    v.textContent=`${d.sc}%`;s.appendChild(v);
+  });
+  document.getElementById('c-egress').appendChild(s);
 })();
 
 /* 4a — flow: one network, two upstreams */

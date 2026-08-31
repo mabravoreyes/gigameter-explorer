@@ -59,7 +59,7 @@ import numpy as np
 import pandas as pd
 
 from join_schools import attach_schools, school_index
-from load_traceroutes import load_traceroutes
+from load_traceroutes import _NO_REPLY_RTT, load_traceroutes
 
 _ROOT = Path(__file__).resolve().parent.parent
 _REFERENCE = json.loads((Path(__file__).resolve().parent / "country_reference.json").read_text())
@@ -309,6 +309,89 @@ def arm_purity(frame: pd.DataFrame) -> dict:
     if not len(other):
         return {"shared_ip_pct": np.nan}
     return {"shared_ip_pct": round(100 * other.isin(school_ips).mean(), 1)}
+
+
+def path_features(frame: pd.DataFrame) -> pd.DataFrame:
+    """
+    Per-trace route shape and where the latency sits, for one country.
+
+    Needs `forward_updated_node_details`, so the caller must have loaded it -
+    `arm_frame` leaves it out by default because it is the heavy column.
+
+    Hop RTTs are cumulative from the M-Lab server, so the walk splits each
+    round trip in two at the point the path enters the client's own ASN:
+
+    * `border_ms` - the last responding hop still outside the client network.
+      Everything the server, the transit chain and the peering cost.
+    * `tail_ms`   - the final responding hop minus that. What the client's own
+      network adds after the hand-off.
+
+    That split is what separates a routing difference from an access-side one.
+    Two arms on the same route with the same `border_ms` and different
+    `tail_ms` differ inside the access network, not on the way to it.
+
+    Out-of-order router replies can make `tail_ms` negative; they are kept
+    rather than clamped so the median is not biased upward, and the median is
+    what should be read.
+    """
+    rows = []
+    for record in frame.to_dict("records"):
+        hops = record.get("forward_updated_node_details")
+        client = record["src_asn"]
+        path, border, final, entered = [], np.nan, np.nan, False
+        for hop in hops if hops is not None else []:
+            asn, rtt = hop.get("associated_asn"), hop.get("rtts")
+            if asn and (not path or path[-1] != asn):
+                path.append(asn)
+            if rtt is None or rtt == _NO_REPLY_RTT:
+                continue
+            if asn == client:
+                entered, final = True, rtt
+            elif not entered:
+                border = rtt
+        rows.append({
+            "id": record["id"], "arm": record["arm"],
+            "src_asn": client, "dst_site": record["dst_site"],
+            "daypart": record["daypart"], "weekend": record["weekend"],
+            "path": ">".join(str(a) for a in path),
+            "path_len": len(path),
+            "first_transit": path[-2] if len(path) >= 2 and path[-1] == client else None,
+            "border_ms": border,
+            "tail_ms": (final - border) if np.isfinite(border) and np.isfinite(final) else np.nan,
+            "forward_distance": record.get("forward_distance"),
+        })
+    return pd.DataFrame(rows)
+
+
+def path_contrast(features: pd.DataFrame, keys: list[str] | None = None,
+                  min_n: int = 30) -> pd.DataFrame:
+    """
+    Arm-by-arm route and latency-split summary for each cell.
+
+    `same_top_path` answers the routing question directly: whether the two arms'
+    most-travelled AS path is the same string. Where it is, and the border
+    latency matches, a gap in `tail_ms` cannot be the route.
+    """
+    keys = keys or PAIR + CLOCK
+    grouped = features.groupby(keys + ["arm"], observed=True)
+    summary = grouped.agg(
+        n=("id", "size"),
+        border_ms=("border_ms", "median"),
+        tail_ms=("tail_ms", "median"),
+        path_len=("path_len", "median"),
+        distance=("forward_distance", "median"),
+    )
+    top = grouped["path"].agg(lambda s: s.value_counts().idxmax() if len(s.dropna()) else None)
+    share = grouped["path"].agg(
+        lambda s: round(100 * s.value_counts(normalize=True).iloc[0], 1) if len(s.dropna()) else np.nan)
+    summary["top_path"], summary["top_path_pct"] = top, share
+
+    wide = summary.unstack("arm")
+    counts = wide["n"].reindex(columns=["school", "unattributed"]).fillna(0)
+    wide = wide[(counts["school"] >= min_n) & (counts["unattributed"] >= min_n)]
+    wide[("same_top_path", "")] = (
+        wide[("top_path", "school")] == wide[("top_path", "unattributed")])
+    return wide
 
 
 def country_rows(country: str, data_root: Path | str | None = None,

@@ -180,6 +180,19 @@
   .fill { position: absolute; inset: 0 auto 0 0; background: var(--accent);
           border-radius: 2px 4px 4px 2px; }
   .fill.host { background: var(--warning); }
+  .ci { position: absolute; top: 50%; height: 2px; transform: translateY(-50%);
+        background: var(--ink); opacity: .8; pointer-events: none;
+        outline: 1px solid rgba(255,255,255,.75); }
+  .ci::before, .ci::after { content: ""; position: absolute; top: -4px;
+        width: 2px; height: 10px; background: var(--ink);
+        outline: 1px solid rgba(255,255,255,.75); }
+  .ci::before { left: 0; }
+  .ci::after  { right: 0; }
+  .ci-key { display: inline-block; width: 1.5rem; height: 2px; background: var(--ink);
+            opacity: .8; vertical-align: 3px; margin-right: 0.4rem; position: relative; }
+  .ci-key::before, .ci-key::after { content: ""; position: absolute; top: -4px;
+            width: 2px; height: 10px; background: var(--ink); opacity: .8; }
+  .ci-key::before { left: 0; } .ci-key::after { right: 0; }
   .bar-lab {
     position: absolute; top: 50%; transform: translateY(-50%); left: 8px;
     font-size: 0.75rem; font-family: "Open Sans", sans-serif; color: #fff;
@@ -257,7 +270,6 @@
   .sec-track { position: relative; height: 16px; background: var(--track); border-radius: 2px; }
   .sec-fill { position: absolute; inset: 0 auto 0 0; background: var(--accent);
               border-radius: 2px 4px 4px 2px; }
-  .sec-fill.thin { background: var(--critical); }
   .sec-ref { position: absolute; top: -3px; bottom: -3px; width: 1px;
              background: var(--ink-3); opacity: .55; }
 
@@ -327,8 +339,10 @@
     <div class="kicker">Giga Meter · 21 countries · traceroute + school join</div>
     <h1>One Road Out</h1>
     <p class="standfirst">
-      In seven of twenty-one countries, a single network carries more than four fifths of
-      the traffic leaving school networks; in Uzbekistan it carries all of it. These
+      In two of twenty-one countries, a single company is the way out for more than four fifths of
+      the schools whose route out can be seen at all — Uzbekistan, where it is the only company
+      observed, and Benin, where eleven schools were measured. Only two thirds of the schools
+      in this panel have a route that can be seen; every figure here is conditioned on that. Counting tests rather than schools put that figure at seven. These
       figures are computed on the school-filtered subset of M-Lab's traceroute data — not on the raw traffic
       across all M-Lab tests in a country, school and non-school.
     </p>
@@ -347,7 +361,7 @@
       Grenada (89), Zambia (67), Saint Vincent and the Grenadines (54), Saint Lucia (3) and
       Congo (0).
       <br>
-      <sup>*</sup>choosing the right threshold in future versions requires iteration. 
+      <i><sup>*</sup>choosing the right threshold in future versions requires iteration</i>. 
     </p>
   </div>
 
@@ -359,28 +373,56 @@
       school, the first network beyond its own ISP is that test's <strong>egress
       operator</strong> — the network its provider hands to. 
       <br> 
+      <br>
       That handoff is frequently inside the country: Cogent takes Albanian school traffic from Abissnet in Tirana and
       carries it out via Belgrade, so egress marks a change of operator. 
       <br>
+      <br>
       Concentration is the share of a country's school
-      tests taking the same road, summarised by the Herfindahl-Hirschman Index over
-      egress operators, where 1.0 means one operator carries everything.
+      schools taking the same road, summarised by the Herfindahl-Hirschman Index, where
+      1.0 means one company is the way out for all of them.
+      <br>
+      <br>
+      Each school carries the same weight however often it tested, and that weight is split
+      across the operators its own tests actually used. Without this a single heavy-measuring
+      school can outvote a hundred others: Albania averages 105 tests per school, and counting
+      tests rather than schools put Cogent at 82.4% instead of 53.2%. Shares are aggregated by
+      company rather than by ASN, since one company can hold several — Kazakhtelekom does, and
+      counting its ASNs separately made Kazakhstan look almost twice as competitive as it is.
     </p>
   </section>
+
+  <div class="note warn">
+    <h3>Everything here is conditioned on being able to see a route</h3>
+    <p>
+      A traceroute that stops inside a school&rsquo;s own network shows no next operator, so that
+      school contributes nothing to any figure on this page. Across the panel that is
+      <strong>4,726 of 13,720 schools</strong> — Uzbekistan can see a route for 2,800 of its
+      6,167, Albania for 476 of 854, Botswana for 70 of 131.
+    </p>
+    <p>
+      Those schools are not missing at random: truncation follows the operator, so an ISP whose
+      equipment does not answer traceroute disappears from its country&rsquo;s figures entirely.
+      Every share below is therefore a ceiling. If every unseen school used a different company,
+      Uzbekistan&rsquo;s 100% would be 45.4%, South Africa&rsquo;s 78.3% would be 44.0%, and
+      Albania&rsquo;s 53.2% would be 29.7%.
+    </p>
+  </div>
 
   <section>
     <div class="eyebrow">Centrality</div>
     <h2>Where one network carries almost everything</h2>
     <figure>
       <div>
-        <div class="fig-title">Share of school egress carried by the single largest operator</div>
-        <div class="fig-sub">Percent of attributed school tests with an observed egress, all published months</div>
+        <div class="fig-title">Share of schools whose way out is the single largest company</div>
+        <div class="fig-sub">Each school counts once, its weight split across the operators its own tests used</div>
       </div>
       <div class="bars" id="bars"></div>
       <div class="axis"><div></div><div class="ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100%</span></div><div></div></div>
       <div class="legend">
         <span><span class="swatch" style="background:var(--accent)"></span>Commercial or state operator</span>
         <span><span class="swatch" style="background:var(--warning)"></span>⚑ The network hosting the measurement server</span>
+        <span><span class="ci-key"></span>95% interval — how far the estimate could move on a different sample of schools</span>
       </div>
       <figcaption>
         Where the largest "egress operator" is the network the M-Lab server itself sits in
@@ -400,8 +442,8 @@
     <h2>The same networks recur across borders</h2>
     <figure>
       <div>
-        <div class="fig-title">Operators carrying ≥10% of school egress in more than one country</div>
-        <div class="fig-sub">Cell value is that operator's share of the country's school egress</div>
+        <div class="fig-title">Companies that are the way out for ≥10% of schools in more than one country</div>
+        <div class="fig-sub">Cell value is that company's share of the country's schools</div>
       </div>
       <div class="matrix-wrap"><table class="matrix" id="matrix"></table></div>
       <div class="scale">
@@ -412,9 +454,11 @@
         <span>10% → 100%</span>
       </div>
       <figcaption>
-        Cogent carries a tenth or more of school egress in four countries and 82% of
-        Albania's; Columbus Networks does the same across three in Central America and the
-        Caribbean. A resilience question about those countries is a question about one company.
+        Cogent is the way out for a tenth or more of the schools in four countries, and for
+        53% of Albania's. Columbus Networks does the same in four across Central America and
+        the Caribbean, reaching 65% in both Belize and Trinidad. TENET appears in four
+        southern African countries, though three of those are flagged: it hosts the
+        measurement server there.
       </figcaption>
     </figure>
   </section>
@@ -432,9 +476,10 @@
       <br>
       <br>
       The <i>effective</i> number of providers is a size-weighted count. It discounts each provider
-      by how small its share is - in Albania for example, there are 19 operators carring traffic, 
-      but it is weighted to 1.45 because Cogent carries 82% of it. 1/HHI gives a size-weighted count
-       - how many equal-sized providers would produce the concentration actually observerd. 
+      by how small its share is - in Albania for example, 19 companies are the way out for at
+      least one school, but they weight to 3.03 because Cogent alone is the way out for 53% of
+      them. 1/HHI gives a size-weighted count - how many equal-sized providers would produce
+      the concentration actually observed. 
     </p>
     <figure>
       <div>
@@ -449,21 +494,18 @@
       </div>
       <figcaption>
         Fifteen countries are shown. The six whose largest egress operator is the network
-        hosting the M-Lab server — South Africa, Kenya, Mongolia, Botswana, Fiji and Benin —
+        hosting the M-Lab server — South Africa, Kenya, Botswana, Fiji, Lesotho and Benin —
         are left out here: their wholesale figure describes where the server sits.
         <br>
         <br>
-        Albania is the extreme: 46 ISPs sell to its schools, behaving like 11.3 equal
-        competitors, while its egress appears to be concentrated, weighted to 1.45. 
+        Albania is the extreme: 43 companies sell to its schools, behaving like 7.5 equal
+        competitors, while its egress weights to 3.03. 
         <br> 
-        Malawi also sees a large gap between retail and wholesale concentration. Practically one network (WIOCC, a submarine  
         <br>
-        <br>
-        Four run the other way, with more competition carrying the traffic onward than
-        selling to schools: Moldova (3.97 retail against 4.74 wholesale) and Bosnia
-        (3.48 against 4.19) most clearly. Montenegro and Dominica show the same direction
-        on much thinner evidence — 8% and 50% of their school tests respectively reveal an
-        egress at all.
+        Six run the other way, with more competition carrying the traffic onward than
+        selling to schools: Moldova (3.97 retail against 5.09 wholesale), Bosnia (3.48 against
+        4.57), Dominica (2.03 against 2.94), Honduras (5.42 against 6.18), Belize (1.44
+        against 2.05) and Namibia (1.99 against 2.10).
       </figcaption>
     </figure>
     <div class="note warn">
@@ -478,28 +520,98 @@
       </p>
     </div>
     <div class="note">
-      <h3>Weighted by traffic, Albania&rsquo;s 135 links resolve to 4.2</h3>
+      <h3>Weighted by traffic, Albania&rsquo;s 135 links resolve to 4.9</h3>
       <p>
         Albania's AS-level graph is genuinely complex: 60 networks joined by 135 observed
-        links, which renders as a dense, plural, many-roads picture. Weight those edges by
-        the traffic they actually carry and it collapses.
+        links, which renders as a dense, plural, many-roads picture. Weight those links by the
+        school traffic they actually carry and it collapses to a chain.
       </p>
       <div class="tbl-wrap" style="border:1px solid var(--rule);border-radius:2px">
         <table class="data">
-          <thead><tr><th>Albania, school-filtered</th><th>Edges</th><th>Share of the 135 drawn</th></tr></thead>
+          <thead><tr><th>Albania, school-weighted</th><th>Links</th><th>Share of the 135 drawn</th></tr></thead>
           <tbody>
-            <tr><td>Carry ≥ 50% of traces</td><td>2</td><td>1.5%</td></tr>
-            <tr><td>Carry ≥ 10%</td><td>4</td><td>3.0%</td></tr>
-            <tr><td>Carry ≥ 1%</td><td>12</td><td>8.9%</td></tr>
-            <tr><td>Appear in exactly one trace</td><td>11</td><td>8.1%</td></tr>
+            <tr><td>Carry ≥ 50% of school traffic</td><td>2</td><td>1.5%</td></tr>
+            <tr><td>Carry ≥ 10%</td><td>5</td><td>3.7%</td></tr>
+            <tr><td>Carry ≥ 1%</td><td>20</td><td>14.8%</td></tr>
+            <tr><td>Carry under 1%</td><td>115</td><td>85.2%</td></tr>
           </tbody>
         </table>
       </div>
+      <figure style="margin:0.4rem 0 0;padding:0;border:0;background:none;gap:0.6rem">
+        <svg viewBox="0 0 900 360" role="img" style="max-width:100%;height:auto"
+             aria-label="Albania's AS graph weighted by school traffic: a single chain from the measurement server through Hrvatski Telekom and Cogent carries most of it, while 115 of the 135 observed links are hairlines below one percent.">
+          <defs>
+            <marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L8,4 L0,8 z" fill="currentColor"/>
+            </marker>
+          </defs>
+          <g font-family="Manrope, sans-serif" font-size="12" fill="currentColor">
+            <text x="70" y="24" font-size="11" opacity=".6">MEASUREMENT SERVER</text>
+            <text x="292" y="24" font-size="11" opacity=".6">CROATIA</text>
+            <text x="520" y="24" font-size="11" opacity=".6">INTERNATIONAL TRANSIT</text>
+            <text x="770" y="24" font-size="11" opacity=".6">ALBANIA</text>
+          </g>
+
+          <g stroke="var(--accent)" fill="none" opacity=".85" marker-end="url(#ar)" color="var(--accent)">
+            <line x1="185" y1="170" x2="285" y2="170" stroke-width="27"/>
+            <line x1="415" y1="170" x2="512" y2="128" stroke-width="21"/>
+            <line x1="642" y1="128" x2="762" y2="86"  stroke-width="6.2"/>
+            <line x1="642" y1="128" x2="762" y2="150" stroke-width="4.5"/>
+            <line x1="415" y1="170" x2="512" y2="243" stroke-width="4.2"/>
+          </g>
+          <g stroke="currentColor" fill="none" opacity=".45" marker-end="url(#ar)">
+            <line x1="642" y1="128" x2="762" y2="212" stroke-width="1.2"/>
+            <line x1="642" y1="243" x2="762" y2="250" stroke-width="0.9"/>
+          </g>
+          <g stroke="currentColor" opacity=".2" fill="none">
+            <path d="M642,140 C700,190 720,270 770,300"/><path d="M642,146 C700,210 730,280 790,306"/>
+            <path d="M642,152 C700,230 740,290 810,300"/><path d="M415,182 C520,250 640,300 770,312"/>
+            <path d="M415,188 C520,270 660,310 800,318"/><path d="M642,255 C700,280 720,300 780,318"/>
+          </g>
+
+          <g font-family="Manrope, sans-serif" font-size="12">
+            <g fill="var(--surface)" stroke="currentColor" stroke-width="1.2">
+              <rect x="40"  y="150" width="145" height="40" rx="3"/>
+              <rect x="285" y="150" width="130" height="40" rx="3"/>
+              <rect x="512" y="108" width="130" height="40" rx="3"/>
+              <rect x="512" y="223" width="130" height="40" rx="3"/>
+              <rect x="762" y="66"  width="120" height="40" rx="3"/>
+              <rect x="762" y="130" width="120" height="40" rx="3"/>
+              <rect x="762" y="192" width="120" height="40" rx="3"/>
+            </g>
+            <g fill="currentColor" text-anchor="middle">
+              <text x="112" y="166">Crnogorski</text><text x="112" y="181">Telekom</text>
+              <text x="350" y="166">Hrvatski</text><text x="350" y="181">Telekom</text>
+              <text x="577" y="124">Cogent</text><text x="577" y="139" opacity=".6" font-size="11">AS174</text>
+              <text x="577" y="239">Arelion</text><text x="577" y="254" opacity=".6" font-size="11">AS1299</text>
+              <text x="822" y="82">Abissnet</text><text x="822" y="97" opacity=".6" font-size="11">access ISP</text>
+              <text x="822" y="146">Vodafone</text><text x="822" y="161" opacity=".6" font-size="11">transit</text>
+              <text x="822" y="208">ONE Albania</text><text x="822" y="223" opacity=".6" font-size="11">access ISP</text>
+            </g>
+            <g fill="currentColor" font-size="11" font-weight="600">
+              <text x="235" y="163" text-anchor="middle">91.4%</text>
+              <text x="455" y="132" text-anchor="middle">69.6%</text>
+              <text x="700" y="98"  text-anchor="middle">20.5%</text>
+              <text x="706" y="146" text-anchor="middle">14.9%</text>
+              <text x="452" y="222" text-anchor="middle">13.9%</text>
+              <text x="700" y="182" text-anchor="middle" opacity=".55" font-weight="400">3.8%</text>
+            </g>
+            <text x="770" y="340" fill="currentColor" opacity=".65" font-size="11">
+              115 further links, each below 1% of school traffic
+            </text>
+          </g>
+        </svg>
+        <figcaption style="font-size:0.875rem">
+          Every link observed at least once is drawn in the published topology graph. Here the
+          stroke width is the share of school traffic each carries, and five links carry almost
+          all of it.
+        </figcaption>
+      </figure>
       <p>
-        Ninety-one percent of the edges carry under 1% of the traffic. Weighting them gives an
-        edge HHI of 0.240 — <strong>4.2 effective links out of 135 drawn</strong>. The spine is
-        a single chain: Crnogorski Telekom → Hrvatski Telekom (91.6% of traces) → Cogent
-        (79.2%) → Abissnet (42.3%).
+        Eighty-five percent of the links carry under 1% of school traffic. Weighting them gives
+        an edge HHI of 0.204 — <strong>4.9 effective links out of 135 drawn</strong>. The spine
+        is a single chain: Crnogorski Telekom → Hrvatski Telekom (91.4%) → Cogent (69.6%) →
+        Abissnet (20.5%).
       </p>
       <p>
         A topology graph draws an edge observed once exactly as it draws an edge observed
@@ -516,10 +628,20 @@
       <div class="second" id="second"></div>
       <div class="axis"><div></div><div class="ticks"><span>0</span><span>10</span><span>20</span><span>30%</span></div><div></div></div>
       <figcaption>
-        The line marks 10%. Uzbekistan has no second operator at all — one egress network,
-        nothing else observed. Albania has nineteen egress operators and its second still
-        carries only 8.5%, so a long tail is not a fallback. Rwanda, Bosnia, Mongolia and
-        Montenegro carry a quarter or more on a second road.
+        The line marks 10% — below it, a second company exists but is too small to absorb the
+        load if the first failed. Uzbekistan has no second company at all. Albania has
+        nineteen, and its second, Arelion, is the way out for 19% of schools. Rwanda (30%),
+        Mongolia (31%), Bosnia (31%) and Dominica (31%) carry roughly a third on a second road.
+        <br>
+        <br>
+        Malawi&rsquo;s 6% is a satellite figure rather than a Malawian one: 74% of its schools
+        with an observable path are on Starlink, which hands to a single company in
+        Johannesburg. Its terrestrial operator splits across four upstreams roughly evenly.
+        <br>
+        <br>
+        Every bar counts only schools whose traceroutes reveal a path out — Malawi&rsquo;s 104
+        of 142, Uzbekistan&rsquo;s 2,800 of 6,167. Schools whose paths stop inside their own
+        network are absent, and they are not absent at random.
       </figcaption>
     </figure>
   </section>
@@ -585,8 +707,9 @@
       <p>
         Unfiltered, Malawi's top egress reads as TENET, the South African research network,
         at HHI 0.428. On school traffic it is <strong>West Indian Ocean Cable Company at
-        85.8%</strong>, HHI 0.744. Same country, same months — a different company and
-        nearly double the concentration.
+        76.5%</strong> of schools. Same country, same months, a different company — though
+        74% of those schools are on Starlink, and excluding satellite the figure falls to
+        39.7%.
       </p>
     </div>
     <div class="note">
@@ -620,7 +743,28 @@
         keeps the ones that don't.
       </li>
       <li>
-<strong>Six countries are excluded — for observability, not size.</strong> A country
+<strong>A third of the panel cannot support a point estimate.</strong> Intervals come
+        from resampling schools, the unit of independence. Lesotho has five schools with an
+        observable path and its interval runs from 8% to 82%; Trinidad, Honduras, Dominica,
+        Rwanda, Kenya and Belize all span more than twenty points. Read those as ranges.
+      </li>
+      <li>
+        <strong>Satellite is a different question, and in four countries it dominates.</strong>
+        Starlink is the access network for 74% of Malawi's measured schools, 60% of Lesotho's,
+        39% of Botswana's and 27% of Fiji's. Its egress reflects SpaceX's own peering — in
+        Malawi, 91% hands to WIOCC in Johannesburg — not the country's routing. Excluding
+        satellite schools moves Malawi from 76.5% to 39.7%, and Fiji the other way from 75.2%
+        to 97.0%.
+      </li>
+      <li>
+        <strong>Every figure is a ceiling.</strong> Schools whose traceroutes stop before
+        leaving their own network contribute nothing, and they are not missing at random —
+        truncation follows the operator. Uzbekistan has 2,800 schools with an observable path
+        and 3,367 without; if all of those used a different company its 100% would be 45.4%.
+        South Africa's 78.3% has a floor of 44.0%, Albania's 53.2% a floor of 29.7%.
+      </li>
+      <li>
+        <strong>Six countries are excluded — for observability, not size.</strong> A country
         needs enough tests that reveal an egress to estimate a share distribution at all.
         Saint Vincent measures <strong>19.4%</strong> of its connected schools — better coverage
         than Kazakhstan, Namibia or South Africa — but only 54 of its 1,896 traces reveal an
@@ -651,7 +795,11 @@
     </p>
     <p>
       Egress operator is the first AS beyond the school's own network on the collapsed AS
-      path, equivalent to the "first observed transit" view in the published reports. The
+      path, equivalent to the "first observed transit" view in the published reports. Shares
+      are computed per school, not per test: each school contributes weight 1.0, divided among
+      the operators its own tests used, so measurement volume cannot drive a country's result.
+      ASNs are aggregated to companies by normalised organisation name. Intervals are 95%
+      percentile bootstraps over 400 resamples of schools. The
       other two views those reports carry — first AS outside the country, and first
       foreign-registered AS — need AS registration country, which the exports do not include.
       HHI is computed over tests that yield an egress; tests without one are reported
@@ -663,7 +811,7 @@
 <div id="tip" role="tooltip" aria-hidden="true"></div>
 
 <script>
-const DATA = {"countries":[{"iso":"UZ","name":"Uzbekistan","schools":6167,"traces":76025,"connected":10399,"coverage":59.3,"conn_unknown":0.4,"egress_obs":15793,"egress_cov":20.8,"hhi":1.0,"n_ops":1,"top_org":"\"Uzbektelekom\" Joint Stock Company","top_share":100.0,"top_is_server":false,"second_egress":null,"second_share":0.0,"retail_isps":11,"retail_hhi":0.549,"retail_eff":1.82,"wholesale_eff":1.0,"wholesale_ops":1,"top_isp":"\"Uzbektelekom\" Joint Stock Compa","top_isp_share":72.8,"top_egress":"\"Uzbektelekom\" Joint Stock Company","top_egress_share":100.0,"gap":0.82},{"iso":"BJ","name":"Benin","schools":12,"traces":269,"connected":34,"coverage":35.3,"conn_unknown":88.8,"egress_obs":265,"egress_cov":98.5,"hhi":0.978,"n_ops":3,"top_org":"MTN NIGERIA Communication limited","top_share":98.9,"top_is_server":true,"second_egress":"MTN SA","second_share":0.8,"retail_isps":2,"retail_hhi":0.847,"retail_eff":1.18,"wholesale_eff":1.02,"wholesale_ops":3,"top_isp":"SPACETEL BENIN SA","top_isp_share":91.7,"top_egress":"MTN NIGERIA Communication limited","top_egress_share":98.9,"gap":0.16},{"iso":"ZA","name":"South Africa","schools":178,"traces":10882,"connected":17122,"coverage":1.0,"conn_unknown":5.6,"egress_obs":4033,"egress_cov":37.1,"hhi":0.777,"n_ops":13,"top_org":"TENET (The UNINET Project)","top_share":88.0,"top_is_server":true,"second_egress":"West Indian Ocean Cable Company","second_share":3.3,"retail_isps":34,"retail_hhi":0.134,"retail_eff":7.44,"wholesale_eff":1.29,"wholesale_ops":13,"top_isp":"AS12091","top_isp_share":23.0,"top_egress":"TENET (The UNINET Project)","top_egress_share":88.0,"gap":6.15},{"iso":"MW","name":"Malawi","schools":142,"traces":15582,"connected":1367,"coverage":10.4,"conn_unknown":3.9,"egress_obs":5897,"egress_cov":37.8,"hhi":0.744,"n_ops":11,"top_org":"West Indian Ocean Cable Company","top_share":85.8,"top_is_server":false,"second_egress":"SEACOM Limited","second_share":6.2,"retail_isps":5,"retail_hhi":0.296,"retail_eff":3.38,"wholesale_eff":1.34,"wholesale_ops":11,"top_isp":"Space Exploration Technologies C","top_isp_share":39.1,"top_egress":"West Indian Ocean Cable Company","top_egress_share":85.8,"gap":2.04},{"iso":"KE","name":"Kenya","schools":50,"traces":1897,"connected":443,"coverage":11.3,"conn_unknown":98.5,"egress_obs":1366,"egress_cov":72.0,"hhi":0.724,"n_ops":10,"top_org":"Kenya Education Network","top_share":84.8,"top_is_server":true,"second_egress":"Unwired Communications Limited","second_share":6.3,"retail_isps":17,"retail_hhi":0.15,"retail_eff":6.66,"wholesale_eff":1.38,"wholesale_ops":10,"top_isp":"Safaricom Limited","top_isp_share":28.1,"top_egress":"Kenya Education Network","top_egress_share":84.8,"gap":5.28},{"iso":"BZ","name":"Belize","schools":61,"traces":11595,"connected":274,"coverage":22.3,"conn_unknown":8.6,"egress_obs":3907,"egress_cov":33.7,"hhi":0.737,"n_ops":7,"top_org":"Columbus Networks USA, Inc.","top_share":84.7,"top_is_server":false,"second_egress":"LIBERTY NETWORKS SOLUTIONS MEXICO","second_share":13.7,"retail_isps":6,"retail_hhi":0.694,"retail_eff":1.44,"wholesale_eff":1.36,"wholesale_ops":7,"top_isp":"Belize Telemedia Limited","top_isp_share":82.6,"top_egress":"Columbus Networks USA, Inc.","top_egress_share":84.7,"gap":0.08},{"iso":"AL","name":"Albania","schools":854,"traces":94315,"connected":1085,"coverage":78.7,"conn_unknown":0.0,"egress_obs":50104,"egress_cov":53.1,"hhi":0.688,"n_ops":19,"top_org":"Cogent Communications, LLC","top_share":82.4,"top_is_server":false,"second_egress":"Arelion Sweden AB","second_share":8.5,"retail_isps":46,"retail_hhi":0.088,"retail_eff":11.32,"wholesale_eff":1.45,"wholesale_ops":19,"top_isp":"Abissnet sh.a.","top_isp_share":17.0,"top_egress":"Cogent Communications, LLC","top_egress_share":82.4,"gap":9.87},{"iso":"FJ","name":"Fiji","schools":376,"traces":67692,"connected":902,"coverage":41.7,"conn_unknown":30.8,"egress_obs":26218,"egress_cov":38.7,"hhi":0.531,"n_ops":8,"top_org":"Research and Education Advanced Ne","top_share":70.4,"top_is_server":true,"second_egress":"GSL Networks Pty LTD","second_share":15.1,"retail_isps":5,"retail_hhi":0.286,"retail_eff":3.5,"wholesale_eff":1.88,"wholesale_ops":8,"top_isp":"Vodafone Fiji Limited","top_isp_share":36.5,"top_egress":"Research and Education Advanced Ne","top_egress_share":70.4,"gap":1.62},{"iso":"TT","name":"Trinidad and Tobago","schools":21,"traces":2473,"connected":649,"coverage":3.2,"conn_unknown":0.0,"egress_obs":2186,"egress_cov":88.4,"hhi":0.539,"n_ops":9,"top_org":"Columbus Networks USA, Inc.","top_share":70.0,"top_is_server":false,"second_egress":"Cogent Communications, LLC","second_share":21.6,"retail_isps":5,"retail_hhi":0.368,"retail_eff":2.72,"wholesale_eff":1.86,"wholesale_ops":9,"top_isp":"Telecommunication Services of Tr","top_isp_share":42.4,"top_egress":"Columbus Networks USA, Inc.","top_egress_share":70.0,"gap":0.86},{"iso":"NA","name":"Namibia","schools":80,"traces":11609,"connected":1317,"coverage":6.1,"conn_unknown":0.9,"egress_obs":11579,"egress_cov":99.7,"hhi":0.505,"n_ops":4,"top_org":"Telecom Namibia","top_share":68.6,"top_is_server":false,"second_egress":"Cogent Communications, LLC","second_share":12.5,"retail_isps":4,"retail_hhi":0.504,"retail_eff":1.99,"wholesale_eff":1.98,"wholesale_ops":4,"top_isp":"Telecom Namibia","top_isp_share":66.1,"top_egress":"Telecom Namibia","top_egress_share":68.6,"gap":0.01},{"iso":"LK","name":"Sri Lanka","schools":3252,"traces":149044,"connected":4004,"coverage":81.2,"conn_unknown":0.0,"egress_obs":68912,"egress_cov":46.2,"hhi":0.487,"n_ops":17,"top_org":"Sri Lanka Telecom Ltd","top_share":68.4,"top_is_server":false,"second_egress":"Kerala Vision Broad Band Private L","second_share":9.4,"retail_isps":5,"retail_hhi":0.365,"retail_eff":2.74,"wholesale_eff":2.05,"wholesale_ops":17,"top_isp":"Sri Lanka Telecom Ltd","top_isp_share":50.8,"top_egress":"Sri Lanka Telecom Ltd","top_egress_share":68.4,"gap":0.69},{"iso":"BW","name":"Botswana","schools":131,"traces":16321,"connected":611,"coverage":21.4,"conn_unknown":5.4,"egress_obs":6813,"egress_cov":41.7,"hhi":0.447,"n_ops":11,"top_org":"TENET (The UNINET Project)","top_share":64.5,"top_is_server":true,"second_egress":"BOTSWANA FIBRE NETWORKS (Proprieta","second_share":11.4,"retail_isps":9,"retail_hhi":0.217,"retail_eff":4.61,"wholesale_eff":2.24,"wholesale_ops":11,"top_isp":"Orange Botswana (PTY) Ltd","top_isp_share":28.1,"top_egress":"TENET (The UNINET Project)","top_egress_share":64.5,"gap":2.37},{"iso":"MN","name":"Mongolia","schools":651,"traces":97909,"connected":843,"coverage":77.2,"conn_unknown":0.1,"egress_obs":66352,"egress_cov":67.8,"hhi":0.392,"n_ops":14,"top_org":"Mongolian Technical University, Co","top_share":55.1,"top_is_server":true,"second_egress":"National Data Center","second_share":26.4,"retail_isps":14,"retail_hhi":0.184,"retail_eff":5.42,"wholesale_eff":2.55,"wholesale_ops":14,"top_isp":"MCS Com Co Ltd","top_isp_share":32.1,"top_egress":"Mongolian Technical University, Co","top_egress_share":55.1,"gap":2.87},{"iso":"LS","name":"Lesotho","schools":7,"traces":1077,"connected":249,"coverage":2.8,"conn_unknown":3.2,"egress_obs":796,"egress_cov":73.9,"hhi":0.431,"n_ops":5,"top_org":"West Indian Ocean Cable Company","top_share":51.8,"top_is_server":false,"second_egress":"Discovery Health","second_share":39.6,"retail_isps":3,"retail_hhi":0.34,"retail_eff":2.94,"wholesale_eff":2.32,"wholesale_ops":5,"top_isp":"Econet Telecom Lesotho (PTY) LTD","top_isp_share":40.0,"top_egress":"West Indian Ocean Cable Company","top_egress_share":51.8,"gap":0.62},{"iso":"HN","name":"Honduras","schools":45,"traces":3967,"connected":1522,"coverage":3.0,"conn_unknown":0.0,"egress_obs":1172,"egress_cov":29.5,"hhi":0.239,"n_ops":14,"top_org":"Columbus Networks USA, Inc.","top_share":43.0,"top_is_server":false,"second_egress":"Telecom Italia S.p.A.","second_share":12.7,"retail_isps":14,"retail_hhi":0.184,"retail_eff":5.42,"wholesale_eff":4.18,"wholesale_ops":14,"top_isp":"TELECOMUNICACIONES DE GUATEMALA,","top_isp_share":33.7,"top_egress":"Columbus Networks USA, Inc.","top_egress_share":43.0,"gap":1.24},{"iso":"RW","name":"Rwanda","schools":29,"traces":3249,"connected":2909,"coverage":1.0,"conn_unknown":0.1,"egress_obs":1416,"egress_cov":43.6,"hhi":0.303,"n_ops":8,"top_org":"MTN SA","top_share":41.7,"top_is_server":false,"second_egress":"Airtel Networks Kenya Limited","second_share":29.7,"retail_isps":6,"retail_hhi":0.233,"retail_eff":4.3,"wholesale_eff":3.3,"wholesale_ops":8,"top_isp":"MTN Rwandacell","top_isp_share":27.9,"top_egress":"MTN SA","top_egress_share":41.7,"gap":1.0},{"iso":"MD","name":"Republic of Moldova","schools":79,"traces":26550,"connected":1166,"coverage":6.8,"conn_unknown":0.0,"egress_obs":23128,"egress_cov":87.1,"hhi":0.211,"n_ops":23,"top_org":"Cogent Communications, LLC","top_share":40.2,"top_is_server":false,"second_egress":"Arelion Sweden AB","second_share":13.6,"retail_isps":13,"retail_hhi":0.252,"retail_eff":3.97,"wholesale_eff":4.74,"wholesale_ops":23,"top_isp":"Moldtelecom SA","top_isp_share":37.8,"top_egress":"Cogent Communications, LLC","top_egress_share":40.2,"gap":-0.77},{"iso":"DM","name":"Dominica","schools":11,"traces":1212,"connected":68,"coverage":16.2,"conn_unknown":0.0,"egress_obs":604,"egress_cov":49.8,"hhi":0.328,"n_ops":5,"top_org":"Digicel Jamaica","top_share":38.2,"top_is_server":false,"second_egress":"GTT Communications Inc.","second_share":30.5,"retail_isps":3,"retail_hhi":0.492,"retail_eff":2.03,"wholesale_eff":3.05,"wholesale_ops":5,"top_isp":"SAT TELECOMMUNICATIONS LTD","top_isp_share":62.5,"top_egress":"Digicel Jamaica","top_egress_share":38.2,"gap":-1.02},{"iso":"ME","name":"Montenegro","schools":344,"traces":78854,"connected":460,"coverage":74.8,"conn_unknown":17.1,"egress_obs":6331,"egress_cov":8.0,"hhi":0.276,"n_ops":7,"top_org":"Hrvatski Telekom d.d.","top_share":37.6,"top_is_server":false,"second_egress":"TELEKOM SRBIJA a.d.","second_share":26.3,"retail_isps":5,"retail_hhi":0.378,"retail_eff":2.65,"wholesale_eff":3.63,"wholesale_ops":7,"top_isp":"Crnogorski Telekom a.d.Podgorica","top_isp_share":45.1,"top_egress":"Hrvatski Telekom d.d.","top_egress_share":37.6,"gap":-0.98},{"iso":"BA","name":"Bosnia and Herzegovina","schools":721,"traces":114948,"connected":1522,"coverage":47.4,"conn_unknown":0.0,"egress_obs":71949,"egress_cov":62.6,"hhi":0.238,"n_ops":19,"top_org":"Hrvatski Telekom d.d.","top_share":36.4,"top_is_server":false,"second_egress":"TELEKOM SRBIJA a.d.","second_share":29.6,"retail_isps":15,"retail_hhi":0.287,"retail_eff":3.48,"wholesale_eff":4.19,"wholesale_ops":19,"top_isp":"\"Telekomunikacije Republike Srps","top_isp_share":37.0,"top_egress":"Hrvatski Telekom d.d.","top_egress_share":36.4,"gap":-0.71},{"iso":"KZ","name":"Kazakhstan","schools":509,"traces":49340,"connected":6902,"coverage":7.4,"conn_unknown":0.0,"egress_obs":30502,"egress_cov":61.8,"hhi":0.158,"n_ops":28,"top_org":"JSC Kazakhtelecom","top_share":24.7,"top_is_server":false,"second_egress":"Mezhdugorodnyaya Mezhdunarodnaya T","second_share":21.8,"retail_isps":30,"retail_hhi":0.131,"retail_eff":7.63,"wholesale_eff":6.35,"wholesale_ops":28,"top_isp":"Kar-Tel LLC","top_isp_share":21.0,"top_egress":"JSC Kazakhtelecom","top_egress_share":24.7,"gap":1.28}],"matrix":{"TENET (The UNINET Project)":{"ZA":88.0,"BW":64.5},"West Indian Ocean Cable Company":{"MW":85.8,"LS":51.8},"Columbus Networks USA, Inc.":{"BZ":84.7,"TT":70.0,"HN":43.0,"DM":29.8},"Cogent Communications, LLC":{"AL":82.4,"TT":21.6,"NA":12.5,"MD":40.2},"Arelion Sweden AB":{"HN":11.9,"MD":13.6},"Hrvatski Telekom d.d.":{"ME":37.6,"BA":36.4},"TELEKOM SRBIJA a.d.":{"ME":26.3,"BA":29.6}},"dropped":[{"iso":"CG","name":"Congo (Brazzaville)","schools":2,"traces":35,"connected":10,"coverage":20.0,"conn_unknown":0.0,"egress_obs":0,"egress_cov":0.0},{"iso":"GD","name":"Grenada","schools":9,"traces":119,"connected":154,"coverage":5.8,"conn_unknown":0.0,"egress_obs":89,"egress_cov":74.8},{"iso":"KG","name":"Kyrgyzstan","schools":2,"traces":146,"connected":6,"coverage":33.3,"conn_unknown":99.7,"egress_obs":139,"egress_cov":95.2},{"iso":"LC","name":"Saint Lucia","schools":6,"traces":461,"connected":91,"coverage":6.6,"conn_unknown":0.0,"egress_obs":3,"egress_cov":0.7},{"iso":"VC","name":"Saint Vincent and the Grenadines","schools":18,"traces":1896,"connected":93,"coverage":19.4,"conn_unknown":0.0,"egress_obs":54,"egress_cov":2.8},{"iso":"ZM","name":"Zambia","schools":57,"traces":6717,"connected":2728,"coverage":2.1,"conn_unknown":77.6,"egress_obs":67,"egress_cov":1.0}]};
+const DATA = {"countries":[{"iso":"UZ","name":"Uzbekistan","schools":2800,"schools_total":6167,"unobserved":3367,"connected":10399,"coverage":59.3,"conn_unknown":0.4,"top_org":"\"Uzbektelekom\" Joint Stock Company","share":100.0,"lo":100.0,"hi":100.0,"eff":1.0,"operators":1,"second_org":null,"second_share":0.0,"retail_eff":1.82,"retail_companies":11,"gap":0.82,"top_is_server":false,"starlink_pct":0.0,"terr_share":100.0,"terr_eff":1.0,"bound":45.4,"ops":[["\"Uzbektelekom\" Joint Stock Company",100.0]],"server_org":"N/A","egress_cov":20.8},{"iso":"BJ","name":"Benin","schools":11,"schools_total":12,"unobserved":1,"connected":34,"coverage":35.3,"conn_unknown":88.8,"top_org":"MTN NIGERIA Communication limited","share":99.4,"lo":98.7,"hi":100.0,"eff":1.01,"operators":3,"second_org":"MTN SA","second_share":0.5,"retail_eff":1.18,"retail_companies":2,"gap":0.17,"top_is_server":true,"starlink_pct":0.0,"terr_share":99.4,"terr_eff":1.01,"bound":91.1,"ops":[["MTN NIGERIA Communication limited",99.4],["MTN SA",0.5],["Telecom Italia S.p.A.",0.1]],"server_org":"MTN NIGERIA Communication limite","egress_cov":98.5},{"iso":"ZA","name":"South Africa","schools":100,"schools_total":178,"unobserved":78,"connected":17122,"coverage":1.0,"conn_unknown":5.6,"top_org":"TENET (The UNINET Project)","share":78.3,"lo":70.6,"hi":84.8,"eff":1.61,"operators":13,"second_org":"Vodacom","second_share":6.7,"retail_eff":6.93,"retail_companies":33,"gap":5.32,"top_is_server":true,"starlink_pct":0.0,"terr_share":78.3,"terr_eff":1.61,"bound":44.0,"ops":[["TENET (The UNINET Project)",78.3],["Vodacom",6.7],["Echotel Pty Ltd",4.6],["Google LLC",3.6],["Vodacom Mocambique S.A",3.0],["MTN SA",1.3]],"server_org":"TENET (The UNINET Project)","egress_cov":37.1},{"iso":"MW","name":"Malawi","schools":104,"schools_total":142,"unobserved":38,"connected":1367,"coverage":10.4,"conn_unknown":3.9,"top_org":"West Indian Ocean Cable Company","share":76.5,"lo":71.7,"hi":81.8,"eff":1.68,"operators":11,"second_org":"Vodacom","second_share":6.3,"retail_eff":3.38,"retail_companies":5,"gap":1.7,"top_is_server":false,"starlink_pct":74.0,"terr_share":39.7,"terr_eff":4.04,"bound":56.0,"ops":[["West Indian Ocean Cable Company",76.5],["Vodacom",6.3],["SEACOM Limited",4.8],["Telecom Namibia",3.9],["Discovery Health",3.8],["Liquid Telecommunications Ltd",3.7]],"server_org":"Vodacom Mocambique S.A","egress_cov":37.8},{"iso":"KE","name":"Kenya","schools":38,"schools_total":50,"unobserved":12,"connected":443,"coverage":11.3,"conn_unknown":98.5,"top_org":"Kenya Education Network","share":75.9,"lo":64.9,"hi":86.9,"eff":1.7,"operators":10,"second_org":"Safaricom Limited","second_share":6.7,"retail_eff":5.5,"retail_companies":16,"gap":3.8,"top_is_server":true,"starlink_pct":13.2,"terr_share":73.0,"terr_eff":1.82,"bound":57.7,"ops":[["Kenya Education Network",75.9],["Safaricom Limited",6.7],["Unwired Communications Limited",5.8],["SEACOM Limited",5.0],["Accelerit Technologies PTY LTD",3.0],["Liquid Telecommunications Ltd",2.5]],"server_org":"Kenya Education Network","egress_cov":72.0},{"iso":"FJ","name":"Fiji","schools":244,"schools_total":376,"unobserved":132,"connected":902,"coverage":41.7,"conn_unknown":30.8,"top_org":"Research and Education Advanced Ne","share":75.2,"lo":69.8,"hi":80.3,"eff":1.62,"operators":7,"second_org":"GSL Networks Pty LTD","second_share":22.5,"retail_eff":3.5,"retail_companies":5,"gap":1.88,"top_is_server":true,"starlink_pct":26.6,"terr_share":97.0,"terr_eff":1.06,"bound":48.8,"ops":[["Research and Education Advanced Ne",75.2],["GSL Networks Pty LTD",22.5],["InterNet Services, Telecom Fiji Lt",2.0],["Australian Academic and Research N",0.1],["VOCUS GROUP LIMITED",0.1],["Google LLC",0.0]],"server_org":"Research and Education Advanced ","egress_cov":38.7},{"iso":"ME","name":"Montenegro","schools":228,"schools_total":344,"unobserved":116,"connected":460,"coverage":74.8,"conn_unknown":17.1,"top_org":"Hrvatski Telekom d.d.","share":73.5,"lo":68.6,"hi":79.6,"eff":1.74,"operators":7,"second_org":"Crnogorski Telekom a.d.Podgorica","second_share":18.1,"retail_eff":2.65,"retail_companies":5,"gap":0.91,"top_is_server":false,"starlink_pct":0.0,"terr_share":73.5,"terr_eff":1.74,"bound":48.7,"ops":[["Hrvatski Telekom d.d.",73.5],["Crnogorski Telekom a.d.Podgorica",18.1],["TELEKOM SRBIJA a.d.",5.1],["UNITED GROUP NETWORK INFRASTRUCTUR",2.7],["Drustvo za telekomunikacije \"MTEL\"",0.4],["Serbia BroadBand-Srpske Kablovske ",0.1]],"server_org":"Crnogorski Telekom a.d.Podgorica","egress_cov":8.0},{"iso":"NA","name":"Namibia","schools":80,"schools_total":80,"unobserved":0,"connected":1317,"coverage":6.1,"conn_unknown":0.9,"top_org":"Telecom Namibia","share":66.1,"lo":59.9,"hi":71.9,"eff":2.1,"operators":4,"second_org":"Cogent Communications, LLC","second_share":11.7,"retail_eff":1.99,"retail_companies":4,"gap":-0.11,"top_is_server":false,"starlink_pct":0.0,"terr_share":66.1,"terr_eff":2.1,"bound":66.1,"ops":[["Telecom Namibia",66.1],["Cogent Communications, LLC",11.7],["Google LLC",11.3],["TENET (The UNINET Project)",10.9]],"server_org":"TENET (The UNINET Project)","egress_cov":99.7},{"iso":"BZ","name":"Belize","schools":44,"schools_total":61,"unobserved":17,"connected":274,"coverage":22.3,"conn_unknown":8.6,"top_org":"Columbus Networks USA, Inc.","share":64.8,"lo":51.6,"hi":75.8,"eff":2.05,"operators":7,"second_org":"LIBERTY NETWORKS SOLUTIONS MEXICO","second_share":25.4,"retail_eff":1.44,"retail_companies":6,"gap":-0.61,"top_is_server":false,"starlink_pct":0.0,"terr_share":64.8,"terr_eff":2.05,"bound":46.7,"ops":[["Columbus Networks USA, Inc.",64.8],["LIBERTY NETWORKS SOLUTIONS MEXICO",25.4],["Central TV and Internet Limited",4.1],["UFINET PANAMA S.A.",3.2],["BROADBAND BELIZE LTD",2.3],["Arelion Sweden AB",0.2]],"server_org":"Cogent Communications, LLC","egress_cov":33.7},{"iso":"TT","name":"Trinidad and Tobago","schools":20,"schools_total":21,"unobserved":1,"connected":649,"coverage":3.2,"conn_unknown":0.0,"top_org":"Columbus Networks USA, Inc.","share":64.8,"lo":47.1,"hi":82.0,"eff":2.07,"operators":8,"second_org":"Cogent Communications, LLC","second_share":24.4,"retail_eff":2.72,"retail_companies":5,"gap":0.65,"top_is_server":false,"starlink_pct":0.0,"terr_share":64.8,"terr_eff":2.07,"bound":61.7,"ops":[["Columbus Networks USA, Inc.",64.8],["Cogent Communications, LLC",24.4],["Digicel Jamaica",4.2],["TELEFONICA GLOBAL SOLUTIONS SL",2.6],["Telecommunication Services of Trin",1.9],["Telecom Italia S.p.A.",1.3]],"server_org":"Telecom Italia S.p.A.","egress_cov":88.4},{"iso":"LK","name":"Sri Lanka","schools":3009,"schools_total":3252,"unobserved":243,"connected":4004,"coverage":81.2,"conn_unknown":0.0,"top_org":"Sri Lanka Telecom Ltd","share":63.4,"lo":61.9,"hi":65.1,"eff":2.28,"operators":17,"second_org":"Kerala Vision Broad Band Private L","second_share":15.5,"retail_eff":2.74,"retail_companies":5,"gap":0.46,"top_is_server":false,"starlink_pct":0.0,"terr_share":63.4,"terr_eff":2.28,"bound":58.7,"ops":[["Sri Lanka Telecom Ltd",63.4],["Kerala Vision Broad Band Private L",15.5],["Bharti Airtel Limited",9.8],["NTT America, Inc.",3.6],["Cogent Communications, LLC",3.0],["Reliance Jio Infocomm Pte.Ltd",2.3]],"server_org":"Tata Communications Limited","egress_cov":46.2},{"iso":"AL","name":"Albania","schools":476,"schools_total":854,"unobserved":378,"connected":1085,"coverage":78.7,"conn_unknown":0.0,"top_org":"Cogent Communications, LLC","share":53.2,"lo":48.3,"hi":56.7,"eff":3.03,"operators":19,"second_org":"Arelion Sweden AB","second_share":19.2,"retail_eff":7.46,"retail_companies":43,"gap":4.43,"top_is_server":false,"starlink_pct":0.8,"terr_share":53.6,"terr_eff":3.0,"bound":29.7,"ops":[["Cogent Communications, LLC",53.2],["Arelion Sweden AB",19.2],["Albanian Telecommunications Union ",6.9],["Crnogorski Telekom a.d.Podgorica",5.3],["ONE ALBANIA SH.A.",3.2],["Vodafone Group PLC",2.5]],"server_org":"Crnogorski Telekom a.d.Podgorica","egress_cov":53.1},{"iso":"BW","name":"Botswana","schools":70,"schools_total":131,"unobserved":61,"connected":611,"coverage":21.4,"conn_unknown":5.4,"top_org":"TENET (The UNINET Project)","share":49.8,"lo":40.7,"hi":59.2,"eff":3.26,"operators":11,"second_org":"BOTSWANA FIBRE NETWORKS (Proprieta","second_share":16.8,"retail_eff":4.61,"retail_companies":9,"gap":1.35,"top_is_server":true,"starlink_pct":38.6,"terr_share":40.2,"terr_eff":3.61,"bound":26.6,"ops":[["TENET (The UNINET Project)",49.8],["BOTSWANA FIBRE NETWORKS (Proprieta",16.8],["Paratus Telecommunications Limited",12.8],["Google LLC",8.1],["Telkom SA Ltd.",7.9],["AS327999.0",3.0]],"server_org":"TENET (The UNINET Project)","egress_cov":41.7},{"iso":"RW","name":"Rwanda","schools":29,"schools_total":29,"unobserved":0,"connected":2909,"coverage":1.0,"conn_unknown":0.1,"top_org":"MTN SA","share":49.2,"lo":35.1,"hi":64.5,"eff":2.84,"operators":8,"second_org":"Airtel Networks Kenya Limited","second_share":30.3,"retail_eff":3.09,"retail_companies":5,"gap":0.25,"top_is_server":false,"starlink_pct":6.9,"terr_share":48.5,"terr_eff":2.8,"bound":49.2,"ops":[["MTN SA",49.2],["Airtel Networks Kenya Limited",30.3],["SEACOM Limited",11.3],["Bandwidth and Cloud Services Group",6.3],["Kenya Education Network",2.3],["Ubuntunet Alliance For Research an",0.5]],"server_org":"Kenya Education Network","egress_cov":43.6},{"iso":"KZ","name":"Kazakhstan","schools":449,"schools_total":509,"unobserved":60,"connected":6902,"coverage":7.4,"conn_unknown":0.0,"top_org":"JSC Kazakhtelecom","share":46.3,"lo":43.1,"hi":49.9,"eff":3.84,"operators":26,"second_org":"Mezhdugorodnyaya Mezhdunarodnaya T","second_share":15.1,"retail_eff":5.94,"retail_companies":25,"gap":2.1,"top_is_server":false,"starlink_pct":18.7,"terr_share":43.6,"terr_eff":4.04,"bound":40.8,"ops":[["JSC Kazakhtelecom",46.3],["Mezhdugorodnyaya Mezhdunarodnaya T",15.1],["Kar-Tel LLC",10.8],["JSC Transtelecom",6.0],["Google LLC",4.9],["TNS-Plus LLP",4.7]],"server_org":"Z COM NETWORKS","egress_cov":61.8},{"iso":"LS","name":"Lesotho","schools":5,"schools_total":7,"unobserved":2,"connected":249,"coverage":2.8,"conn_unknown":3.2,"top_org":"TENET (The UNINET Project)","share":45.4,"lo":8.3,"hi":82.0,"eff":2.94,"operators":5,"second_org":"West Indian Ocean Cable Company","second_share":27.1,"retail_eff":2.94,"retail_companies":3,"gap":0.0,"top_is_server":true,"starlink_pct":60.0,"terr_share":null,"terr_eff":null,"bound":32.4,"ops":[["TENET (The UNINET Project)",45.4],["West Indian Ocean Cable Company",27.1],["Discovery Health",24.5],["Google LLC",3.0],["Inq. Digital Limited",0.0]],"server_org":"TENET (The UNINET Project)","egress_cov":73.9},{"iso":"DM","name":"Dominica","schools":11,"schools_total":11,"unobserved":0,"connected":68,"coverage":16.2,"conn_unknown":0.0,"top_org":"Digicel Jamaica","share":41.2,"lo":24.2,"hi":55.7,"eff":2.94,"operators":5,"second_org":"Columbus Networks USA, Inc.","second_share":31.0,"retail_eff":2.03,"retail_companies":3,"gap":-0.91,"top_is_server":false,"starlink_pct":0.0,"terr_share":41.2,"terr_eff":2.94,"bound":41.2,"ops":[["Digicel Jamaica",41.2],["Columbus Networks USA, Inc.",31.0],["GTT Communications Inc.",27.2],["Zayo Bandwidth",0.4],["Telecom Italia S.p.A.",0.2]],"server_org":"Telecom Italia S.p.A.","egress_cov":49.8},{"iso":"MN","name":"Mongolia","schools":567,"schools_total":651,"unobserved":84,"connected":843,"coverage":77.2,"conn_unknown":0.1,"top_org":"National Data Center","share":40.8,"lo":37.4,"hi":44.0,"eff":3.24,"operators":13,"second_org":"Mongolian Technical University, Co","second_share":30.8,"retail_eff":5.42,"retail_companies":14,"gap":2.18,"top_is_server":false,"starlink_pct":10.4,"terr_share":42.6,"terr_eff":3.03,"bound":35.5,"ops":[["National Data Center",40.8],["Mongolian Technical University, Co",30.8],["Gemnet",21.4],["Google LLC",3.7],["MobiCom Corporation",1.0],["KDDI CORPORATION",0.7]],"server_org":"Mongolian Technical University, ","egress_cov":67.8},{"iso":"MD","name":"Republic of Moldova","schools":74,"schools_total":79,"unobserved":5,"connected":1166,"coverage":6.8,"conn_unknown":0.0,"top_org":"Cogent Communications, LLC","share":38.7,"lo":30.7,"hi":46.1,"eff":5.09,"operators":23,"second_org":"Arelion Sweden AB","second_share":15.0,"retail_eff":3.97,"retail_companies":13,"gap":-1.12,"top_is_server":false,"starlink_pct":0.0,"terr_share":38.7,"terr_eff":5.09,"bound":36.3,"ops":[["Cogent Communications, LLC",38.7],["Arelion Sweden AB",15.0],["Fiord Networks, UAB",8.4],["Google LLC",8.1],["Inter.link GmbH",6.3],["Level 3 Parent, LLC",5.1]],"server_org":"Arelion Sweden AB","egress_cov":87.1},{"iso":"BA","name":"Bosnia and Herzegovina","schools":611,"schools_total":721,"unobserved":110,"connected":1522,"coverage":47.4,"conn_unknown":0.0,"top_org":"TELEKOM SRBIJA a.d.","share":33.1,"lo":29.6,"hi":36.3,"eff":4.57,"operators":19,"second_org":"Hrvatski Telekom d.d.","second_share":30.5,"retail_eff":3.48,"retail_companies":15,"gap":-1.09,"top_is_server":false,"starlink_pct":0.0,"terr_share":33.1,"terr_eff":4.57,"bound":28.1,"ops":[["TELEKOM SRBIJA a.d.",33.1],["Hrvatski Telekom d.d.",30.5],["Agentia de Administrare a Retelei ",7.1],["internic Datenkommunikations GmbH",6.0],["UNITED GROUP NETWORK INFRASTRUCTUR",5.1],["WIFIWEB s.r.l.",4.5]],"server_org":"Serbian Open Exchange DOO","egress_cov":62.6},{"iso":"HN","name":"Honduras","schools":24,"schools_total":45,"unobserved":21,"connected":1522,"coverage":3.0,"conn_unknown":0.0,"top_org":"Columbus Networks USA, Inc.","share":31.3,"lo":18.4,"hi":45.5,"eff":6.18,"operators":14,"second_org":"TATA COMMUNICATIONS (AMERICA) INC","second_share":17.9,"retail_eff":5.42,"retail_companies":14,"gap":-0.76,"top_is_server":false,"starlink_pct":8.3,"terr_share":34.1,"terr_eff":5.56,"bound":16.7,"ops":[["Columbus Networks USA, Inc.",31.3],["TATA COMMUNICATIONS (AMERICA) INC",17.9],["TELEFONICA GLOBAL SOLUTIONS SL",10.5],["Arelion Sweden AB",8.9],["MULTICABLE NETWORK LLC",5.4],["Verizon Business",4.8]],"server_org":"Cogent Communications, LLC","egress_cov":29.5}],"matrix":{"TENET (The UNINET Project)":{"ZA":78.3,"NA":10.9,"BW":49.8,"LS":45.4},"West Indian Ocean Cable Company":{"MW":76.5,"LS":27.1},"Hrvatski Telekom d.d.":{"ME":73.5,"BA":30.5},"Cogent Communications, LLC":{"NA":11.7,"TT":24.4,"AL":53.2,"MD":38.7},"Columbus Networks USA, Inc.":{"BZ":64.8,"TT":64.8,"DM":31.0,"HN":31.3},"Arelion Sweden AB":{"AL":19.2,"MD":15.0}},"dropped":[{"iso":"CG","name":"Congo (Brazzaville)","schools":2,"traces":35,"connected":10,"coverage":20.0,"conn_unknown":0.0,"egress_obs":0,"egress_cov":0.0},{"iso":"GD","name":"Grenada","schools":9,"traces":119,"connected":154,"coverage":5.8,"conn_unknown":0.0,"egress_obs":89,"egress_cov":74.8},{"iso":"KG","name":"Kyrgyzstan","schools":2,"traces":146,"connected":6,"coverage":33.3,"conn_unknown":99.7,"egress_obs":139,"egress_cov":95.2},{"iso":"LC","name":"Saint Lucia","schools":6,"traces":461,"connected":91,"coverage":6.6,"conn_unknown":0.0,"egress_obs":3,"egress_cov":0.7},{"iso":"VC","name":"Saint Vincent and the Grenadines","schools":18,"traces":1896,"connected":93,"coverage":19.4,"conn_unknown":0.0,"egress_obs":54,"egress_cov":2.8},{"iso":"ZM","name":"Zambia","schools":57,"traces":6717,"connected":2728,"coverage":2.1,"conn_unknown":77.6,"egress_obs":67,"egress_cov":1.0}]};
 
 const COUNTRIES = DATA.countries, MATRIX = DATA.matrix;
 const tip = document.getElementById('tip');
@@ -678,7 +826,10 @@ function showTip(e, html) {
 function hideTip() { tip.style.opacity = '0'; }
 
 /* ---- stat row ---- */
-const over80 = COUNTRIES.filter(c => c.top_share >= 80).length;
+const over80 = COUNTRIES.filter(c => c.share >= 80).length;
+const wideCI = COUNTRIES.filter(c => c.hi - c.lo > 20).length;
+const seen = COUNTRIES.reduce((a, c) => a + c.schools, 0);
+const allSch = COUNTRIES.reduce((a, c) => a + c.schools_total, 0);
 const hostFlag = COUNTRIES.filter(c => c.top_is_server).length;
 const totalSchools = COUNTRIES.reduce((a, c) => a + c.schools, 0);
 const covs = COUNTRIES.map(c => c.coverage).filter(v => v != null).sort((a, b) => a - b);
@@ -686,32 +837,38 @@ const covRange = covs.length ? `${covs[0].toFixed(0)}–${covs[covs.length - 1].
 const wellCovered = covs.filter(v => v >= 40).length;
 document.getElementById('stats').innerHTML = [
   [COUNTRIES.length, 'countries with enough observed egresses to report'],
-  [over80, 'where one operator carries 80% or more of school egress'],
-  [totalSchools.toLocaleString(), 'schools attributed by NDT&nbsp;UUID'],
+  [over80, 'where one company is the way out for 80% or more of the schools measured'],
+  [wideCI, 'whose interval is too wide to report as a number — too few schools'],
+  [totalSchools.toLocaleString(), 'schools with an observable path out'],
+  [Math.round(100 * seen / allSch) + '%', 'of the schools measured show a route out at all; the rest stop inside their own network before any other operator appears'],
   [covRange, 'range of how much of a country&rsquo;s connected-school population is measured — ' + wellCovered + ' countries above 40%, five below 5%'],
-  [hostFlag, 'countries where that leading operator is simply the network the test server sits inside — not a road the country chose'],
+  [hostFlag, 'countries where that leading operator is simply the network the test server sits inside'],
 ].map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
 
 /* ---- bar chart ---- */
 document.getElementById('bars').innerHTML = COUNTRIES.map(c => {
-  const inside = c.top_share > 34;
+  const inside = c.share > 34;
   const lab = c.top_org + (c.top_is_server ? ' ⚑' : '');
   return `<div class="bar-row" tabindex="0" data-iso="${c.iso}">
     <div class="cty">${c.name}</div>
     <div class="track">
-      <div class="fill${c.top_is_server ? ' host' : ''}" style="width:${c.top_share}%"></div>
-      <span class="bar-lab${inside ? (c.top_is_server ? ' on-host' : '') : ' outside'}" style="${inside ? '' : `left:calc(${c.top_share}% + 8px)`}">${lab}</span>
+      <div class="fill${c.top_is_server ? ' host' : ''}" style="width:${c.share}%"></div>
+      <div class="ci" style="left:${c.lo}%;width:${Math.max(c.hi - c.lo, 0.4)}%"></div>
+      <span class="bar-lab${inside ? (c.top_is_server ? ' on-host' : '') : ' outside'}" style="${inside ? '' : `left:calc(${c.hi}% + 10px)`}">${lab}</span>
     </div>
-    <div class="bar-val">${c.top_share.toFixed(0)}%</div>
+    <div class="bar-val">${c.share.toFixed(0)}%</div>
   </div>`;
 }).join('');
 
 document.querySelectorAll('.bar-row').forEach(row => {
   const c = COUNTRIES.find(x => x.iso === row.dataset.iso);
   const html = `<div class="t">${c.name}</div>
-    <div class="r">${c.top_org} — ${c.top_share.toFixed(1)}% of school egress</div>
-    <div class="r">HHI ${c.hhi.toFixed(3)} across ${c.n_ops} egress operators</div>
-    <div class="r">${c.schools.toLocaleString()} schools · ${c.egress_obs.toLocaleString()} egress observations</div>
+    <div class="r">${c.top_org} — ${c.share.toFixed(1)}% of schools (95% CI ${c.lo}–${c.hi})</div>
+    <div class="r">${c.eff} effective operators of ${c.operators} companies observed</div>
+    <div class="r">second: ${c.second_org || 'none'} ${c.second_share.toFixed(1)}%</div>
+    ${c.starlink_pct > 20 ? `<div class="r">satellite is ${c.starlink_pct}% of these schools; terrestrial only: ${c.terr_share ?? '—'}%</div>` : ''}
+    <div class="r">${c.unobserved} of ${c.schools_total} schools show no egress — lower bound ${c.bound}%</div>
+    <div class="r">${c.schools.toLocaleString()} schools · ${c.schools.toLocaleString()} egress observations</div>
     <div class="r">${c.schools.toLocaleString()} of ${c.connected != null ? c.connected.toLocaleString() : '?'} connected schools (${c.coverage != null ? c.coverage + '%' : '—'})</div>
     <div class="r">egress coverage ${c.egress_cov}%</div>
     ${c.top_is_server ? '<div class="r">⚑ this operator hosts the measurement server</div>' : ''}`;
@@ -757,7 +914,7 @@ const RW = DATA.countries.filter(c => !c.top_is_server).sort((a, b) => b.gap - a
 const XMAX = 12;
 const xp = v => Math.min(100, (v - 1) / (XMAX - 1) * 100);
 document.getElementById('dumb').innerHTML = RW.map(r => {
-  const a = xp(r.retail_eff), b = xp(r.wholesale_eff);
+  const a = xp(r.retail_eff), b = xp(r.eff);
   const lo = Math.min(a, b), hi = Math.max(a, b);
   return `<div class="dumb-row" tabindex="0" data-iso="${r.iso}">
     <div class="cty">${r.name}${r.top_is_server ? '<span class="hostmark" title="top egress operator is the measurement host">⚑</span>' : ''}</div>
@@ -766,16 +923,15 @@ document.getElementById('dumb').innerHTML = RW.map(r => {
       <div class="dot retail" style="left:${a}%"></div>
       <div class="dot whole${r.top_is_server ? ' host' : ''}" style="left:${b}%"></div>
     </div>
-    <div class="dumb-val"><b>${r.retail_eff.toFixed(1)}</b> → <b>${r.wholesale_eff.toFixed(1)}</b></div>
+    <div class="dumb-val"><b>${r.retail_eff.toFixed(1)}</b> → <b>${r.eff.toFixed(1)}</b></div>
   </div>`;
 }).join('');
 document.querySelectorAll('.dumb-row').forEach(row => {
   const r = RW.find(x => x.iso === row.dataset.iso);
   const html = `<div class="t">${r.name}</div>
-    <div class="r">retail: ${r.retail_isps} ISPs → ${r.retail_eff.toFixed(2)} effective</div>
-    <div class="r">largest: ${r.top_isp} (${r.top_isp_share}% of schools)</div>
-    <div class="r">wholesale: ${r.wholesale_ops} egress operators → ${r.wholesale_eff.toFixed(2)} effective</div>
-    <div class="r">largest: ${r.top_egress} (${r.top_egress_share}%)${r.top_is_server ? ' ⚑ measurement host' : ''}</div>`;
+    <div class="r">retail: ${r.retail_companies} ISPs → ${r.retail_eff.toFixed(2)} effective</div>
+    <div class="r">wholesale: ${r.operators} egress operators → ${r.eff.toFixed(2)} effective</div>
+    <div class="r">largest: ${r.top_org} (${r.share}%)${r.top_is_server ? ' ⚑ measurement host' : ''}</div>`;
   row.addEventListener('mousemove', e => showTip(e, html));
   row.addEventListener('mouseleave', hideTip);
   row.addEventListener('focus', () => { const b = row.getBoundingClientRect(); showTip({ clientX: b.right - 60, clientY: b.top }, html); });
@@ -788,7 +944,7 @@ document.getElementById('second').innerHTML = SEC.map(r => `
   <div class="sec-row" tabindex="0" data-iso="${r.iso}">
     <div class="cty">${r.name}${r.top_is_server ? '<span class="hostmark" title="top egress operator is the measurement host">⚑</span>' : ''}</div>
     <div class="sec-track">
-      <div class="sec-fill${r.second_share < 10 ? ' thin' : ''}" style="width:${Math.min(100, r.second_share / 30 * 100)}%"></div>
+      <div class="sec-fill" style="width:${Math.min(100, r.second_share / 30 * 100)}%"></div>
       <div class="sec-ref" style="left:${10 / 30 * 100}%"></div>
     </div>
     <div class="bar-val">${r.second_share.toFixed(1)}%</div>
@@ -796,9 +952,9 @@ document.getElementById('second').innerHTML = SEC.map(r => `
 document.querySelectorAll('.sec-row').forEach(row => {
   const r = RW.find(x => x.iso === row.dataset.iso);
   const html = `<div class="t">${r.name}</div>
-    <div class="r">second egress: ${r.second_egress || 'none observed'} — ${r.second_share.toFixed(1)}%</div>
-    <div class="r">largest: ${r.top_egress} — ${r.top_egress_share}%</div>
-    <div class="r">${r.wholesale_ops} egress operators observed</div>`;
+    <div class="r">second egress: ${r.second_org || 'none observed'} — ${r.second_share.toFixed(1)}%</div>
+    <div class="r">largest: ${r.top_org} — ${r.share}%</div>
+    <div class="r">${r.operators} egress operators observed</div>`;
   row.addEventListener('mousemove', e => showTip(e, html));
   row.addEventListener('mouseleave', hideTip);
   row.addEventListener('focus', () => { const b = row.getBoundingClientRect(); showTip({ clientX: b.right - 60, clientY: b.top }, html); });
@@ -807,7 +963,7 @@ document.querySelectorAll('.sec-row').forEach(row => {
 
 
 /* ---- in-country chokepoint ---- */
-const CK = [{"iso":"UZ","tests":15000,"in_country_as":5,"choke_asn":28910,"choke_org":"\"Uzbektelekom\" Joint Stock Company","cov_all":99.9,"cov_transit":100.0,"second_org":"PJSC \"Vimpelcom\"","second_cov_all":23.1,"no_transit_pct":0.1,"name":"Uzbekistan","host":false},{"iso":"LK","tests":15000,"in_country_as":1,"choke_asn":45489,"choke_org":"Sri Lanka Telecom Ltd","cov_all":73.7,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":26.3,"name":"Sri Lanka","host":false},{"iso":"AL","tests":15000,"in_country_as":13,"choke_asn":174,"choke_org":"Cogent Communications, LLC","cov_all":66.2,"cov_transit":89.0,"second_org":"Arelion Sweden AB","second_cov_all":3.5,"no_transit_pct":25.7,"name":"Albania","host":false},{"iso":"KZ","tests":15000,"in_country_as":18,"choke_asn":50482,"choke_org":"JSC Kazakhtelecom","cov_all":42.9,"cov_transit":59.6,"second_org":"JSC Kazakhtelecom","second_cov_all":28.5,"no_transit_pct":28.0,"name":"Kazakhstan","host":false},{"iso":"MD","tests":15000,"in_country_as":8,"choke_asn":174,"choke_org":"Cogent Communications","cov_all":38.2,"cov_transit":81.3,"second_org":"RETN Limited","second_cov_all":5.9,"no_transit_pct":53.1,"name":"Republic of Moldova","host":false},{"iso":"ZA","tests":10882,"in_country_as":15,"choke_asn":36994,"choke_org":"Vodacom","cov_all":24.9,"cov_transit":67.6,"second_org":"MTN SA","second_cov_all":13.7,"no_transit_pct":63.1,"name":"South Africa","host":true},{"iso":"HN","tests":3967,"in_country_as":6,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":23.2,"cov_transit":83.6,"second_org":"MULTICABLE NETWORK LLC","second_cov_all":4.0,"no_transit_pct":72.2,"name":"Honduras","host":false},{"iso":"MN","tests":15000,"in_country_as":7,"choke_asn":56301,"choke_org":"National Data Center","cov_all":20.9,"cov_transit":53.9,"second_org":"Gemnet","second_cov_all":15.9,"no_transit_pct":61.3,"name":"Mongolia","host":true},{"iso":"BW","tests":15000,"in_country_as":3,"choke_asn":37678,"choke_org":"BOTSWANA FIBRE NETWORKS (Proprieta","cov_all":15.1,"cov_transit":83.9,"second_org":"Paratus Telecommunications Lim","second_cov_all":2.0,"no_transit_pct":82.1,"name":"Botswana","host":true},{"iso":"RW","tests":3249,"in_country_as":4,"choke_asn":37006,"choke_org":"Liquid Telecommunication Rwanda Li","cov_all":12.6,"cov_transit":57.5,"second_org":"Airtel Rwanda Ltd","second_cov_all":9.2,"no_transit_pct":78.2,"name":"Rwanda","host":false},{"iso":"TT","tests":2473,"in_country_as":4,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":7.6,"cov_transit":77.6,"second_org":"Telecommunication Services of ","second_cov_all":1.3,"no_transit_pct":90.3,"name":"Trinidad and Tobago","host":false},{"iso":"BA","tests":15000,"in_country_as":9,"choke_asn":1299,"choke_org":"Arelion Sweden AB","cov_all":4.6,"cov_transit":58.1,"second_org":"UNITED GROUP NETWORK INFRASTRU","second_cov_all":1.6,"no_transit_pct":92.0,"name":"Bosnia and Herzegovina","host":false},{"iso":"KE","tests":1897,"in_country_as":10,"choke_asn":328490,"choke_org":"Unwired Communications Limited","cov_all":4.5,"cov_transit":34.7,"second_org":"Safaricom Limited","second_cov_all":2.5,"no_transit_pct":86.9,"name":"Kenya","host":true},{"iso":"DM","tests":1212,"in_country_as":1,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":3.3,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":96.7,"name":"Dominica","host":false},{"iso":"NA","tests":11609,"in_country_as":1,"choke_asn":174,"choke_org":"Cogent Communications, LLC","cov_all":2.7,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":97.3,"name":"Namibia","host":false},{"iso":"ME","tests":15000,"in_country_as":3,"choke_asn":8400,"choke_org":"TELEKOM SRBIJA a.d.","cov_all":1.5,"cov_transit":61.4,"second_org":"Serbia BroadBand-Srpske Kablov","second_cov_all":1.0,"no_transit_pct":97.5,"name":"Montenegro","host":false},{"iso":"MW","tests":15000,"in_country_as":5,"choke_asn":37662,"choke_org":"West Indian Ocean Cable Company","cov_all":1.3,"cov_transit":85.5,"second_org":"Discovery Health","second_cov_all":0.1,"no_transit_pct":98.4,"name":"Malawi","host":false},{"iso":"BZ","tests":11595,"in_country_as":3,"choke_asn":263824,"choke_org":"Central TV and Internet Limited","cov_all":0.2,"cov_transit":50.0,"second_org":"LIBERTY NETWORKS SOLUTIONS MEX","second_cov_all":0.2,"no_transit_pct":99.6,"name":"Belize","host":false},{"iso":"BJ","tests":269,"no_transit_pct":100.0,"name":"Benin","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0},{"iso":"FJ","tests":15000,"no_transit_pct":100.0,"name":"Fiji","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0},{"iso":"LS","tests":1077,"no_transit_pct":100.0,"name":"Lesotho","host":false,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0}];
+const CK = [{"iso":"UZ","tests":15000,"in_country_as":5,"choke_asn":28910,"choke_org":"\"Uzbektelekom\" Joint Stock Company","cov_all":99.9,"cov_transit":100.0,"second_org":"PJSC \"Vimpelcom\"","second_cov_all":23.1,"no_transit_pct":0.1,"name":"Uzbekistan","host":false},{"iso":"LK","tests":15000,"in_country_as":1,"choke_asn":45489,"choke_org":"Sri Lanka Telecom Ltd","cov_all":73.7,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":26.3,"name":"Sri Lanka","host":false},{"iso":"AL","tests":15000,"in_country_as":13,"choke_asn":174,"choke_org":"Cogent Communications, LLC","cov_all":66.2,"cov_transit":89.0,"second_org":"Arelion Sweden AB","second_cov_all":3.5,"no_transit_pct":25.7,"name":"Albania","host":false},{"iso":"KZ","tests":15000,"in_country_as":18,"choke_asn":50482,"choke_org":"JSC Kazakhtelecom","cov_all":42.9,"cov_transit":59.6,"second_org":"JSC Kazakhtelecom","second_cov_all":28.5,"no_transit_pct":28.0,"name":"Kazakhstan","host":false},{"iso":"MD","tests":15000,"in_country_as":8,"choke_asn":174,"choke_org":"Cogent Communications","cov_all":38.2,"cov_transit":81.3,"second_org":"RETN Limited","second_cov_all":5.9,"no_transit_pct":53.1,"name":"Republic of Moldova","host":false},{"iso":"ZA","tests":10882,"in_country_as":15,"choke_asn":36994,"choke_org":"Vodacom","cov_all":24.9,"cov_transit":67.6,"second_org":"MTN SA","second_cov_all":13.7,"no_transit_pct":63.1,"name":"South Africa","host":true},{"iso":"HN","tests":3967,"in_country_as":6,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":23.2,"cov_transit":83.6,"second_org":"MULTICABLE NETWORK LLC","second_cov_all":4.0,"no_transit_pct":72.2,"name":"Honduras","host":false},{"iso":"MN","tests":15000,"in_country_as":7,"choke_asn":56301,"choke_org":"National Data Center","cov_all":20.9,"cov_transit":53.9,"second_org":"Gemnet","second_cov_all":15.9,"no_transit_pct":61.3,"name":"Mongolia","host":false},{"iso":"BW","tests":15000,"in_country_as":3,"choke_asn":37678,"choke_org":"BOTSWANA FIBRE NETWORKS (Proprieta","cov_all":15.1,"cov_transit":83.9,"second_org":"Paratus Telecommunications Lim","second_cov_all":2.0,"no_transit_pct":82.1,"name":"Botswana","host":true},{"iso":"RW","tests":3249,"in_country_as":4,"choke_asn":37006,"choke_org":"Liquid Telecommunication Rwanda Li","cov_all":12.6,"cov_transit":57.5,"second_org":"Airtel Rwanda Ltd","second_cov_all":9.2,"no_transit_pct":78.2,"name":"Rwanda","host":false},{"iso":"TT","tests":2473,"in_country_as":4,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":7.6,"cov_transit":77.6,"second_org":"Telecommunication Services of ","second_cov_all":1.3,"no_transit_pct":90.3,"name":"Trinidad and Tobago","host":false},{"iso":"BA","tests":15000,"in_country_as":9,"choke_asn":1299,"choke_org":"Arelion Sweden AB","cov_all":4.6,"cov_transit":58.1,"second_org":"UNITED GROUP NETWORK INFRASTRU","second_cov_all":1.6,"no_transit_pct":92.0,"name":"Bosnia and Herzegovina","host":false},{"iso":"KE","tests":1897,"in_country_as":10,"choke_asn":328490,"choke_org":"Unwired Communications Limited","cov_all":4.5,"cov_transit":34.7,"second_org":"Safaricom Limited","second_cov_all":2.5,"no_transit_pct":86.9,"name":"Kenya","host":true},{"iso":"DM","tests":1212,"in_country_as":1,"choke_asn":23520,"choke_org":"Columbus Networks USA, Inc.","cov_all":3.3,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":96.7,"name":"Dominica","host":false},{"iso":"NA","tests":11609,"in_country_as":1,"choke_asn":174,"choke_org":"Cogent Communications, LLC","cov_all":2.7,"cov_transit":100.0,"second_org":null,"second_cov_all":0.0,"no_transit_pct":97.3,"name":"Namibia","host":false},{"iso":"ME","tests":15000,"in_country_as":3,"choke_asn":8400,"choke_org":"TELEKOM SRBIJA a.d.","cov_all":1.5,"cov_transit":61.4,"second_org":"Serbia BroadBand-Srpske Kablov","second_cov_all":1.0,"no_transit_pct":97.5,"name":"Montenegro","host":false},{"iso":"MW","tests":15000,"in_country_as":5,"choke_asn":37662,"choke_org":"West Indian Ocean Cable Company","cov_all":1.3,"cov_transit":85.5,"second_org":"Discovery Health","second_cov_all":0.1,"no_transit_pct":98.4,"name":"Malawi","host":false},{"iso":"BZ","tests":11595,"in_country_as":3,"choke_asn":263824,"choke_org":"Central TV and Internet Limited","cov_all":0.2,"cov_transit":50.0,"second_org":"LIBERTY NETWORKS SOLUTIONS MEX","second_cov_all":0.2,"no_transit_pct":99.6,"name":"Belize","host":false},{"iso":"BJ","tests":269,"no_transit_pct":100.0,"name":"Benin","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0},{"iso":"FJ","tests":15000,"no_transit_pct":100.0,"name":"Fiji","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0},{"iso":"LS","tests":1077,"no_transit_pct":100.0,"name":"Lesotho","host":true,"cov_all":null,"choke_org":null,"cov_transit":null,"in_country_as":0}];
 document.getElementById('ck').innerHTML = CK.map(r => {
   const top = r.cov_all ?? 0;
   const none = r.no_transit_pct ?? 100;
@@ -840,13 +996,13 @@ document.querySelectorAll('.ck-row').forEach(row => {
 
 /* ---- table ---- */
 document.getElementById('table').innerHTML =
-  `<thead><tr><th>Country</th><th>Top egress operator</th><th>Share</th><th>HHI</th>
+  `<thead><tr><th>Country</th><th>Top company</th><th>Share</th><th>95% CI</th><th>Effective</th>
    <th>Operators</th><th>Schools</th><th>Coverage of connected</th><th>Egress obs.</th><th>Egress cov.</th></tr></thead><tbody>` +
   COUNTRIES.map(c => `<tr>
     <td>${c.name}</td>
     <td>${c.top_org}${c.top_is_server ? '<span class="flag">⚑ host</span>' : ''}</td>
-    <td>${c.top_share.toFixed(1)}%</td><td>${c.hhi.toFixed(3)}</td><td>${c.n_ops}</td>
+    <td>${c.share.toFixed(1)}%</td><td>${c.lo}–${c.hi}</td><td>${c.eff.toFixed(2)}</td><td>${c.operators}</td>
     <td>${c.schools.toLocaleString()}</td>
     <td>${c.coverage != null ? c.coverage + '%' + (c.conn_unknown > 25 ? '*' : '') : '—'}</td>
-    <td>${c.egress_obs.toLocaleString()}</td><td>${c.egress_cov}%</td></tr>`).join('') + '</tbody>';
+    <td>${c.schools.toLocaleString()}</td><td>${c.egress_cov}%</td></tr>`).join('') + '</tbody>';
 </script>

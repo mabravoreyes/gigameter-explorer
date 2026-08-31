@@ -1,0 +1,311 @@
+<title>Starlink in School Networks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F4F5F6; --surface:#FFFFFF; --surface-2:#FAFBFB;
+  --ink:#14191F; --ink-2:#3D4752; --muted:#5C6773; --faint:#8A939D;
+  --hair:#DFE3E7; --hair-strong:#C7CDD4;
+  --sat:#15629B; --terr:#3F7A2E; --warn:#B85C10; --mid:#7C8590;
+  --sat-wash:#E4EDF5; --terr-wash:#E8F0E4; --warn-wash:#F6EBE1;
+  --shadow:0 1px 2px rgba(20,25,31,.05),0 8px 24px -12px rgba(20,25,31,.14);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1419; --surface:#161C22; --surface-2:#1B222A;
+    --ink:#E2E7EC; --ink-2:#C2CAD3; --muted:#8B96A2; --faint:#6C7783;
+    --hair:#252D35; --hair-strong:#333D47;
+    --sat:#3B8FC7; --terr:#5D9E43; --warn:#CE7628; --mid:#828B96;
+    --sat-wash:#13202B; --terr-wash:#182213; --warn-wash:#2A1E14;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1419; --surface:#161C22; --surface-2:#1B222A;
+  --ink:#E2E7EC; --ink-2:#C2CAD3; --muted:#8B96A2; --faint:#6C7783;
+  --hair:#252D35; --hair-strong:#333D47;
+  --sat:#3B8FC7; --terr:#5D9E43; --warn:#CE7628; --mid:#828B96;
+  --sat-wash:#13202B; --terr-wash:#182213; --warn-wash:#2A1E14;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);
+  font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  font-size:17px;line-height:1.62;margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px 96px}
+.col{max-width:66ch;margin:0 auto}
+h1,h2,h3,.eyebrow,.stat-n,th,.tag,.axis text,.legend,.tt,.fig-t,.fig-s,.stat-l{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+.mono,td.n,.num{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(38px,6vw,62px);line-height:1.02;font-weight:700;letter-spacing:-.025em;margin:.28em 0 .3em;text-wrap:balance}
+h2{font-size:clamp(23px,3vw,29px);font-weight:600;letter-spacing:-.014em;line-height:1.2;margin:0 0 .5em;text-wrap:balance}
+h3{font-size:18px;font-weight:600;letter-spacing:-.005em;margin:0 0 .4em}
+p{margin:0 0 1.05em}
+a{color:var(--sat)}
+.lede{font-size:21px;line-height:1.55;color:var(--ink-2)}
+header.top{padding:76px 0 40px}
+.rule{height:1px;background:var(--hair);border:0;margin:0}
+section{padding:52px 0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hair);
+  border:1px solid var(--hair);border-radius:3px;overflow:hidden;margin:34px 0 8px}
+@media (min-width:620px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--surface);padding:18px}
+.stat-n{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;display:block;margin-bottom:7px}
+.stat-l{font-size:13.5px;line-height:1.4;color:var(--muted)}
+.figure{background:var(--surface);border:1px solid var(--hair);border-radius:3px;padding:26px 24px 20px;
+  box-shadow:var(--shadow);margin:30px 0}
+.fig-head{display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:4px}
+.fig-t{font-size:16px;font-weight:600;letter-spacing:-.005em}
+.fig-s{font-size:13.5px;color:var(--muted);max-width:62ch;margin:.35em 0 16px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);align-items:center}
+.lg{display:inline-flex;align-items:center;gap:7px}
+.scroll{overflow-x:auto}
+svg{display:block}
+.axis text{font-size:11px;fill:var(--faint);font-family:"IBM Plex Mono",monospace}
+.axis line{stroke:var(--hair)}
+.slab{font-family:Archivo,sans-serif;font-size:12px;fill:var(--ink-2)}
+.sm{font-size:10.5px;fill:var(--faint);font-family:"IBM Plex Mono",monospace}
+table{width:100%;border-collapse:collapse;font-size:14px;font-family:Archivo,sans-serif}
+th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  padding:0 12px 9px;border-bottom:1px solid var(--hair-strong);white-space:nowrap}
+th.r,td.n{text-align:right}
+td{padding:9px 12px;border-bottom:1px solid var(--hair);vertical-align:baseline}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:13px}
+tr:hover td{background:var(--surface-2)}
+.tag{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.045em;text-transform:uppercase;
+  padding:2.5px 7px;border-radius:2px;white-space:nowrap}
+.tag.s{background:var(--sat-wash);color:var(--sat)}
+.tag.t{background:var(--terr-wash);color:var(--terr)}
+.tag.w{background:var(--warn-wash);color:var(--warn)}
+.tag.m{background:var(--surface-2);color:var(--mid);border:1px solid var(--hair-strong)}
+.callout{border-left:2px solid var(--warn);padding:2px 0 2px 20px;margin:26px 0;color:var(--ink-2)}
+.callout.s{border-left-color:var(--sat)}
+.callout p:last-child{margin-bottom:0}
+.note{font-size:14.5px;color:var(--muted);line-height:1.55}
+ul{padding-left:1.1em;margin:0 0 1.05em}
+li{margin-bottom:.45em}
+footer{padding:44px 0 0;border-top:1px solid var(--hair);font-size:13.5px;color:var(--muted);font-family:Archivo,sans-serif}
+@media (max-width:720px){body{font-size:16px}.wrap{padding:0 18px 64px}header.top{padding:52px 0 30px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+:focus-visible{outline:2px solid var(--sat);outline-offset:2px}
+</style>
+<div class="wrap">
+
+<header class="top col">
+  <div class="eyebrow">Giga &middot; Giga Meter and M-Lab traceroute &middot; Feb&ndash;Aug 2026</div>
+  <h1>Starlink in school networks</h1>
+  <p class="lede">Schools in 18 of the 37 countries Giga Meter covers now measure on Starlink. We compared its routing and performance against the terrestrial operators serving schools in the same countries. Ground station placement accounts for most of the variation, and in Malawi &mdash; the only country with enough schools on both links to control for placement &mdash; the throughput advantage largely disappears.</p>
+</header>
+
+<hr class="rule">
+
+<section class="col">
+  <h2>Coverage</h2>
+  <p>Starlink serves schools in 18 countries. Malawi has the highest share of measuring schools at 63%, up from 20% in June 2025. Kazakhstan, Botswana and Fiji sit between 15% and 19% and have been flat since late 2025. Mongolia is at 4%.</p>
+  <p>Malawi&rsquo;s fleet is a Giga programme deployment rather than market adoption: schools were selected and connected. Its estate is 75% rural against 53% for the terrestrial estate in the same country.</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-n">18</span><span class="stat-l">countries with schools on Starlink</span></div>
+    <div class="stat"><span class="stat-n">63<span style="font-size:.62em">%</span></span><span class="stat-l">of Malawi&rsquo;s measuring schools, from 20% in Jun 2025</span></div>
+    <div class="stat"><span class="stat-n">6<span style="font-size:.62em">/9</span></span><span class="stat-l">countries where Starlink never crosses the national internet</span></div>
+    <div class="stat"><span class="stat-n">9<span style="font-size:.62em">/18</span></span><span class="stat-l">Malawian schools faster on Starlink than their own terrestrial line</span></div>
+  </div>
+</section>
+
+<section class="col">
+  <h2>Ground station placement</h2>
+  <p>Starlink traffic leaves the dish, returns to earth at a ground station, and joins the terrestrial internet there. We identified the ground station from the first non-Starlink hop in each traceroute, walking outward from the school.</p>
+  <p>Two of six countries hand off inside their own borders: Kenya in Nairobi, Kazakhstan in Almaty. The rest hand off abroad &mdash; Malawi and Botswana in Johannesburg, Mongolia in Tokyo, Fiji in Sydney.</p>
+  <p>Latency follows placement. Mongolia has a test server in Ulaanbaatar that terrestrial operators reach in 8.7&nbsp;ms. Starlink traffic from the same schools reaches Tokyo, hands to a Japanese carrier, and returns: 111&nbsp;ms to a destination in its own capital. Botswana&rsquo;s traffic to South Africa transits the United States on 75% of paths.</p>
+</section>
+
+<section>
+  <div class="figure">
+    <div class="fig-head">
+      <div>
+        <div class="fig-t">Median latency by ground station location</div>
+        <div class="fig-s">Each row is one country. Starlink latency sits near the terrestrial figure where the ground station is domestic, and above it where the ground station is abroad.</div>
+      </div>
+      <div class="legend">
+        <span class="lg"><svg width="13" height="13"><circle cx="6.5" cy="6.5" r="5" fill="var(--sat)"/></svg> Starlink</span>
+        <span class="lg"><svg width="13" height="13"><circle cx="6.5" cy="6.5" r="5" fill="var(--terr)"/></svg> Terrestrial</span>
+      </div>
+    </div>
+    <div class="scroll"><svg id="gs" width="860" height="300" role="img" aria-label="Median latency on Starlink and terrestrial by country, annotated with ground station city"></svg></div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="col">
+  <h2>Within-school comparison</h2>
+  <p>Compared across schools, Malawi&rsquo;s Starlink schools deliver a median 32.3&nbsp;Mb/s against 5.6&nbsp;Mb/s for terrestrial schools. That comparison includes the placement effect: the programme was deployed to the worst-served schools.</p>
+  <p>Eighteen Malawian schools recorded at least 20 tests on each link. Comparing within school removes the placement effect. On that basis the median gain is 0.1&nbsp;Mb/s, 9 of 18 schools are faster on Starlink, and the difference is not significant (Wilcoxon p&nbsp;=&nbsp;0.23). Latency reverses: Starlink is a median 29&nbsp;ms slower within school, and lower only at 6 of 18.</p>
+</section>
+
+<section>
+  <div class="figure">
+    <div class="fig-head">
+      <div>
+        <div class="fig-t">Download speed on both links, same school</div>
+        <div class="fig-s">Eighteen Malawian schools with at least 20 tests on each connection. The line runs from the terrestrial median to the Starlink median. Schools are ordered by change.</div>
+      </div>
+      <div class="legend">
+        <span class="lg"><svg width="13" height="13"><circle cx="6.5" cy="6.5" r="4.5" fill="var(--terr)"/></svg> terrestrial</span>
+        <span class="lg"><svg width="13" height="13"><circle cx="6.5" cy="6.5" r="4.5" fill="var(--sat)"/></svg> Starlink</span>
+      </div>
+    </div>
+    <div class="scroll"><svg id="paired" width="860" height="470" role="img" aria-label="Paired within-school download speeds on terrestrial and Starlink"></svg></div>
+  </div>
+</section>
+
+<section class="col">
+  <p>Starlink performance at these schools is bimodal. Eight schools record 15&nbsp;Mb/s or more, median 29.8. Nine record under 5&nbsp;Mb/s, median 1.6. Few sit between.</p>
+  <p>Which group a school falls into does not correlate with the speed of the line it replaced (&rho;&nbsp;=&nbsp;+0.11, p&nbsp;=&nbsp;0.66). The variation is a property of the Starlink installation &mdash; obstruction, service tier, terminal model, or a dish shared across a site. Eighteen schools are not enough to separate those; installation records would.</p>
+</section>
+
+<hr class="rule">
+
+<section class="col">
+  <h2>Throughput and packet loss</h2>
+  <p>Starlink delivers 2&ndash;6&times; the throughput of terrestrial operators in most of these countries, measured across schools. Packet loss runs higher in every country except Botswana, by up to two orders of magnitude.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr>
+      <th>Country</th><th class="r">Starlink Mb/s</th><th class="r">Terrestrial</th>
+      <th class="r">Starlink loss</th><th class="r">Terrestrial loss</th><th>Ground station</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Botswana</td><td class="n">107.6</td><td class="n">27.4</td><td class="n">0.32%</td><td class="n">0.30%</td><td>Johannesburg <span class="tag w">abroad</span></td></tr>
+      <tr><td>Mongolia</td><td class="n">82.3</td><td class="n">79.1</td><td class="n">1.99%</td><td class="n">1.56%</td><td>Tokyo <span class="tag w">abroad</span></td></tr>
+      <tr><td>Fiji</td><td class="n">52.1</td><td class="n">12.5</td><td class="n">2.42%</td><td class="n">0.01%</td><td>Sydney <span class="tag w">abroad</span></td></tr>
+      <tr><td>Malawi</td><td class="n">32.3</td><td class="n">5.6</td><td class="n">1.53%</td><td class="n">0.60%</td><td>Johannesburg <span class="tag w">abroad</span></td></tr>
+      <tr><td>Kazakhstan</td><td class="n">27.3</td><td class="n">17.2</td><td class="n">3.16%</td><td class="n">0.08%</td><td>Almaty <span class="tag t">domestic</span></td></tr>
+      <tr><td>Kenya</td><td class="n">5.8</td><td class="n">7.4</td><td class="n">8.73%</td><td class="n">4.29%</td><td>Nairobi <span class="tag t">domestic</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Medians across all measurements to each country&rsquo;s primary test server. Loss is end-to-end from the NDT transfer, not traceroute reachability. Throughput figures are across schools and carry the placement effect described above.</p>
+  <p>Loss at these rates degrades interactive traffic &mdash; video conferencing, real-time collaboration &mdash; while leaving bulk download largely unaffected. Contracts specified in megabits per second do not capture it.</p>
+</section>
+
+<hr class="rule">
+
+<section class="col">
+  <h2>Domestic transit</h2>
+  <p>In six of the nine countries with sufficient traceroutes, school traffic on Starlink does not cross any network inside its own country. It reaches a foreign ground station and continues to the destination from there.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Country</th><th class="r">Domestic hand-off</th><th class="r">Readable traces</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Kazakhstan</td><td class="n">82.4%</td><td class="n">3,132</td><td><span class="tag t">domestic</span> Kazakhtelecom, Almaty</td></tr>
+      <tr><td>Kenya</td><td class="n">100%</td><td class="n">961</td><td><span class="tag m">partial</span> 85% of traces unreadable</td></tr>
+      <tr><td>Mongolia</td><td class="n">0%</td><td class="n">7,662</td><td><span class="tag w">bypassed</span> hands off in Tokyo</td></tr>
+      <tr><td>Fiji</td><td class="n">0%</td><td class="n">8,194</td><td><span class="tag w">bypassed</span></td></tr>
+      <tr><td>Malawi</td><td class="n">0%</td><td class="n">6,355</td><td><span class="tag w">bypassed</span></td></tr>
+      <tr><td>Botswana</td><td class="n">0%</td><td class="n">908</td><td><span class="tag w">bypassed</span></td></tr>
+      <tr><td>Albania</td><td class="n">0%</td><td class="n">94</td><td><span class="tag w">bypassed</span></td></tr>
+      <tr><td>Rwanda</td><td class="n">0%</td><td class="n">8</td><td><span class="tag m">insufficient traces</span></td></tr>
+      <tr><td>Lesotho</td><td class="n">0%</td><td class="n">4</td><td><span class="tag m">insufficient traces</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Measured at the hand-off hop. Where that hop is the destination&rsquo;s own network, or the AS path is two networks long, nothing is observable and the trace is excluded. Kenya&rsquo;s figure rests on 961 readable traces of 6,750; its test server sits one hop from the ground station.</p>
+  <p>Where traffic bypasses the national internet, the domestic operator carries none of it, the national exchange point is not traversed, and no hop on the path falls under domestic regulatory jurisdiction.</p>
+</section>
+
+<hr class="rule">
+
+<section class="col">
+  <h2>Limitations</h2>
+  <ul>
+    <li>No cost data. Comparisons here are technical only.</li>
+    <li>Only Malawi has enough schools on both links to control for placement. Elsewhere the comparison is between different schools; Starlink schools are systematically more remote, which would understate rather than inflate its advantage.</li>
+    <li>Observational comparison between operators over the same period, not an experiment. Terrestrial performance may have changed independently.</li>
+    <li>Packet loss is a period median. Whether it rises during teaching hours is a separate measurement.</li>
+    <li>The hand-off hop indicates where traffic enters the terrestrial internet, which is consistent with a ground station in that city and with a nearby station landing into the same exchange.</li>
+    <li>Hop geolocation is imperfect and can place a domestic operator&rsquo;s routers abroad.</li>
+  </ul>
+</section>
+
+<footer class="col">
+  Giga &middot; Giga Meter measurements and M-Lab traceroute exports, February&ndash;August 2026.
+  Coverage from 37 countries; routing from the 9 with sufficient traceroutes on both technologies.
+  Draft. Figures reproducible from <span class="mono">traceroutes/starlink.ipynb</span>.
+</footer>
+
+</div>
+<script>
+const GS=[
+ {c:"Mongolia",city:"Tokyo",dom:false,s:111.3,t:8.7},
+ {c:"Botswana",city:"Johannesburg",dom:false,s:22.2,t:18.5},
+ {c:"Malawi",city:"Johannesburg",dom:false,s:45.0,t:97.0},
+ {c:"Fiji",city:"Sydney",dom:false,s:71.3,t:90.1},
+ {c:"Kenya",city:"Nairobi",dom:true,s:22.9,t:18.0},
+ {c:"Kazakhstan",city:"Almaty",dom:true,s:258.0,t:244.3}
+];
+const MWI=[{"n": "Chizumulu CDSS", "a": "Rural", "t": 1.43, "s": 39.87}, {"n": "St Paul's Anglican", "a": "Rural", "t": 4.24, "s": 40.75}, {"n": "Chankhomi CDSS", "a": "Urban", "t": 0.83, "s": 30.75}, {"n": "Phalombe", "a": "Rural", "t": 3.73, "s": 28.88}, {"n": "New Life Tabernacle private school", "a": "Urban", "t": 6.99, "s": 30.63}, {"n": "Chisala CDSS", "a": "Rural", "t": 6.5, "s": 24.74}, {"n": "Kuwala Christian Girls", "a": "Rural", "t": 11.49, "s": 25.69}, {"n": "Bambino", "a": "Urban", "t": 11.4, "s": 18.17}, {"n": "Rumphi Secondary school", "a": "Urban", "t": 0.49, "s": 0.93}, {"n": "Nkolokoti CCAP", "a": "Urban", "t": 1.55, "s": 1.35}, {"n": "Ndirande Hill Secondary", "a": "Urban", "t": 2.24, "s": 1.67}, {"n": "Namatapa LEA", "a": "Urban", "t": 1.07, "s": 0.38}, {"n": "Zingwangwa Secondary", "a": "Urban", "t": 3.34, "s": 1.49}, {"n": "Karonga CDSS", "a": "Urban", "t": 5.54, "s": 2.05}, {"n": "Naizi CDSS", "a": "Urban", "t": 8.27, "s": 0.04}, {"n": "Lilongwe LEA", "a": "Urban", "t": 12.16, "s": 3.04}, {"n": "Christian Heritage", "a": "Urban", "t": 23.72, "s": 12.12}, {"n": "Livimbo cdss", "a": "Urban", "t": 17.38, "s": 4.96}];
+const cs=getComputedStyle(document.documentElement);
+const C=k=>cs.getPropertyValue(k).trim();
+const NS="http://www.w3.org/2000/svg";
+const el=(n,a={})=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+
+function groundStations(){
+  const svg=document.getElementById("gs"); if(!svg) return; svg.textContent="";
+  const W=860,L=176,R=784,rows=GS.length,top=52,rh=38;
+  const max=Math.max(...GS.flatMap(d=>[d.s,d.t]))*1.06;
+  const x=v=>L+(v/max)*(R-L);
+  const ax=el("g",{class:"axis"});
+  [0,50,100,150,200,250].forEach(v=>{
+    if(v>max) return;
+    ax.appendChild(el("line",{x1:x(v),x2:x(v),y1:top-16,y2:top+rows*rh-14}));
+    const t=el("text",{x:x(v),y:top-22,"text-anchor":"middle"});t.textContent=v;ax.appendChild(t);
+  });
+  const lab=el("text",{x:L,y:top-40,class:"sm"});lab.textContent="median round trip (ms)";ax.appendChild(lab);
+  svg.appendChild(ax);
+  GS.forEach((d,i)=>{
+    const y=top+i*rh;
+    const n=el("text",{x:0,y:y+4,class:"slab"});n.textContent=d.c;svg.appendChild(n);
+    const g=el("text",{x:0,y:y+18,class:"sm"});
+    g.textContent=d.city+(d.dom?" · domestic":" · abroad");
+    g.setAttribute("fill",d.dom?C("--terr"):C("--warn"));svg.appendChild(g);
+    svg.appendChild(el("line",{x1:x(Math.min(d.s,d.t)),x2:x(Math.max(d.s,d.t)),y1:y,y2:y,
+      stroke:C("--hair-strong"),"stroke-width":3,"stroke-linecap":"round"}));
+    svg.appendChild(el("circle",{cx:x(d.t),cy:y,r:5.5,fill:C("--terr")}));
+    svg.appendChild(el("circle",{cx:x(d.s),cy:y,r:5.5,fill:C("--sat")}));
+    const v=el("text",{x:R+8,y:y+4,class:"sm"});
+    v.textContent=d.s.toFixed(0)+" / "+d.t.toFixed(0);svg.appendChild(v);
+  });
+}
+
+function paired(){
+  const svg=document.getElementById("paired"); if(!svg) return; svg.textContent="";
+  const W=860,L=214,R=770,top=44,rh=23;
+  const max=Math.max(...MWI.flatMap(d=>[d.s,d.t]))*1.06;
+  const x=v=>L+(v/max)*(R-L);
+  const ax=el("g",{class:"axis"});
+  [0,10,20,30,40].forEach(v=>{
+    if(v>max) return;
+    ax.appendChild(el("line",{x1:x(v),x2:x(v),y1:top-14,y2:top+MWI.length*rh-8}));
+    const t=el("text",{x:x(v),y:top-20,"text-anchor":"middle"});t.textContent=v;ax.appendChild(t);
+  });
+  const lab=el("text",{x:L,y:top-36,class:"sm"});
+  lab.textContent="median download (Mb/s)";ax.appendChild(lab);svg.appendChild(ax);
+  MWI.forEach((d,i)=>{
+    const y=top+i*rh, up=d.s>d.t;
+    const n=el("text",{x:0,y:y+4,class:"slab"});
+    n.textContent=(d.n.length>26?d.n.slice(0,25)+"\u2026":d.n);svg.appendChild(n);
+    const a=el("text",{x:196,y:y+4,class:"sm","text-anchor":"end"});
+    a.textContent=d.a.toLowerCase();svg.appendChild(a);
+    svg.appendChild(el("line",{x1:x(d.t),x2:x(d.s),y1:y,y2:y,
+      stroke:up?C("--sat"):C("--warn"),"stroke-width":2,opacity:.5,"stroke-linecap":"round"}));
+    svg.appendChild(el("circle",{cx:x(d.t),cy:y,r:4,fill:C("--terr")}));
+    svg.appendChild(el("circle",{cx:x(d.s),cy:y,r:4,fill:C("--sat")}));
+    const v=el("text",{x:R+10,y:y+4,class:"sm"});
+    v.textContent=(up?"+":"")+(d.s-d.t).toFixed(1);
+    v.setAttribute("fill",up?C("--sat"):C("--warn"));svg.appendChild(v);
+  });
+}
+groundStations(); paired();
+let t; addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(()=>{groundStations();paired()},140)});
+</script>

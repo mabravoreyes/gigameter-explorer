@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Where School Content Is Hosted</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +81,20 @@ a{color:var(--accent)}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);align-items:center}
 .lg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .scroll{overflow-x:auto}
+.ctrl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0 16px}
+.ctrl .lab{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);margin-right:4px}
+.ctrl button{font:inherit;font-size:13px;font-weight:500;color:var(--ink-2);background:var(--card);
+  border:1px solid var(--rule);border-radius:999px;padding:5px 13px;cursor:pointer;
+  transition:background .12s,border-color .12s,color .12s}
+.ctrl button:hover{border-color:var(--ink-4);color:var(--ink)}
+.ctrl button[aria-pressed="true"]{background:var(--p600);border-color:var(--p600);color:#fff}
+.lg.off{opacity:.28}
+.u{font-weight:400;color:var(--ink-4);text-transform:none;letter-spacing:0}
+td.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--ink-2)}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;
+  border:1px solid currentColor}
+.tag.t-domestic{color:var(--good)}.tag.t-cdn{color:var(--moderate)}.tag.t-foreign{color:var(--bad)}
 svg{display:block}
 .axis text{font-size:11px;fill:var(--ink-4)}
 .axis line{stroke:var(--rule-2)}
@@ -130,9 +145,9 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
   <div class="status">
     <h3>Draft v0 — Methodology Note</h3>
     <p><strong>Every active measurement on this page is a single one-off traceroute per probe per destination, taken on 30–31 August 2026.</strong> Internet paths change over hours and days, under load, and with routing policy. One sample can capture a transient route as easily as a stable one. <strong>This artifact is to demonstrate the potential of this research rather than to draw conclusions</strong> </p>
-    <p>The two sides of every comparison are not sampled to the same depth. The M-Lab figures aggregate six months and, in the larger countries, tens of thousands of measurements. The Atlas figures beside them come from one to three probes taking one measurement each..</p>
+    <p>The two sides of every comparison are not sampled to the same depth. The M-Lab figures aggregate six months and, in the larger countries, tens of thousands of measurements. The Atlas figures beside them come from one to three probes taking one measurement each.</p>
     <p>This affects the forward-path and asymmetry section most directly: the claim that seven of eighteen school networks route identically in both directions rests on one outbound trace per network. It should be read as an indication that asymmetry is common, not as a measurement of how common.</p>
-    <p>What would make this robust: repeated measurements at intervals over several days per probe, more probes per network where they exist, and periodic re-runs so a path can be seen to hold or change. Directional findings are likely to survive that.</p>
+    <p>What would make this robust: repeated measurements at intervals over several days per probe, more probes per network where they exist, and periodic re-runs so a path can be seen to hold or change.</p>
   </div>
 </header>
 
@@ -155,32 +170,40 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
   </div>
 
   <div class="stats">
-    <div class="stat"><span class="stat-n">9 <small>of 22</small></span><span class="stat-l">countries where the test server's round trip falls outside the range of every destination measured</span></div>
-    <div class="stat"><span class="stat-n">6 <small>of 17</small></span><span class="stat-l">national <em>learning platforms</em> hosted on foreign clouds, answering in 62–320&nbsp;ms</span></div>
-    <div class="stat"><span class="stat-n">320<small>ms</small></span><span class="stat-l">Zambia's learning platform, hosted on AWS in Oregon. The slowest destination measured</span></div>
-    <div class="stat"><span class="stat-n">7 <small>of 18</small></span><span class="stat-l">school networks whose transit path to the test server is identical in both directions</span></div>
-    <div class="stat"><span class="stat-n">21 <small>of 22</small></span><span class="stat-l">countries reaching Wikipedia from Europe or North America, at 37–193&nbsp;ms</span></div>
-    <div class="stat"><span class="stat-n">&lt;25<small>ms</small></span><span class="stat-l">median AI service round trip. Claude, ChatGPT and Gemini answer closer than most other destinations measured</span></div>
+    <div class="stat"><span class="stat-n">9 <small>of 22</small></span><span class="stat-l">countries where the test server's round trip falls outside the range of every destination measured.</span></div>
+    <div class="stat"><span class="stat-n">6 <small>of 17</small></span><span class="stat-l">national <em>learning platforms</em> hosted on foreign clouds, answering in 62–320&nbsp;ms.</span></div>
+    <div class="stat"><span class="stat-n">320<small>ms</small></span><span class="stat-l">Zambia's learning platform, hosted on AWS in Oregon. The slowest destination measured.</span></div>
+    <div class="stat"><span class="stat-n">7 <small>of 18</small></span><span class="stat-l">school networks whose transit path to the test server is identical in both directions.</span></div>
+    <div class="stat"><span class="stat-n">21 <small>of 22</small></span><span class="stat-l">countries reaching Wikipedia from Europe or North America, at 37–193&nbsp;ms.</span></div>
+    <div class="stat"><span class="stat-n">&lt;25<small>ms</small></span><span class="stat-l">median AI service round trip. Claude, ChatGPT and Gemini answer closer than most other destinations measured.</span></div>
   </div>
 </section>
 
 <section>
   <h2>Destination latency by content tier</h2>
-  <p>Giga's traceroute studies measure the path between a school and an M-Lab server. The destinations schools open are hosted elsewhere, and at a range of distances. Destinations were grouped into three tiers and each measured from the same probes: the <strong>national learning platform</strong>, <strong>global services</strong> (Google Classroom, Google Search, YouTube, Khan Academy, Wikipedia) and <strong>AI services</strong> (Claude, ChatGPT, Gemini).</p>
+  <p>Giga's traceroute studies measure the path between a school and an M-Lab server. The destinations schools open are hosted elsewhere, and at a range of distances. Destinations were grouped into three tiers and each measured from the same probes: the <strong>national learning platform</strong>, <strong>global services</strong> (Google Classroom, Google Search, YouTube, Khan Academy, Wikipedia) and <strong>AI services</strong> (Claude, ChatGPT, Gemini). Every destination measured, and the network serving it, is listed in <a href="#annex-destinations">Annex A</a>.</p>
   <p>The spread within a single country is often larger than the spread between countries. Botswana reaches global services in 8&nbsp;ms and Wikipedia in 174. Sri Lanka reaches AI services in 4&nbsp;ms and its M-Lab server in 175.</p>
 
   <div class="figure">
     <div class="fig-head"><div>
       <div class="fig-t">Destination latency range, with the test server marked</div>
-      <div class="fig-s">The band spans the closest and furthest destination measured. The vertical bar is the M-Lab test server. Where the bar sits outside the band, the test server's round trip is outside the range of every destination measured in that country.</div>
+      <div class="fig-s" id="range-sub">The band spans the closest and furthest destination measured. The vertical bar is the M-Lab test server. Where the bar sits outside the band, the test server's round trip is outside the range of every destination measured in that country.</div>
     </div>
     <div class="legend">
-      <span class="lg"><svg width="12" height="12"><path d="M6 1.5 L10.5 9.5 L1.5 9.5 Z" fill="var(--ink-3)"/></svg> Learning platform</span>
-      <span class="lg"><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--p600)"/></svg> Global services</span>
-      <span class="lg"><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--p900)"/></svg> AI services</span>
-      <span class="lg"><svg width="12" height="12"><rect x="2" y="2" width="8" height="8" fill="none" stroke="var(--ink-4)" stroke-width="2"/></svg> Wikipedia</span>
-      <span class="lg"><svg width="6" height="13"><rect x="2" width="2" height="13" fill="currentColor"/></svg> M-Lab server</span>
+      <span class="lg" data-t="plat"><svg width="12" height="12"><path d="M6 1.5 L10.5 9.5 L1.5 9.5 Z" fill="var(--ink-3)"/></svg> Learning platform</span>
+      <span class="lg" data-t="glob"><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--p600)"/></svg> Global services</span>
+      <span class="lg" data-t="ai"><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--p900)"/></svg> AI services</span>
+      <span class="lg" data-t="wiki"><svg width="12" height="12"><rect x="2" y="2" width="8" height="8" fill="none" stroke="var(--ink-4)" stroke-width="2"/></svg> Wikipedia</span>
+      <span class="lg" data-t="mlab"><svg width="6" height="13"><rect x="2" width="2" height="13" fill="currentColor"/></svg> M-Lab server</span>
     </div></div>
+    <div class="ctrl" id="tierctrl" role="group" aria-label="Filter by content tier">
+      <span class="lab">Show</span>
+      <button type="button" data-t="all" aria-pressed="true">All tiers</button>
+      <button type="button" data-t="plat" aria-pressed="false">Learning platform</button>
+      <button type="button" data-t="glob" aria-pressed="false">Global services</button>
+      <button type="button" data-t="ai" aria-pressed="false">AI services</button>
+      <button type="button" data-t="wiki" aria-pressed="false">Wikipedia</button>
+    </div>
     <div class="scroll"><svg id="range" role="img" aria-label="Latency range per country with the M-Lab server marked"></svg></div>
   </div>
 </section>
@@ -223,11 +246,13 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
   <div class="figure">
     <div class="fig-head"><div>
       <div class="fig-t">Networks serving schools, and Atlas probe coverage</div>
-      <div class="fig-s">Bar length is the share of that country's school traceroutes the network carries. The dot marks the share of attributed schools seen on it — a school can appear on more than one network, so these do not sum to 100%. Networks with no live Atlas probe cannot be independently measured.</div>
+      <div class="fig-s">The <strong>bar</strong> is the share of that country's school traceroutes the network carries; the percentage at the right repeats it. The <strong>open dot</strong> is a different measure on the same axis: the share of that country's identified schools seen on the network at least once. A school can appear on more than one network, so the dots do not sum to 100%, and a network can carry few traces while touching many schools. Top four networks per country. Networks with no live Atlas probe cannot be independently measured.</div>
     </div>
     <div class="legend">
-      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--p600)"/></svg> Has a live probe</span>
-      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--ink-4)"/></svg> No probe — unverifiable</span>
+      <span class="lg"><svg width="26" height="10"><rect y="2" width="26" height="6" rx="2" fill="var(--p600)" opacity=".85"/></svg> Bar: share of school traceroutes</span>
+      <span class="lg"><svg width="12" height="12"><circle cx="6" cy="6" r="3.6" fill="var(--card)" stroke="var(--p600)" stroke-width="2"/></svg> Dot: share of schools seen</span>
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--p600)"/></svg> Blue: has a live probe</span>
+      <span class="lg"><svg width="11" height="11"><rect width="11" height="11" rx="2" fill="var(--ink-4)"/></svg> Grey: no probe, unverifiable</span>
     </div></div>
     <div class="scroll"><svg id="asnet" role="img" aria-label="School-serving networks per country with Atlas probe coverage"></svg></div>
   </div>
@@ -243,7 +268,7 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
       <div class="fig-s">Only networks where an Atlas probe sits in the same autonomous system as measured school traffic. Overlap is the share of transit networks common to both directions.</div>
     </div></div>
     <div class="scroll"><table id="asymtbl">
-      <thead><tr><th>Country</th><th>School network</th><th class="r">M-Lab traces</th><th class="r">Transit overlap</th><th>Same route both ways</th></tr></thead>
+      <thead><tr><th>Country</th><th>School network</th><th class="r">M-Lab traces</th><th class="r">Transit overlap <span class="u">%</span></th><th>Same route both ways</th></tr></thead>
       <tbody></tbody></table></div>
   </div>
 </section>
@@ -256,8 +281,7 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
     </div></div>
     <div class="scroll"><table id="tbl">
       <thead><tr>
-        <th>Country</th><th>Test server</th><th class="r">M-Lab</th><th class="r">Platform</th><th>Platform host</th>
-        <th class="r">Global</th><th class="r">AI</th><th class="r">Wikipedia</th><th>Server in range</th>
+        <th>Country</th><th>Test server</th><th class="r">M-Lab <span class="u">ms</span></th><th class="r">Platform <span class="u">ms</span></th><th>Platform host</th><th class="r">Global <span class="u">ms</span></th><th class="r">AI <span class="u">ms</span></th><th class="r">Wikipedia <span class="u">ms</span></th><th>Server in range</th>
       </tr></thead><tbody></tbody>
     </table></div>
   </div>
@@ -281,8 +305,55 @@ footer{padding:36px 0 0;border-top:1px solid var(--rule);font-size:13.5px;color:
 
 <hr class="rule">
 
+<section id="annex-destinations">
+  <h2>Annex A — destinations measured</h2>
+  <p>Two sets of destinations were measured from every probe. Eight are identical in all 22 countries, so a difference between countries reflects the path rather than the target. One is different in each country: the ministry's own learning platform.</p>
+
+  <h3>Measured in every country</h3>
+  <p>Distinct addresses is the number of different IPs a destination resolved to across all 46 probes. A low count with a low round trip indicates anycast; a low count with a high round trip indicates few sites, far away. Claude answered on a single address in every country at a median of 21&nbsp;ms. Wikipedia answered on five addresses at 105&nbsp;ms.</p>
+  <div class="figure"><div class="scroll"><table>
+    <thead><tr><th>Service</th><th>Hostname</th><th>Tier</th><th>Served by</th>
+      <th class="r">Distinct addrs</th><th class="r">Median ms</th><th class="r">Range ms</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ChatGPT</strong></td><td class="mono">chatgpt.com</td><td>AI services</td><td>Cloudflare (CDN)</td><td class="n">2</td><td class="n">16</td><td class="n">&lt;1–160</td></tr>
+      <tr><td><strong>Claude</strong></td><td class="mono">claude.ai</td><td>AI services</td><td>Anthropic</td><td class="n">1</td><td class="n">21</td><td class="n">1–97</td></tr>
+      <tr><td><strong>Gemini</strong></td><td class="mono">gemini.google.com</td><td>AI services</td><td>Google</td><td class="n">8</td><td class="n">39</td><td class="n">8–100</td></tr>
+      <tr><td><strong>YouTube</strong></td><td class="mono">www.youtube.com</td><td>Global services</td><td>Google</td><td class="n">8</td><td class="n">40</td><td class="n">8–102</td></tr>
+      <tr><td><strong>Google Search</strong></td><td class="mono">www.google.com</td><td>Global services</td><td>Google</td><td class="n">9</td><td class="n">42</td><td class="n">8–100</td></tr>
+      <tr><td><strong>Google Classroom</strong></td><td class="mono">classroom.google.com</td><td>Global services</td><td>Google</td><td class="n">36</td><td class="n">42</td><td class="n">8–118</td></tr>
+      <tr><td><strong>Khan Academy</strong></td><td class="mono">www.khanacademy.org</td><td>Global services</td><td>Fastly (CDN)</td><td class="n">19</td><td class="n">51</td><td class="n">5–108</td></tr>
+      <tr><td><strong>Wikipedia</strong></td><td class="mono">en.wikipedia.org</td><td>Global services</td><td>Wikimedia Foundation</td><td class="n">5</td><td class="n">105</td><td class="n">37–193</td></tr>
+    </tbody></table></div></div>
+
+  <h3>National learning platforms</h3>
+  <p>One per country, taken from UNICEF's landscape mapping. Hosting was identified from the autonomous system of the responding address. Five countries — Botswana, Fiji, Lesotho, Saint Kitts and Nevis, Saint Lucia — had no platform that could be measured, either because no probe sat in a school-serving network or because the host did not resolve.</p>
+  <div class="figure"><div class="scroll"><table>
+    <thead><tr><th>Country</th><th>Platform</th><th>Hosting network</th><th>Class</th><th class="r">Median ms</th></tr></thead>
+    <tbody>
+      <tr><td>Mongolia</td><td class="mono">medle.mn</td><td>ERDEMNET</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">1</td></tr>
+      <tr><td>Kazakhstan</td><td class="mono">moocs.kz</td><td>Kazakhtelecom</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">2</td></tr>
+      <tr><td>Montenegro</td><td class="mono">skolskiportal.edu.me</td><td>Univ. of Montenegro</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">2</td></tr>
+      <tr><td>Rwanda</td><td class="mono">elearning.reb.rw</td><td>KT Rwanda</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">2</td></tr>
+      <tr><td>Republic of Moldova</td><td class="mono">educatieonline.md</td><td>Moldtelecom</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">3</td></tr>
+      <tr><td>Sri Lanka</td><td class="mono">e-thaksalawa.moe.gov.lk</td><td>Dialog Axiata</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">6</td></tr>
+      <tr><td>Kyrgyzstan</td><td class="mono">ibilim.kg</td><td>Cloudflare</td><td><span class="tag t-cdn">CDN</span></td><td class="n">12</td></tr>
+      <tr><td>Albania</td><td class="mono">akademi.al</td><td>Google Cloud</td><td><span class="tag t-cdn">CDN</span></td><td class="n">14</td></tr>
+      <tr><td>Honduras</td><td class="mono">educatrachos.hn</td><td>Hondutel</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">18</td></tr>
+      <tr><td>Bosnia and Herzegovina</td><td class="mono">enastava.skolers.org</td><td>Lanaco</td><td><span class="tag t-domestic">Domestic</span></td><td class="n">24</td></tr>
+      <tr><td>Namibia</td><td class="mono">learnonone.org</td><td>Cloudflare</td><td><span class="tag t-cdn">CDN</span></td><td class="n">38</td></tr>
+      <tr><td>Trinidad and Tobago</td><td class="mono">learn.moe.gov.tt</td><td>Microsoft Azure</td><td><span class="tag t-foreign">Foreign cloud</span></td><td class="n">62</td></tr>
+      <tr><td>Benin</td><td class="mono">infre-benin.org</td><td>Neue Medien (DE)</td><td><span class="tag t-foreign">Foreign cloud</span></td><td class="n">135</td></tr>
+      <tr><td>Kenya</td><td class="mono">elimika.kec.ac.ke</td><td>Microsoft Azure</td><td><span class="tag t-foreign">Foreign cloud</span></td><td class="n">139</td></tr>
+      <tr><td>Malawi</td><td class="mono">tikwere.org</td><td>Hetzner (DE)</td><td><span class="tag t-foreign">Foreign cloud</span></td><td class="n">196</td></tr>
+      <tr><td>South Africa</td><td class="mono">dbecloud.org.za</td><td>Trellian (AU)</td><td><span class="tag t-foreign">Foreign cloud</span></td><td class="n">255</td></tr>
+      <tr><td>Zambia</td><td class="mono">notesmaster.com</td><td>AWS Oregon</td><td><span class="tag t-foreign">Foreign cloud</span></td><td class="n">320</td></tr>
+    </tbody></table></div></div>
+</section>
+
+<hr class="rule">
+
 <section>
-  <h2>Annex — transit and exchange point exposure</h2>
+  <h2>Annex B — transit and exchange point exposure</h2>
   <p>Two operators come up repeatedly when school routing is discussed: Arelion (AS1299, formerly Telia Carrier) as a transit carrier, and Equinix as an interconnection venue. They appear in this dataset in different roles.</p>
 
   <h3>Arelion appears on a third of school networks</h3>
@@ -344,38 +415,81 @@ function bind(g,W,y,rowH,html){
   h.addEventListener("mouseleave",hide);g.appendChild(h);
 }
 
+const TIERS={
+  plat:{lbl:"Learning platform",v:d=>d.plat},
+  glob:{lbl:"Global services",v:d=>d.glob},
+  ai:{lbl:"AI services",v:d=>d.ai},
+  wiki:{lbl:"Wikipedia",v:d=>d.wiki}};
+let TIER="all";
+const SUB_ALL="The band spans the closest and furthest destination measured. The vertical bar is the M-Lab test server. Where the bar sits outside the band, the test server's round trip is outside the range of every destination measured in that country.";
+
 function ranges(){
   const host=document.getElementById("range");host.textContent="";
+  const single=TIER!=="all", T_=single?TIERS[TIER]:null;
+  let rows=D;
+  if(single) rows=D.filter(d=>T_.v(d)!=null).slice().sort((a,b)=>T_.v(a)-T_.v(b));
+  const sub=document.getElementById("range-sub");
+  if(sub) sub.textContent = single
+    ? T_.lbl+" only, sorted by round trip. The vertical bar is the M-Lab test server; the connector spans the gap between the tier and the test server."
+    : SUB_ALL;
+  document.querySelectorAll("#tierctrl button").forEach(b=>
+    b.setAttribute("aria-pressed", String(b.dataset.t===TIER)));
+  document.querySelectorAll(".legend .lg[data-t]").forEach(l=>
+    l.classList.toggle("off", single && l.dataset.t!==TIER && l.dataset.t!=="mlab"));
+
   const W=Math.max(780,host.parentElement.clientWidth||900),L=186,R=52,T=32,rowH=25;
-  const H=T+D.length*rowH+26;
-  host.setAttribute("viewBox",`0 0 ${W} ${H}`);host.setAttribute("width",W);host.setAttribute("height",H);
+  const H=T+rows.length*rowH+26;
+  host.setAttribute("viewBox","0 0 "+W+" "+H);host.setAttribute("width",W);host.setAttribute("height",H);
+  host.setAttribute("aria-label", single
+    ? T_.lbl+" round trip per country, with the M-Lab test server marked"
+    : "Latency range per country with the M-Lab server marked");
   const max=340,x=v=>L+(v/max)*(W-L-R);
   const ax=el("g",{class:"axis"});axis(ax,x,[0,60,120,180,240,300],T,H-20);host.appendChild(ax);
-  D.forEach((d,i)=>{
+  rows.forEach((d,i)=>{
     const y=T+i*rowH+rowH/2,g=el("g",{class:"rowg"});rowShell(g,W,y,rowH);
     const nm=el("text",{x:L-12,y:y+4,"text-anchor":"end",class:"cty"});
     nm.textContent=d.country.length>19?d.country.slice(0,18)+"…":d.country;g.appendChild(nm);
-    if(d.lo!=null)g.appendChild(el("line",{x1:x(d.lo),x2:x(d.hi),y1:y,y2:y,
-      stroke:"var(--rule)","stroke-width":6,"stroke-linecap":"round"}));
-    if(d.wiki!=null)g.appendChild(el("rect",{x:x(d.wiki)-4,y:y-4,width:8,height:8,fill:"none",
-      stroke:"var(--ink-4)","stroke-width":2}));
-    if(d.glob!=null)g.appendChild(el("circle",{cx:x(d.glob),cy:y,r:4.5,fill:"var(--p600)",class:"mk"}));
-    if(d.ai!=null)g.appendChild(el("circle",{cx:x(d.ai),cy:y,r:4,fill:"var(--p900)",class:"mk"}));
-    if(d.plat!=null){const px=x(d.plat);
-      g.appendChild(el("path",{d:`M${px} ${y-5.2} L${px+4.8} ${y+3.8} L${px-4.8} ${y+3.8} Z`,
-        fill:HOST[d.plat_class]||"var(--ink-3)",class:"mk"}));}
+    if(single){
+      const v=T_.v(d);
+      g.appendChild(el("line",{x1:x(Math.min(v,d.mlab)),x2:x(Math.max(v,d.mlab)),y1:y,y2:y,
+        stroke:"var(--rule)","stroke-width":6,"stroke-linecap":"round"}));
+      if(TIER==="wiki")g.appendChild(el("rect",{x:x(v)-4.5,y:y-4.5,width:9,height:9,fill:"var(--card)",
+        stroke:"var(--ink-4)","stroke-width":2}));
+      else if(TIER==="plat")g.appendChild(el("path",{d:"M"+x(v)+" "+(y-5.6)+" L"+(x(v)+5.2)+" "+(y+4.1)+" L"+(x(v)-5.2)+" "+(y+4.1)+" Z",
+        fill:HOST[d.plat_class]||"var(--ink-3)",class:"mk"}));
+      else g.appendChild(el("circle",{cx:x(v),cy:y,r:5,fill:TIER==="ai"?"var(--p900)":"var(--p600)",class:"mk"}));
+      const hiX=x(Math.max(v,d.mlab)), loX=x(Math.min(v,d.mlab));
+      const near=hiX>W-R-46;
+      const lb=el("text",{x:near?loX-12:hiX+12,y:y+4,class:"val","text-anchor":near?"end":"start",
+        fill:"var(--ink-2)"});
+      lb.textContent=Math.round(v)+" ms";g.appendChild(lb);
+    }else{
+      if(d.lo!=null)g.appendChild(el("line",{x1:x(d.lo),x2:x(d.hi),y1:y,y2:y,
+        stroke:"var(--rule)","stroke-width":6,"stroke-linecap":"round"}));
+      if(d.wiki!=null)g.appendChild(el("rect",{x:x(d.wiki)-4,y:y-4,width:8,height:8,fill:"none",
+        stroke:"var(--ink-4)","stroke-width":2}));
+      if(d.glob!=null)g.appendChild(el("circle",{cx:x(d.glob),cy:y,r:4.5,fill:"var(--p600)",class:"mk"}));
+      if(d.ai!=null)g.appendChild(el("circle",{cx:x(d.ai),cy:y,r:4,fill:"var(--p900)",class:"mk"}));
+      if(d.plat!=null){const px=x(d.plat);
+        g.appendChild(el("path",{d:"M"+px+" "+(y-5.2)+" L"+(px+4.8)+" "+(y+3.8)+" L"+(px-4.8)+" "+(y+3.8)+" Z",
+          fill:HOST[d.plat_class]||"var(--ink-3)",class:"mk"}));}
+    }
     g.appendChild(el("line",{x1:x(d.mlab),x2:x(d.mlab),y1:y-9,y2:y+9,
       stroke:d.in_range?"var(--ink)":"var(--bad)","stroke-width":2.5}));
-    bind(g,W,y,rowH,`<b>${d.country}</b>`
-      +`<div class="r"><span>M-Lab · ${d.server}</span><span>${ms(d.mlab)}</span></div>`
-      +`<div class="r"><span>Learning platform</span><span>${ms(d.plat)}</span></div>`
-      +`<div class="r"><span>Global services</span><span>${ms(d.glob)}</span></div>`
-      +`<div class="r"><span>AI services</span><span>${ms(d.ai)}</span></div>`
-      +`<div class="r"><span>Wikipedia</span><span>${ms(d.wiki)}</span></div>`
-      +`<div class="r"><span>Server in range</span><span>${d.in_range?"yes":"no"}</span></div>`);
+    bind(g,W,y,rowH,"<b>"+d.country+"</b>"
+      +'<div class="r"><span>M-Lab · '+d.server+"</span><span>"+ms(d.mlab)+"</span></div>"
+      +'<div class="r"><span>Learning platform</span><span>'+ms(d.plat)+"</span></div>"
+      +'<div class="r"><span>Global services</span><span>'+ms(d.glob)+"</span></div>"
+      +'<div class="r"><span>AI services</span><span>'+ms(d.ai)+"</span></div>"
+      +'<div class="r"><span>Wikipedia</span><span>'+ms(d.wiki)+"</span></div>"
+      +'<div class="r"><span>Server in range</span><span>'+(d.in_range?"yes":"no")+"</span></div>");
     host.appendChild(g);
   });
 }
+document.getElementById("tierctrl").addEventListener("click",function(e){
+  const b=e.target.closest("button[data-t]");if(!b)return;
+  TIER=b.dataset.t;ranges();
+});
 
 function hosting(){
   const host=document.getElementById("host");host.textContent="";
@@ -442,7 +556,7 @@ function asnet(){
   const by={};ASNET.forEach(r=>{(by[r.country]=by[r.country]||[]).push(r)});
   const order=D.map(d=>d.country).filter(c=>by[c]);
   const rows=[];order.forEach(c=>{by[c].slice(0,4).forEach((r,i)=>rows.push({...r,first:i===0}))});
-  const W=Math.max(780,host.parentElement.clientWidth||900),L=246,R=58,T=28,rowH=21;
+  const W=Math.max(780,host.parentElement.clientWidth||900),L=318,R=58,T=28,rowH=21,CW=134;
   const H=T+rows.length*rowH+22;
   host.setAttribute("viewBox",`0 0 ${W} ${H}`);host.setAttribute("width",W);host.setAttribute("height",H);
   const x=v=>L+(v/100)*(W-L-R);
@@ -451,9 +565,11 @@ function asnet(){
     const y=T+i*rowH+rowH/2,g=el("g",{class:"rowg"});
     g.appendChild(el("rect",{class:"rowbg",x:0,y:y-rowH/2,width:W,height:rowH,fill:"transparent"}));
     if(r.first)g.appendChild(el("line",{class:"rowline",x1:0,x2:W,y1:y-rowH/2,y2:y-rowH/2}));
-    if(r.first){const cn=el("text",{x:8,y:y+4,class:"cty"});cn.textContent=r.country.slice(0,17);g.appendChild(cn);}
-    const nm=el("text",{x:L-10,y:y+4,"text-anchor":"end",class:"sub"});
-    nm.textContent=(r.name||"").slice(0,30);g.appendChild(nm);
+    g.appendChild(el("line",{class:"rowline",x1:CW,x2:CW,y1:y-rowH/2,y2:y+rowH/2,opacity:.55}));
+    if(r.first){const cn=el("text",{x:8,y:y+4,class:"cty"});
+      cn.textContent=r.country.length>18?r.country.slice(0,17)+"\u2026":r.country;g.appendChild(cn);}
+    const nm=el("text",{x:CW+10,y:y+4,class:"sub"});
+    nm.textContent=(r.name||"").length>30?(r.name||"").slice(0,29)+"\u2026":(r.name||"");g.appendChild(nm);
     const c=r.has_probe?"var(--p600)":"var(--ink-4)";
     g.appendChild(el("rect",{x:x(0),y:y-4,width:Math.max(1,x(r.trace_pct)-x(0)),height:8,rx:2,fill:c,opacity:.85}));
     if(r.school_pct!=null&&r.school_pct===r.school_pct)
