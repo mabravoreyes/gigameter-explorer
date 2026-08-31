@@ -1,0 +1,26 @@
+cc,country,traces,arelion_pct,equinix_as_pct,equinix_ixp_pct,any_ixp_pct,top_ixp,top_ixp_pct
+AL,Albania,140915,13.5,0.0,0.0,0.0,SOX_Serbia,0.1
+BA,Bosnia and Herzegovina,137635,7.1,0.0,0.0,0.0,SOX_Serbia,48.5
+BJ,Benin,810,0.0,0.0,0.0,0.1,TunIXP,0.9
+BW,Botswana,21650,0.0,0.0,0.0,0.0,JINX,35.9
+BZ,Belize,13993,14.5,0.0,5.7,0.0,Equinix_Los_Angeles,5.7
+DM,Dominica,1529,1.0,0.0,0.0,0.1,IX.br_(PTT.br)_Rio_de_Janeiro:_ATM/MPLA,0.1
+FJ,Fiji,75146,0.0,0.0,88.6,0.0,Equinix_Sydney,88.6
+HN,Honduras,10419,21.7,0.9,2.0,0.0,Equinix_Los_Angeles,2.0
+KE,Kenya,63645,0.0,0.0,0.0,0.0,KIXP_-_Nairobi,84.5
+KG,Kyrgyzstan,502,0.0,0.0,0.0,0.0,,0.0
+KZ,Kazakhstan,68284,0.9,0.0,6.8,0.0,Equinix_Singapore,6.8
+LC,Saint Lucia,612,0.0,0.0,0.0,0.0,,0.0
+LK,Sri Lanka,318551,5.8,0.0,7.3,0.0,DE-CIX_Marseille,15.1
+LS,Lesotho,1678,0.0,0.0,0.0,0.2,NAPAfrica_IX_Johannesburg,66.6
+MD,Republic of Moldova,32766,45.9,0.0,0.2,0.0,InterLAN-IX,4.9
+ME,Montenegro,94555,0.0,0.0,0.0,0.0,SOX_Serbia,2.1
+MN,Mongolia,109398,0.5,0.0,0.0,0.0,MIX_MNDC,12.0
+MW,Malawi,28211,0.0,0.0,0.0,0.0,NAPAfrica_IX_Johannesburg,27.6
+NA,Namibia,40678,0.0,0.0,0.0,0.0,NAPAfrica_IX_Cape_Town,71.4
+RW,Rwanda,5268,0.0,0.0,0.0,0.1,KIXP_-_Nairobi,95.3
+TT,Trinidad and Tobago,5206,5.6,0.0,0.0,0.0,FL-IX,0.4
+UZ,Uzbekistan,86166,0.0,0.0,0.1,0.0,DE-CIX_Frankfurt,64.4
+VC,Saint Vincent and the Grenadines,2435,0.4,0.0,0.0,0.0,,0.0
+ZA,South Africa,85167,0.2,0.0,0.0,0.0,NAPAfrica_IX_Cape_Town,24.1
+ZM,Zambia,12978,0.0,0.0,0.0,0.1,NAPAfrica_IX_Johannesburg,22.1
