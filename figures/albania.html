@@ -93,8 +93,8 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
   <h1>Three routes out of Albania</h1>
   <p class="lede">Albanian schools reach the same test server 130&nbsp;km away by three different
   paths, and which one a school gets is decided by its internet provider — not by where the
-  school is. The slowest is fourteen times the latency of the fastest — and the cost lands on
-  latency, not bandwidth.</p>
+  school is. The slowest is fourteen times the latency of the fastest, and every other measure
+  is worse on it too.</p>
   <p class="fig-s" style="max-width:60ch;margin-top:-4px">Everything here is restricted to
   traceroutes attributable to a Giga-registered school by NDT test ID — 94,315 of the 140,915
   in the Albanian export. The other third are non-school clients on the same networks.</p>
@@ -187,20 +187,23 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
     so most of the network's schools are seen on the long path at some point.</p>
   </div>
   <div class="fig">
-    <p class="fig-t">What the longer route costs</p>
-    <p class="fig-s">Each bar is how much <i>worse</i> the longer route is on that measure —
-    always positive, whichever direction the underlying number moves. Latency and retransmission
-    go up; upload and download go down. Raw values at right.</p>
+    <p class="fig-t">What the longer route costs the same school</p>
+    <p class="fig-s">The 129 Abissnet schools with enough traces on both upstreams, each
+    compared against itself. Bars are the median within-school change as a percentage — always
+    drawn as a penalty, whichever way the underlying number moves. Every measure is worse on the
+    longer route; latency is worse by far.</p>
     <div id="c-ndt"></div>
-    <p class="note">Latency more than doubles, retransmission rises a third and upload falls a
-    fifth — but download is within 2%, which is noise. The cross-sectional throughput gap between
-    routes is therefore composition, not causation. Retransmission is meaningful <i>here</i>
-    because download is held nearly equal, so it is not standing in for how hard the link was
-    pushed.</p>
+    <p class="note">Every measure is significantly worse on the longer route, so this is not a
+    latency-only effect — but the magnitudes are not comparable. Latency rises 142% while
+    download falls about 3%. A school on the long path loses a couple of Mb/s and gains 37 ms.
+    That matters because most school internet use — a page loading, a video call, a login — is
+    bound by round trips rather than by sustained bandwidth.</p>
   </div>
-  <div class="callout"><b>This is a latency argument, and only a latency argument.</b> Latency
-  governs video lessons, live classes and anything interactive. Presenting routing as a
-  bandwidth problem invites a rebuttal the data would not survive.</div>
+  <div class="callout"><b>Latency is the effect worth arguing about, not the only one.</b>
+  Download and upload are both significantly worse on the long route, by roughly 3%. Latency is
+  worse by 142%. Frame the case on latency because that is where the size is — and because
+  round trips, not bandwidth, are what a page load, a video call or a login actually waits
+  on.</div>
 </section>
 
 <section>
@@ -319,10 +322,10 @@ const D={
            via:['RS','HR'],pct:92.3,c:'--r2'},
           {up:'Arelion',asn:'AS1299',n:3295,sch:184,rtt:64.1,km:3030,
            via:['IT','DE','AT','HR'],pct:7.7,c:'--r3'}]},
- ndt:[{k:'Latency',a:27,b:64,u:'ms',dir:'up',pen:137},
-      {k:'Retransmission',a:4.83,b:6.64,u:'%',dir:'up',pen:37},
-      {k:'Upload',a:65.6,b:53.3,u:'Mb/s',dir:'down',pen:19},
-      {k:'Download',a:75.7,b:73.9,u:'Mb/s',dir:'down',pen:2}],
+ ndt:[{k:'Latency',a:26.0,b:64.0,u:'ms',d:'+37.0 ms',pen:142,w:99,p:'6e-23'},
+      {k:'Retransmission',a:4.55,b:6.87,u:'%',d:'+1.53 pts',pen:34,w:75,p:'6e-11'},
+      {k:'Upload',a:81.6,b:60.0,u:'Mb/s',d:'−2.08 Mb/s',pen:3,w:80,p:'3e-11'},
+      {k:'Download',a:84.9,b:76.0,u:'Mb/s',d:'−2.52 Mb/s',pen:3,w:73,p:'6e-06'}],
  multi:[{k:'Latency',v:[41.0,25.0,25.0,38.5],u:'ms'},
         {k:'Download',v:[74.7,85.3,84.9,88.7],u:'Mb/s'},
         {k:'Upload',v:[62.9,83.9,76.3,78.2],u:'Mb/s'},
@@ -494,12 +497,11 @@ const W=()=>Math.min(1000,document.querySelector('.wrap').clientWidth-52);
     const t=el('text',{x:0,y:y+21,class:'lbl'});t.textContent=d.k;s.appendChild(t);
     const r=el('rect',{x:X(0),y:y+4,width:Math.max(2,X(d.pen)-X(0)),height:24,rx:4,
       fill:d.pen>=30?'var(--r3)':'var(--r2)','fill-opacity':d.pen>=30?1:.4});
-    const arrow=d.dir==='up'?'higher':'lower';
-    hov(r,`<b>${d.k}</b><br>via Cogent ${d.a} ${d.u} · via Arelion ${d.b} ${d.u}<br>`+
-          `${d.pen}% worse on the longer route (${arrow})`);
+    hov(r,`<b>${d.k}</b><br>median school: ${d.a} → ${d.b} ${d.u}<br>`+
+          `within-school change ${d.d} · ${d.w}% of schools worse<br>Wilcoxon p = ${d.p}`);
     s.appendChild(r);
     const v=el('text',{x:X(d.pen)+10,y:y+21,class:'val'});
-    v.textContent=`${d.a} → ${d.b} ${d.u}`;s.appendChild(v);
+    v.textContent=`${d.d}  ·  ${d.w}% of schools worse`;s.appendChild(v);
   });
   document.getElementById('c-ndt').appendChild(s);
 })();

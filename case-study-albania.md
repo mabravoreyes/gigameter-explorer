@@ -185,16 +185,29 @@ its upstreams — separates what the route causes from what the operator does:
 | Cogent | 39,715 | **27 ms** | 75.7 Mb/s | 65.6 Mb/s | 4.8% | 1,250 km |
 | Arelion | 3,295 | **64 ms** | 73.9 Mb/s | 53.3 Mb/s | 6.6% | 3,030 km |
 
-**The route costs latency, and barely touches download.** 2.4x the latency, a
-23% upload penalty, and a download difference of 2% that is noise. The
-cross-sectional throughput gap between routes — 85 Mb/s on the direct path
-against 30 on the European one — is therefore mostly *which operators take
-which route*, not the route itself.
+**Every measure is worse on the long route, but not by comparable amounts.**
+Comparing each of the 129 schools against itself:
 
-That narrows the claim and sharpens it. Routing is a latency problem, and
-latency is what governs video lessons, live classes and anything interactive.
-It is not a bandwidth problem, and presenting it as one invites a correct
-rebuttal.
+| | via Cogent | via Arelion | within-school change | schools worse | p |
+|---|---:|---:|---:|---:|---:|
+| latency | 26.0 ms | 64.0 ms | **+37.0 ms** | 99% | 6e-23 |
+| retransmission | 4.55% | 6.87% | +1.53 pts | 75% | 6e-11 |
+| upload | 81.6 Mb/s | 60.0 Mb/s | −2.08 Mb/s | 80% | 3e-11 |
+| download | 84.9 Mb/s | 76.0 Mb/s | −2.52 Mb/s | 73% | 6e-06 |
+
+Download and upload are significantly worse, so it is wrong to say the route
+costs nothing but latency. They are worse by about 3% where latency is worse by
+142%. Note also that the group medians overstate the throughput effect — 81.6
+against 60.0 Mb/s on upload looks like a third, where the paired change is
+2.08 Mb/s — which is the same cross-sectional inflation the paired design
+exists to remove.
+
+So the case should be argued on latency because that is where the magnitude is,
+not because it is the only thing affected. And latency is not a lesser kind of
+performance: a page load, a video call, a login or a quiz submission waits on
+round trips, not on sustained bandwidth. Within the Arelion path itself, schools
+with higher RTT also download more slowly (rho = -0.25, p = 0.035), which is
+what latency-bound throughput looks like.
 
 **Two consequences.** The rural/urban gap is a *different* problem: rural
 schools trail on download (35.7 against 84.3 Mb/s) and upload (19.1 against

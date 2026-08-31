@@ -305,13 +305,15 @@ def country_rows(country: str, data_root: Path | str | None = None,
 
 
 def run(countries: list[str] | None = None, data_root: Path | str | None = None,
-        min_n: int = 30, metrics: dict | None = None) -> pd.DataFrame:
+        min_n: int = 30, metrics: dict | None = None, verbose: bool = False) -> pd.DataFrame:
     """The cross-country table: every country with a comparable cell, one row per metric."""
     root = Path(data_root or _ROOT / "data" / "traceroutes")
     countries = countries or sorted(
         d.name for d in root.iterdir() if d.is_dir() and len(d.name) == 2)
     rows, skipped = [], []
     for country in countries:
+        if verbose:
+            print(f"  {country} ...", flush=True)
         try:
             found = country_rows(country, data_root=root, metrics=metrics, min_n=min_n)
         except (FileNotFoundError, ValueError, KeyError) as error:  # no data, no index, no window
@@ -334,7 +336,7 @@ def main() -> None:
     parser.add_argument("--out", default="data/traceroutes/pairwise_arms.csv")
     args = parser.parse_args()
 
-    table = run(args.countries or None, data_root=args.root, min_n=args.min_n)
+    table = run(args.countries or None, data_root=args.root, min_n=args.min_n, verbose=True)
     if table.empty:
         print("No country had a comparable cell.")
     else:

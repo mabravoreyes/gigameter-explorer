@@ -113,6 +113,22 @@ published reports do.
 against what the notebook covers, what only approximates it, and what needs the
 Giga Meter join.
 
+`helpers/pairwise_arms.py` uses that same join the other way round — it keeps
+both arms and compares them. School-attributed traces are set against
+unattributed ones *inside* a network-server cell, so a difference can be
+neither the access ISP nor the M-Lab server. Two cautions are built into the
+module rather than left to the reader: the second arm is *unattributed*, not
+verified non-school, and the arms are sampled from different clocks — in
+Albania 22% of school traces fall in the 08:00 hour against 4% of unattributed
+ones, which sit in the residential evening peak. Every estimate is therefore
+reported crude and stratified by daypart and weekday over the same rows, so the
+size of that confound is visible instead of assumed.
+
+```bash
+python helpers/pairwise_arms.py --root ../gigameter-traceroute-data/traceroutes
+```
+
+
 ## Known limits
 * Only Albania and Belize are written up; `country_profiles.csv` summarises
   the other 26
