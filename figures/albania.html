@@ -91,10 +91,10 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
 <header>
   <p class="eyebrow">Giga Meter · traceroute study</p>
   <h1>Three routes out of Albania</h1>
-  <p class="lede">Albanian schools reach the same test server 130&nbsp;km away by three different
-  paths, and which one a school gets is decided by its internet provider — not by where the
-  school is. The slowest is fourteen times the latency of the fastest, and every other measure
-  is worse on it too.</p>
+  <p class="lede">Between March and July 2026, Giga Meter measured Albanian schools against
+  the M-Lab server in Podgorica, 130&nbsp;km away. Traffic reached it over three distinct
+  paths, with median latency ranging from 4&nbsp;ms to 55&nbsp;ms. Which path a school took
+  tracked its internet provider rather than its location.</p>
   <p class="fig-s" style="max-width:60ch;margin-top:-4px">Everything here is restricted to
   traceroutes attributable to a Giga-registered school by NDT test ID — 94,315 of the 140,915
   in the Albanian export. The other third are non-school clients on the same networks.</p>
@@ -107,7 +107,7 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
 </header>
 
 <section>
-  <h2>Almost none of the delay is Albanian</h2>
+  <h2>Where the round trip accrues</h2>
   <p>Albania has no domestic M-Lab server, so every school measurement crosses the border.
   Splitting each path into the milliseconds accrued inside the country and outside it shows
   where the problem lives — and where a national operator has any leverage at all. Figures are
@@ -121,13 +121,14 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
     <div class="tile"><div class="num">59</div>
       <div class="cap">hops crossing an internet exchange, out of <b>1,037,213</b> observed — 0.006%</div></div>
   </div>
-  <div class="callout">With effectively no exchange-point interconnection, there is nowhere
-  regional to hand traffic off. It goes to a global transit provider and it travels.</div>
+  <div class="callout">Exchange-point crossings are close to absent: 59 hops of 1,037,213.
+  Paths leaving Albania are handed to a global transit provider rather than exchanged
+  regionally.</div>
 </section>
 
 <section>
-  <p class="eyebrow">The finding</p>
-  <h2>Same country, same destination, 14× apart</h2>
+  <p class="eyebrow">Routes</p>
+  <h2>Latency by path</h2>
   <p>Every school below is reaching one M-Lab server in Podgorica. The only thing that differs
   is the path its traffic takes to get there.</p>
   <div class="fig">
@@ -135,20 +136,21 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
     <p class="fig-s">One point per school, so a heavily-tested school cannot stand in for a district.
     Bar length is latency; the school count is the population behind each.</p>
     <div id="c-routes"></div>
-    <p class="note">The direct path is not hypothetical — 19 schools already use it. The
-    throughput differences between routes are largely <i>which operators take which route</i>;
-    the section below separates the two.</p>
+    <p class="note">19 schools are observed on the direct path. Throughput differences between
+    routes reflect provider composition as much as the path itself; the next section separates
+    them within a single network.</p>
   </div>
 </section>
 
 <section>
-  <p class="eyebrow">The mechanism</p>
-  <h2>The route follows the provider</h2>
-  <p>Four small operators peer directly into Montenegro and deliver 4&nbsp;ms. The incumbent,
-  Telekom Albania, sends 96.9% of its school traffic through Italy, Germany or Austria.
-  Albania's regional interconnection is being done by its smallest providers.</p>
+  <p class="eyebrow">Networks</p>
+  <h2>Path mix by provider</h2>
+  <p>Path choice is near-uniform within a provider and differs sharply between them. I.B.C
+  reaches Montenegro directly on 95% of its school traffic, at a median 3.1&nbsp;ms. Telekom
+  Albania routes 97.7% through Italy, Germany or Austria, at 61.3&nbsp;ms. The providers
+  observed on the direct path are among the smallest in the dataset.</p>
   <div class="fig">
-    <p class="fig-t">How each operator routes its school traffic</p>
+    <p class="fig-t">Share of each provider's school traffic by path</p>
     <p class="fig-s">Each school's own route split, averaged across that operator's schools —
     so one school with 1,871 tests counts the same as one with five, and a school that uses two
     routes still shows both. Latency is the median of per-school medians. Schools need five
@@ -161,20 +163,18 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
   via Europe against 97.7%. It moves the small ones: Albtelecom's European share reads 16.6% by
   trace and 26.9% by school, and Tele.Co.Albania 64.4% via Serbia against 39.1%. Their heaviest
   testers are not typical of their estates.</p>
-  <div class="callout"><b>The same school, routed two ways, is 37&nbsp;ms slower on the long
-  path.</b> 129 Abissnet schools have enough traces on both upstreams to compare against
-  themselves: median 26&nbsp;ms via Cogent against 64&nbsp;ms via Arelion, and
-  <b>128 of the 129 are slower on Arelion</b> (Wilcoxon p&nbsp;=&nbsp;6&times;10⁻²³). The
-  school, its access network, its contract and its destination are all held constant. Only the
-  route changes.</div>
+  <div class="callout">Across the 129 Abissnet schools with enough traces on both upstreams,
+  the median is 26&nbsp;ms via Cogent and 64&nbsp;ms via Arelion. 128 of the 129 are slower on
+  Arelion (Wilcoxon p&nbsp;=&nbsp;6&times;10⁻²³).</div>
 </section>
 
 <section>
-  <p class="eyebrow">Robustness</p>
-  <h2>The route costs latency, not bandwidth</h2>
-  <p>Every measurement here is NDT7, with download, upload, latency and loss recorded. Holding
-  the operator fixed separates what the route causes from what the operator does — Abissnet
-  carries 43,000 traces across two different upstreams to the same server.</p>
+  <p class="eyebrow">Within one network</p>
+  <h2>Abissnet across two upstreams</h2>
+  <p>Abissnet carries 43,101 school traces across two upstreams to the same server, and 183
+  of its 226 schools appear on both. Comparing each school against itself holds the access
+  network, contract and location fixed. Measurements are NDT7, with download, upload, latency
+  and retransmission recorded.</p>
   <div class="fig">
     <p class="fig-t">One network, two upstreams, same destination</p>
     <p class="fig-s">Abissnet's completed traceroutes to Podgorica, split by the transit
@@ -193,28 +193,23 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
     drawn as a penalty, whichever way the underlying number moves. Every measure is worse on the
     longer route; latency is worse by far.</p>
     <div id="c-ndt"></div>
-    <p class="note">Every measure is significantly worse on the longer route, so this is not a
-    latency-only effect — but the magnitudes are not comparable. Latency rises 142% while
-    download falls about 3%. A school on the long path loses a couple of Mb/s and gains 37 ms.
-    That matters because most school internet use — a page loading, a video call, a login — is
-    bound by round trips rather than by sustained bandwidth.</p>
+    <p class="note">A school on the longer path records a median 37&nbsp;ms more latency and
+    roughly 2.5&nbsp;Mb/s less download. NDT7 measures a sustained transfer, which is the
+    workload least sensitive to round-trip time.</p>
   </div>
-  <div class="callout"><b>Latency is the effect worth arguing about, not the only one.</b>
-  Download and upload are both significantly worse on the long route, by roughly 3%. Latency is
-  worse by 142%. Frame the case on latency because that is where the size is — and because
-  round trips, not bandwidth, are what a page load, a video call or a login actually waits
-  on.</div>
+  <div class="callout">All four measures are significantly worse on the longer path. The
+  magnitudes differ by two orders: latency 142% worse, download and upload about 3%.</div>
 </section>
 
 <section>
-  <p class="eyebrow">Who pays for it</p>
-  <h2>Two different problems, often confused</h2>
-  <p>The regional pattern <i>is</i> routing: Dibër is closer to Podgorica than Tirana is, and it
-  is slow because 89% of its traffic goes through western Europe. The rural–urban gap is not.
-  Rural schools trail on download and upload but barely on latency — that is access capacity,
-  and peering will not fix it.</p>
+  <p class="eyebrow">Distribution</p>
+  <h2>By region and area type</h2>
+  <p>Regional latency tracks path choice. Dibër records the highest median at 59.2&nbsp;ms
+  with 88.9% of its traffic on the western European path, though it sits closer to Podgorica
+  than Tirana does. The rural–urban difference does not follow that pattern: rural schools
+  trail on download and upload but differ little on latency.</p>
   <div class="fig">
-    <p class="fig-t">Regions on the European route are the slow regions</p>
+    <p class="fig-t">Median latency against share of traffic via western Europe</p>
     <p class="fig-s">Each circle is a region, sized by schools measured. Regions sending more
     traffic through western Europe sit higher.</p>
     <div id="c-regions"></div>
@@ -229,8 +224,8 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
 </section>
 
 <section>
-  <p class="eyebrow">The trajectory</p>
-  <h2>It improved to May, then gave much of it back</h2>
+  <p class="eyebrow">Over time</p>
+  <h2>Latency across the period</h2>
   <p>The Giga Meter campaign began in March 2026 and the fleet grew from 99 schools to 856 by
   May, so a country average would move on composition alone. This tracks only the 67 schools
   present in every month from April to July — the same schools throughout.</p>
@@ -248,16 +243,14 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
     value. Download is at its best in July, in the month latency is worst.</p>
     <div class="legend" id="lg-m"></div>
     <div id="c-multi"></div>
-    <p class="note">The schools did not get worse — their routing did. "The gains reversed" is
-    wrong; "the latency gains reversed while capacity kept improving" is right, and is a cleaner
-    argument for treating routing as its own policy object. <b>Retransmission is shown for
-    completeness only:</b> the field labelled packet loss is <i>s2c_bytes_retrans ÷
-    s2c_bytes_sent</i>, a TCP retransmission rate under a test that deliberately saturates the
-    link — not loss on the path. Don't build a claim on it.</p>
+    <p class="note">Latency is the only measure that reverses. Download peaks in July and
+    retransmission is at its lowest, in the month latency is worst. Retransmission is
+    <i>s2c_bytes_retrans ÷ s2c_bytes_sent</i>, a TCP retransmission rate measured under a
+    saturating transfer; it is reported as recorded rather than as path loss.</p>
   </div>
-  <div class="callout">The one trend that did not reverse: the direct Albania→Montenegro path
-  <b>did not exist in March</b> and carried 4.3% of attributed school paths by July. New regional
-  interconnection is appearing, and it is measurable.</div>
+  <div class="callout">The direct Albania→Montenegro path is absent in March and is the main
+  route for 6.3% of schools by July. It is the only trend in the period that does not
+  reverse.</div>
   <div class="fig">
     <p class="fig-t">Share of schools whose main route is the direct one</p>
     <p class="fig-s">One school, one vote, among schools with at least five completed traces
@@ -268,7 +261,7 @@ footer{padding:40px 0 0;font-size:12.5px;color:var(--ink-3)}
 </section>
 
 <section>
-  <h2>What would undercut this</h2>
+  <h2>Notes on the data</h2>
   <div class="callout caveat">
   <ul style="margin:0">
     <li><b>One vantage point.</b> 96% of traces end at Podgorica. These are routes to that
