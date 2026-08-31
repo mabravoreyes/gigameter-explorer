@@ -9,7 +9,24 @@ aggregates slightly (median RTT 28.7 ms on schools against 32.3 on everything).
 
 Albania has no domestic M-Lab server. Every school measurement crosses the
 border, and **96% of a school's round-trip time accrues outside the country**:
-a median 1.15 ms domestic against 30.4 ms international. Nothing a national
+a median 0.94 ms domestic against 29.9 ms international, taking the median of
+per-school medians so a school that ran 1,871 tests counts once.
+
+**Testing is very unevenly spread, so weighting matters.** The 25 heaviest
+schools account for 51% of completed traces (Gini 0.74 across 476 schools);
+the median school ran 36 and the busiest 1,871. Every school-level figure here
+— routes, regions, rural/urban, the balanced panel, the paired upstream
+comparison — is computed one school at a time. Re-running the trace-weighted
+ones school-weighted moves them little: Abissnet's median goes 27.4 to 26.9 ms,
+Telekom Albania's 62.1 to 61.3, I.B.C's 3.0 to 3.1, and the domestic/
+international split 1.15/30.4 to 0.94/29.9.
+
+One figure does move. Abissnet's European share reads 7.6% of its traces but
+**0% of its schools by dominant route** — no Abissnet school mostly uses that
+path; it is spread thinly across many. That is consistent with the paired
+result below, and it is why the operator chart stays trace-weighted: collapsing
+each school to a single route would erase the minority path that the whole
+argument is about. Nothing a national
 operator does to its own network can touch the other 97%.
 
 The destination is Podgorica, about 130 km from Tirana.
