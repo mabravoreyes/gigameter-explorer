@@ -339,13 +339,39 @@ buy transit from Cogent", but: *the same school, on the same network, gets
 it, and the slow path leaves the region to do it.* Regional interconnection is
 the subject; upstream league tables are not.
 
-**Testing the general case is feasible.** Albania has 30 connected RIPE Atlas
-probes including one inside Abissnet, and four in Albtelecom. Pointing those at
-the destinations schools actually use — the ministry platform, Google and
-Microsoft caches, a Frankfurt anchor — would settle whether the regional
-disadvantage extends to the traffic that matters. Atlas cannot force a probe
-through a chosen upstream, so it answers "where does Albanian school traffic
-actually go, and how long does it take", not the counterfactual.
+**The general case has been measured, and it does not hold.** Two Albanian
+Atlas probes were run against the content schools actually use
+(`data/atlas/`, `content_measurements_all_countries.csv`):
+
+| target | served by | probe 16235 | probe 21663 |
+|---|---|---:|---:|
+| YouTube | Google | **8.3 ms** | 19.1 ms |
+| Google Classroom | Google (Sofia) | **8.5 ms** | 19.2 ms |
+| Claude | Cloudflare edge | 8.4 ms | 46.2 ms |
+| Khan Academy | Fastly, via Cogent | 36.2 ms | 30.8 ms |
+| Wikipedia | Marseille | 48.6 ms | 26.3 ms |
+| *M-Lab tgd01, for comparison* | | *32.3 ms* | *32.3 ms* |
+
+**Google-hosted content — the bulk of what a school actually loads — arrives in
+8-19 ms, well below anything in the M-Lab range.** The traceroutes show why:
+from probe 16235 the path reaches Google's network at the seventh hop, 8 ms in.
+The cache is regional and the transit question never arises.
+
+Where content is *not* cached nearby, transit reappears: Khan Academy sits
+behind Fastly and both probes reach it over Cogent, climbing 14 → 26 → 36 ms
+across the Cogent backbone. Wikipedia is served from Marseille at 26-49 ms.
+
+So the M-Lab result describes reaching a measurement server in Montenegro. It
+does not describe reaching Google Classroom, and it would be wrong to present
+26 ms against 64 ms as what a pupil waits for a lesson to load.
+
+**The caveat that keeps this from being conclusive.** Probe 16235 is in ABCOM
+(AS21183, 5.6% of school traffic) and probe 21663 in AS198890, which carries no
+measured school traffic at all. **Neither is in Abissnet or Albtelecom**, the
+two networks the routing argument is about, so this says what *some* Albanian
+networks get, not what the schools in the case study get. Albania has 30
+connected probes and one of them is inside Abissnet — running the same content
+set from it is the measurement that would close this.
 
 ## What would undercut this
 
