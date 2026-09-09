@@ -226,6 +226,51 @@ def classify_service_level(download_median, upload_median, latency_median, packe
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Giga connectivity levels — the authoritative UNICEF/Giga procurement bands
+# ("Connectivity That Matters: Practical Guidance for Connecting Schools and
+# Health Care Facilities to the Internet"). Technology-agnostic service bands for
+# like-for-like procurement, defined by contracted DOWNLINK + school UPLINK.
+# The guide sets NO latency, jitter or packet-loss threshold — do not invent one.
+# Medical-facility uplinks differ (Pioneer 4 / Discovery 10 / Pathfinder 25 /
+# Navigator 100 Mbps) and are not modelled here (schools).  NOT IQB thresholds.
+# ─────────────────────────────────────────────────────────────────────────────
+GIGA_LEVELS = [                       # (name, downlink Mbps, school uplink Mbps)
+    ("Navigator-150", 150, 30),
+    ("Pathfinder-50",  50, 10),
+    ("Discovery-20",   20,  4),
+    ("Pioneer-10",     10,  2),
+]
+GIGA_LEVEL_ORDER = ["Below Pioneer-10", "Pioneer-10", "Discovery-20",
+                    "Pathfinder-50", "Navigator-150"]
+
+
+def classify_giga_level(download_median, upload_median=None, require_uplink=False):
+    """Highest Giga connectivity level a school's measured medians satisfy.
+
+    download_median : median download Mbps (required).
+    upload_median   : median school uplink Mbps (used only if require_uplink).
+    require_uplink  : False (default) classifies on downlink only, matching how
+                      the bands are named/marketed; True is the strict reading —
+                      a level counts only when BOTH its downlink AND school-uplink
+                      targets are met.
+    Returns a level name, "Below Pioneer-10", or None if download is missing.
+    Per the guide, NO latency/loss threshold is applied.
+    """
+    try:
+        if download_median is None or download_median != download_median:   # NaN
+            return None
+    except TypeError:
+        return None
+    for name, dl, ul in GIGA_LEVELS:            # highest first
+        meets_ul = (not require_uplink) or (upload_median is not None
+                                            and upload_median == upload_median
+                                            and upload_median >= ul)
+        if download_median >= dl and meets_ul:
+            return name
+    return "Below Pioneer-10"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Robust group-comparison statistics (peak vs off-peak, ISP, WiFi/Ethernet, …)
 #
 # Two facts about this data drive every choice here:
